@@ -61,17 +61,21 @@ public class Board extends javax.swing.JFrame {
     private void colocaPeçaNoBotão (JButton buttonClicked, Peça piece){
         if ( pieceSelected  != null){
             int[] coordinates = pegaCoordenadas(buttonClicked);
-            if (pieceSelected instanceof Bomba) {
-                piecePlaced = new Bomba(pieceSelected.getNome(), pieceSelected.getNivel(),coordinates);
-                buttonClicked.setText("Bomba");            
-                numberSelectedBombs++;
-                pieceSelected = null;
-            } else if (pieceSelected instanceof Bandeira) {
-                piecePlaced = new Bandeira(pieceSelected.getNome(), pieceSelected.getNivel(),coordinates);
-                buttonClicked.setText("Bandeira");
-                numberSelectedFlag++;
-                pieceSelected = null;
+            int row = coordinates [0];
+            if ( row > 2){
+                if (pieceSelected instanceof Bomba) {
+                    piecePlaced = new Bomba(pieceSelected.getNome(), pieceSelected.getNivel(),coordinates);
+                    buttonClicked.setText("💣");            
+                    numberSelectedBombs++;
+                    pieceSelected = null;
+                } else if (pieceSelected instanceof Bandeira) {
+                    piecePlaced = new Bandeira(pieceSelected.getNome(), pieceSelected.getNivel(),coordinates);
+                    buttonClicked.setText("🏴");
+                    numberSelectedFlag++;
+                    pieceSelected = null;
+                }
             }
+            
         }
     }
     
@@ -114,11 +118,16 @@ public class Board extends javax.swing.JFrame {
         jButtonPeça3 = new javax.swing.JButton();
         jButtonPeça4 = new javax.swing.JButton();
         jButtonPeça5 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jConsole = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("StrategyGame");
+        setName("Board"); // NOI18N
         setPreferredSize(new java.awt.Dimension(500, 500));
-        setSize(new java.awt.Dimension(500, 500));
+        setSize(new java.awt.Dimension(700, 700));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -210,7 +219,6 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton9, gridBagConstraints);
 
-        jButton12.setText("X");
         jButton12.setEnabled(false);
         jButton12.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton12.setName(""); // NOI18N
@@ -350,7 +358,6 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton11, gridBagConstraints);
 
-        jButton14.setText("X");
         jButton14.setEnabled(false);
         jButton14.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton14.setName(""); // NOI18N
@@ -438,7 +445,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton19, gridBagConstraints);
 
-        jButtonPeça1.setText("1");
+        jButtonPeça1.setText("💣");
         jButtonPeça1.setPreferredSize(new java.awt.Dimension(50, 50));
         jButtonPeça1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -447,10 +454,10 @@ public class Board extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça1, gridBagConstraints);
 
-        jButtonPeça2.setText("2");
+        jButtonPeça2.setText("🏴");
         jButtonPeça2.setPreferredSize(new java.awt.Dimension(50, 50));
         jButtonPeça2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -459,37 +466,55 @@ public class Board extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça2, gridBagConstraints);
 
-        jButtonPeça3.setText("3");
+        jButtonPeça3.setText("🕵️ ");
         jButtonPeça3.setPreferredSize(new java.awt.Dimension(50, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça3, gridBagConstraints);
 
-        jButtonPeça4.setText("4");
+        jButtonPeça4.setText("🔧");
         jButtonPeça4.setPreferredSize(new java.awt.Dimension(50, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça4, gridBagConstraints);
 
-        jButtonPeça5.setText("5");
+        jButtonPeça5.setText("🎖️");
         jButtonPeça5.setPreferredSize(new java.awt.Dimension(50, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça5, gridBagConstraints);
-
-        jLabel1.setText("jLabel1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 7;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        getContentPane().add(jSeparator2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.gridheight = 2;
-        getContentPane().add(jLabel1, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        getContentPane().add(jSeparator1, gridBagConstraints);
+
+        jConsole.setEditable(false);
+        jConsole.setColumns(20);
+        jConsole.setLineWrap(true);
+        jConsole.setRows(5);
+        jConsole.setBorder(javax.swing.BorderFactory.createTitledBorder("Console"));
+        jScrollPane1.setViewportView(jConsole);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        getContentPane().add(jScrollPane1, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1025,23 +1050,21 @@ public class Board extends javax.swing.JFrame {
 
     private void jButtonPeça1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPeça1MouseClicked
         if ( numberSelectedBombs < 3){
-            bombSelected = new Bomba("Bomba selecionada", 1, new int[]{, });
+            bombSelected = new Bomba("Bomba", 1, new int[]{, });
             pieceSelected = bombSelected;
-            System.out.println("Bomba selecionada");
+            jConsole.append("Bomba selecionada\n");
         } else {
-            System.out.println("Não é possivel mais selecionar uma Bomba");
-            return;
+            jConsole.append("Não é possivel mais selecionar uma Bomba\n");
         }
     }//GEN-LAST:event_jButtonPeça1MouseClicked
 
     private void jButtonPeça2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPeça2MouseClicked
 if ( numberSelectedFlag < 1){
-            flagSelected = new Bandeira("Bomba selecionada", 1, new int[]{, });
+            flagSelected = new Bandeira("Bandeira", 1, new int[]{, });
             pieceSelected = flagSelected;
-            System.out.println("Bandeira selecionada");
+            jConsole.append("Bandeira selecionada\n");
         } else {
-            System.out.println("Não é possivel mais selecionar uma Bandeira");
-            return;
+            jConsole.append("Não é possivel mais selecionar uma Bandeira\n");
         }
     }//GEN-LAST:event_jButtonPeça2MouseClicked
 
@@ -1085,6 +1108,9 @@ if ( numberSelectedFlag < 1){
     private javax.swing.JButton jButtonPeça3;
     private javax.swing.JButton jButtonPeça4;
     private javax.swing.JButton jButtonPeça5;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextArea jConsole;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }
