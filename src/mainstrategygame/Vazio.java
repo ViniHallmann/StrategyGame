@@ -6,14 +6,11 @@ package mainstrategygame;
 
 /**
  *
- * @author vinic
+ * @author jvlai
  */
-public class Soldado extends Peça {
-    private boolean peçaEscondida;
+public class Vazio extends Peça {
     private char tipo;
     
-    public Soldado (){
-        this.peçaEscondida = true;
-        this.setText("S");
+    public Vazio (){
     }
 }
