@@ -14,37 +14,43 @@ import java.lang.Math;
 
 
 public class Board extends javax.swing.JFrame {
-    private int round = 1;
-    private static int lastRow = -1;
-    private static int lastColumn = -1;
-    private static JButton lastClickedButton = null;
+    private int rodada = 1;
+    private static int linhaUltimoBotãoClicado = -1;
+    private static int colunaUltimoBotãoClicado = -1;
+    private static JButton ultimoBotãoClicado = null;
     
-    private Peça[][] boardMatrix = new Peça[5][5];
-    private Peça pieceSelected;
-    private Peça piecePlaced;
+    private Peça[][] matrizTabuleiro = new Peça[5][5];
+    private Peça peçaSelecionada;
+    private Peça peçaPosicionada;
     
-    int numberSelectedBombs = 0;
-    int numberSelectedFlag = 0;
+    private int bombasUsadas = 0;
+    private boolean espiãoUsado = false;
+    private boolean bandeiraEstáPosicionada = false;
     
-    private Bomba bombSelected;
-    private Bomba bombPlaced;
+    private Bomba bombaSelecionada;
+    private Bomba bombaPosicionada;
     
-    private Bandeira flagSelected;
-    private Bandeira flagPlaced;
+    private Bandeira bandeiraSelecionada;
+    private Bandeira bandeiraPosicionada;
     
-    private void atualizaInformaçõesLastClickedButton(JButton button) {
-        lastClickedButton = button;
+    private Espião espiãoSelecionado;
+    private Espião espiãoPosicionado;
+    
+    private void atualizaInformaçõesDoUltimoBotãoClicado(JButton button) {
+        ultimoBotãoClicado = button;
         int[] coords = pegaCoordenadas(button);
-        lastRow = coords[0];
-        lastColumn = coords[1];
+        linhaUltimoBotãoClicado = coords[0];
+        colunaUltimoBotãoClicado = coords[1];
     }
+    
     private void atualizaCorBotao(JButton button, Color cor) {
         button.setBackground(cor);
-        if (lastClickedButton != null && !lastClickedButton.equals(button)) {
-            lastClickedButton.setBackground(null);
+        if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(button)) {
+            ultimoBotãoClicado.setBackground(null);
         }
-        lastClickedButton = button;
+        ultimoBotãoClicado = button;
     }
+    
     private int[] pegaCoordenadas(JButton buttonClicked) {
         Container parent = buttonClicked.getParent();
         GridBagLayout gridBagLayout = (GridBagLayout) parent.getLayout();
@@ -53,39 +59,48 @@ public class Board extends javax.swing.JFrame {
         int column = constraints.gridx;
         return new int[] {row, column};
     }
+
+    /*
     private int calculoDistância (JButton botãoSelecionado, JButton botãoASelecionar){
         int []coordenadaBotãoSelecionado = pegaCoordenadas(botãoSelecionado);
         int []coordenadaBotãoASelecionar = pegaCoordenadas(botãoASelecionar);
         int distância = Math.abs(coordenadaBotãoSelecionado[0] - coordenadaBotãoASelecionar[0]) + Math.abs(coordenadaBotãoSelecionado[1] - coordenadaBotãoASelecionar[1]);
         return distância;
     }
-    private void colocaPeçaNoBotão (JButton buttonClicked, Peça piece){
-        if ( pieceSelected  != null){
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            int row = coordinates [0];
-            if ( row > 2){
-                if (pieceSelected instanceof Bomba) {
-                    piecePlaced = new Bomba(pieceSelected.getNome(), pieceSelected.getNivel(),coordinates);
-                    buttonClicked.setText("💣");  
-                    boardMatrix[coordinates[0]][coordinates[1]] = piecePlaced;
-                    numberSelectedBombs++;
-                } else if (pieceSelected instanceof Bandeira) {
-                    piecePlaced = new Bandeira(pieceSelected.getNome(), pieceSelected.getNivel(),coordinates);
-                    buttonClicked.setText("🏴");
-                    boardMatrix[coordinates[0]][coordinates[1]] = piecePlaced;
-                    numberSelectedFlag++;
+    */
+    
+    private void colocaPeçaNoBotão (JButton botãoClicado, Peça peça){
+        if ( peçaSelecionada  != null){
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            int linha = coordenadas [0];
+            if ( linha > 2){
+                if (peçaSelecionada instanceof Bomba) {
+                    peçaPosicionada = new Bomba(peçaSelecionada.getNome(), peçaSelecionada.getNivel(),coordenadas);
+                    botãoClicado.setText("💣");  
+                    matrizTabuleiro[coordenadas[0]][coordenadas[1]] = peçaPosicionada;
+                    bombasUsadas++;
+                } else if (peçaSelecionada instanceof Bandeira) {
+                    peçaPosicionada = new Bandeira(peçaSelecionada.getNome(), peçaSelecionada.getNivel(),coordenadas);
+                    botãoClicado.setText("🏴");
+                    matrizTabuleiro[coordenadas[0]][coordenadas[1]] = peçaPosicionada;
+                    bandeiraEstáPosicionada = true;
+                } else if (peçaSelecionada instanceof Espião) {
+                    peçaPosicionada = new Espião(peçaSelecionada.getNome(), peçaSelecionada.getNivel(),coordenadas);
+                    botãoClicado.setText("🕵️ ");
+                    matrizTabuleiro[coordenadas[0]][coordenadas[1]] = peçaPosicionada;
+                    espiãoUsado = true;
                 }
-                pieceSelected = null;
+                peçaSelecionada = null;
             }
         }
     }
     
-    private void imprimeMatriz (Peça [][] boardMatrix){
+    private void imprimeMatriz (Peça [][] matrizTabuleiro){
         jConsole.append("\n");
-        for (int i = 0; i < boardMatrix.length; i++) {
-            for (int j = 0; j < boardMatrix[i].length; j++) {
-                if (boardMatrix[i][j] instanceof Peça){
-                    jConsole.append(boardMatrix[i][j].getNome());
+        for (int i = 0; i < matrizTabuleiro.length; i++) {
+            for (int j = 0; j < matrizTabuleiro[i].length; j++) {
+                if (matrizTabuleiro[i][j] instanceof Peça){
+                    jConsole.append(matrizTabuleiro[i][j].getNome());
                 }
                 else {
                     jConsole.append(" 0 ");
@@ -139,6 +154,7 @@ public class Board extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jConsole = new javax.swing.JTextArea();
         jButton26 = new javax.swing.JButton();
+        jButton27 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("StrategyGame");
@@ -159,7 +175,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton1, gridBagConstraints);
 
@@ -171,7 +187,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton4, gridBagConstraints);
 
@@ -185,7 +201,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton21, gridBagConstraints);
 
@@ -199,7 +215,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton22, gridBagConstraints);
 
@@ -213,7 +229,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton2, gridBagConstraints);
 
@@ -227,7 +243,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton8, gridBagConstraints);
 
@@ -241,7 +257,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton9, gridBagConstraints);
 
@@ -251,7 +267,7 @@ public class Board extends javax.swing.JFrame {
         jButton12.setName(""); // NOI18N
         jButton12.setPreferredSize(new java.awt.Dimension(50, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton12, gridBagConstraints);
 
@@ -265,7 +281,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton23, gridBagConstraints);
 
@@ -279,7 +295,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton13, gridBagConstraints);
 
@@ -293,7 +309,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton16, gridBagConstraints);
 
@@ -307,7 +323,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton17, gridBagConstraints);
 
@@ -321,7 +337,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton3, gridBagConstraints);
 
@@ -335,7 +351,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton6, gridBagConstraints);
 
@@ -349,7 +365,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton7, gridBagConstraints);
 
@@ -363,7 +379,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton24, gridBagConstraints);
 
@@ -377,7 +393,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton5, gridBagConstraints);
 
@@ -391,7 +407,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton11, gridBagConstraints);
 
@@ -401,7 +417,7 @@ public class Board extends javax.swing.JFrame {
         jButton14.setName(""); // NOI18N
         jButton14.setPreferredSize(new java.awt.Dimension(50, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton14, gridBagConstraints);
 
@@ -415,7 +431,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton18, gridBagConstraints);
 
@@ -429,7 +445,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton10, gridBagConstraints);
 
@@ -443,7 +459,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton25, gridBagConstraints);
 
@@ -457,7 +473,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton20, gridBagConstraints);
 
@@ -471,7 +487,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton15, gridBagConstraints);
 
@@ -485,7 +501,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton19, gridBagConstraints);
 
@@ -497,7 +513,7 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça1, gridBagConstraints);
 
@@ -509,38 +525,44 @@ public class Board extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça2, gridBagConstraints);
 
         jButtonPeça3.setText("🕵️ ");
         jButtonPeça3.setPreferredSize(new java.awt.Dimension(50, 50));
+        jButtonPeça3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonPeça3MouseClicked(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça3, gridBagConstraints);
 
         jButtonPeça4.setText("🔧");
         jButtonPeça4.setPreferredSize(new java.awt.Dimension(50, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça4, gridBagConstraints);
 
         jButtonPeça5.setText("🎖️");
         jButtonPeça5.setPreferredSize(new java.awt.Dimension(50, 50));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
         getContentPane().add(jButtonPeça5, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.gridheight = 7;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         getContentPane().add(jSeparator2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
@@ -557,7 +579,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridx = 7;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(jScrollPane1, gridBagConstraints);
 
         jButton26.setText("Imprime Matriz");
@@ -569,544 +591,581 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 7;
         gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 150);
         getContentPane().add(jButton26, gridBagConstraints);
+
+        jButton27.setText("Reset ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 150, 0, 0);
+        getContentPane().add(jButton27, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            
+            // ESSE JEITO AQUI É GAMBIARRA, PARA EVITAR ESSA CADEIA DE IF EU PRECISO COLOCAR AS PEÇAS DISPONIVEIS EM UMA LISTA E APARTIR
+            // DESSA LISTA, CHAMAR A PEÇA QUE EU QUERO COLOCAR NO BOTÃO;
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton1MouseClicked
     
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton5MouseClicked
 
     private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton6MouseClicked
 
     private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton7MouseClicked
 
     private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton8MouseClicked
 
     private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton9MouseClicked
 
     private void jButton10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton10MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton10MouseClicked
 
     private void jButton11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton11MouseClicked
 
     private void jButton13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton13MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton13MouseClicked
 
     private void jButton15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton15MouseClicked
-        if ( round == 1){
+        if ( rodada == 1){
             JButton buttonClicked = (JButton) evt.getSource();
             int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(buttonClicked, bombaSelecionada);
+            else if ( bandeiraSelecionada != null ){
+                colocaPeçaNoBotão(buttonClicked, bandeiraSelecionada);
             }
         }
-        else if ( round == 2){
+        else if ( rodada == 2){
             JButton buttonClicked = (JButton) evt.getSource();
             int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
             System.out.println("Linha: " + row + " Coluna: " + column);
         
             atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(buttonClicked)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = buttonClicked;
         }
     }//GEN-LAST:event_jButton15MouseClicked
 
     private void jButton16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton16MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton16MouseClicked
 
     private void jButton17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton17MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton17MouseClicked
 
     private void jButton18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton18MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton18MouseClicked
 
     private void jButton19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton19MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton19MouseClicked
 
     private void jButton20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton20MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton20MouseClicked
 
     private void jButton21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton21MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton21MouseClicked
 
     private void jButton22MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton22MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton22MouseClicked
 
     private void jButton23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton23MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton23MouseClicked
 
     private void jButton24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton24MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton24MouseClicked
 
     private void jButton25MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton25MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton25MouseClicked
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
-        if ( round == 1){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);
-            if ( bombSelected != null )
-                colocaPeçaNoBotão( buttonClicked, bombSelected);
-            else if ( flagSelected != null ){
-                colocaPeçaNoBotão( buttonClicked, flagSelected);
-            }
+        if ( rodada == 1){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);
+            if ( bombaSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bombaSelecionada);
+            else if ( bandeiraSelecionada != null )
+                colocaPeçaNoBotão(botãoClicado, bandeiraSelecionada);
+            else if ( espiãoSelecionado != null)
+                colocaPeçaNoBotão(botãoClicado, espiãoSelecionado);
         }
-        else if ( round == 2){
-            JButton buttonClicked = (JButton) evt.getSource();
-            int[] coordinates = pegaCoordenadas(buttonClicked);   int row = coordinates[0];   int column = coordinates[1];
-            System.out.println("Linha: " + row + " Coluna: " + column);
+        else if ( rodada == 2){
+            JButton botãoClicado = (JButton) evt.getSource();
+            int[] coordenadas = pegaCoordenadas(botãoClicado);   int linhaMatriz = coordenadas[0];   int colunaMatriz = coordenadas[1];
+            System.out.println("Linha: " + linhaMatriz + " Coluna: " + colunaMatriz);
         
-            atualizaCorBotao(buttonClicked, GREEN);
-            if (lastClickedButton != null && !lastClickedButton.equals(buttonClicked)) {
-                atualizaCorBotao (lastClickedButton,null);
+            atualizaCorBotao(botãoClicado, GREEN);
+            if (ultimoBotãoClicado != null && !ultimoBotãoClicado.equals(botãoClicado)) {
+                atualizaCorBotao (ultimoBotãoClicado,null);
             }
-            lastClickedButton = buttonClicked;
+            ultimoBotãoClicado = botãoClicado;
         }
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButtonPeça1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPeça1MouseClicked
-        if ( numberSelectedBombs < 3){
-            bombSelected = new Bomba("Bomba", 1, new int[]{, });
-            pieceSelected = bombSelected;
+        if ( bombasUsadas < 3){
+            bombaSelecionada = new Bomba("Bomba", 1, new int[]{, });
+            peçaSelecionada = bombaSelecionada;
             jConsole.append("Bomba selecionada\n");
         } else {
             jConsole.append("Não é possivel mais selecionar uma Bomba\n");
@@ -1114,9 +1173,9 @@ public class Board extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPeça1MouseClicked
 
     private void jButtonPeça2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPeça2MouseClicked
-if ( numberSelectedFlag < 1){
-            flagSelected = new Bandeira("Bandeira", 1, new int[]{, });
-            pieceSelected = flagSelected;
+        if ( bandeiraEstáPosicionada == false){
+            bandeiraSelecionada = new Bandeira("Bandeira", 1, new int[]{, });
+            peçaSelecionada = bandeiraSelecionada;
             jConsole.append("Bandeira selecionada\n");
         } else {
             jConsole.append("Não é possivel mais selecionar uma Bandeira\n");
@@ -1124,8 +1183,18 @@ if ( numberSelectedFlag < 1){
     }//GEN-LAST:event_jButtonPeça2MouseClicked
 
     private void jButton26MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton26MouseClicked
-        imprimeMatriz( boardMatrix);
+        imprimeMatriz(matrizTabuleiro);
     }//GEN-LAST:event_jButton26MouseClicked
+
+    private void jButtonPeça3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonPeça3MouseClicked
+        if ( espiãoUsado == false){
+            espiãoSelecionado = new Espião("Bandeira", 1, new int[]{, });
+            peçaSelecionada = espiãoSelecionado;
+            jConsole.append("Espião selecionado\n");
+        } else {
+            jConsole.append("Não é possivel mais selecionar uma Bandeira\n");
+        }
+    }//GEN-LAST:event_jButtonPeça3MouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1177,6 +1246,7 @@ if ( numberSelectedFlag < 1){
     private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton25;
     private javax.swing.JButton jButton26;
+    private javax.swing.JButton jButton27;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
