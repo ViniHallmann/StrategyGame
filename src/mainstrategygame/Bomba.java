@@ -10,8 +10,10 @@ package mainstrategygame;
  */
 public class Bomba extends Peça{
     private boolean peçaEscondida;
-    public Bomba (String nomeDaPeça,int nivelDaPeça, int[] posição){
-        super(nomeDaPeça, nivelDaPeça, posição);
+    private char tipo;
+    
+    public Bomba (){
         this.peçaEscondida = true;
+        this.setText("💣");
     }
 }

@@ -4,34 +4,23 @@
  */
 package mainstrategygame;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author vinic
  */
-public class Peça {
-    private String nomeDaPeça;
-    private int nivelDaPeça;
-    private int[] posiçãoDaPeça;
+public abstract class Peça extends JLabel{
+    private int posX;
+    private int posY;
     
-    public Peça(String nomeDaPeça, int nivelDaPeça, int[]posição) {
-        this.nomeDaPeça = nomeDaPeça;
-        this.nivelDaPeça = nivelDaPeça;
-        this.posiçãoDaPeça = posição;
-    }
-
-    public String getNome() {
-        return nomeDaPeça;
-    }
-
-    public int getNivel() {
-        return nivelDaPeça;
-    }
-
-    public int[] getPosicao() {
-        return posiçãoDaPeça;
+    public Peça() {
     }
     
-    public void setPosiçãoDaPeça(int[] posiçãoDaPeça) {
-        this.posiçãoDaPeça = posiçãoDaPeça;
+    public void setCoord(int x ,int y)
+    {
+        this.posX = x;
+        this.posY = y;
     }
+    
 }

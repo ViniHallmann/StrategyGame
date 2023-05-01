@@ -10,9 +10,10 @@ package mainstrategygame;
  */
 public class Marechal extends Peça{
     private boolean peçaEscondida;
+    private char tipo;
     
-    public Marechal (String nomeDaPeça, int nivelDaPeça, int[] posição){
-        super(nomeDaPeça, nivelDaPeça, posição);
+    public Marechal(){
         this.peçaEscondida = true;
+        this.setText("🎖");
     }
 }

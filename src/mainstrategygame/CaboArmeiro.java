@@ -9,15 +9,11 @@ package mainstrategygame;
  * @author vinic
  */
 public class CaboArmeiro extends Peça {
-    private final boolean desarmarBomba = true;
     private boolean peçaEscondida;
+    private char tipo;
     
-    public CaboArmeiro (String nomeDaPeça,int nivelDaPeça, int[] posição){
-        super(nomeDaPeça, nivelDaPeça, posição);
+    public CaboArmeiro (){
         this.peçaEscondida = true;
-    }
-    
-    public boolean isDesarmarBomba() {
-        return desarmarBomba;
+        this.setText("🔧");
     }
 }

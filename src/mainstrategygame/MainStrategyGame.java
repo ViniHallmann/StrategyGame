@@ -4,14 +4,20 @@
  */
 package mainstrategygame;
 
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 /**
  *
  * @author vinic
  */
-public class MainStrategyGame {
+public class MainStrategyGame{
     public static void main(String[] args) {
-        Board board = new Board();
+        BoardSub board = new BoardSub();
         board.setVisible(true);
+        
+        
     }
+    
+    
     
 }

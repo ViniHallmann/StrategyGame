@@ -10,12 +10,11 @@ package mainstrategygame;
  */
 public class Bandeira extends Peça{
     private boolean peçaEscondida;
-    private boolean peçaCapturada;
+    private char tipo;
     
-    public Bandeira (String nomeDaPeça, int nivelDaPeça, int[] posição){
-        super(nomeDaPeça, nivelDaPeça, posição);
+    public Bandeira(){
         this.peçaEscondida = true;
-        this.peçaCapturada = false;
+        this.setText("🏴");
     }
 
    
