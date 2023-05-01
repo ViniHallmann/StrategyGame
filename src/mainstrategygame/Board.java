@@ -19,6 +19,7 @@ public class Board extends javax.swing.JFrame {
     private static int lastColumn = -1;
     private static JButton lastClickedButton = null;
     
+    private Peça[][] boardMatrix = new Peça[5][5];
     private Peça pieceSelected;
     private Peça piecePlaced;
     
@@ -65,17 +66,32 @@ public class Board extends javax.swing.JFrame {
             if ( row > 2){
                 if (pieceSelected instanceof Bomba) {
                     piecePlaced = new Bomba(pieceSelected.getNome(), pieceSelected.getNivel(),coordinates);
-                    buttonClicked.setText("💣");            
+                    buttonClicked.setText("💣");  
+                    boardMatrix[coordinates[0]][coordinates[1]] = piecePlaced;
                     numberSelectedBombs++;
-                    pieceSelected = null;
                 } else if (pieceSelected instanceof Bandeira) {
                     piecePlaced = new Bandeira(pieceSelected.getNome(), pieceSelected.getNivel(),coordinates);
                     buttonClicked.setText("🏴");
+                    boardMatrix[coordinates[0]][coordinates[1]] = piecePlaced;
                     numberSelectedFlag++;
-                    pieceSelected = null;
+                }
+                pieceSelected = null;
+            }
+        }
+    }
+    
+    private void imprimeMatriz (Peça [][] boardMatrix){
+        jConsole.append("\n");
+        for (int i = 0; i < boardMatrix.length; i++) {
+            for (int j = 0; j < boardMatrix[i].length; j++) {
+                if (boardMatrix[i][j] instanceof Peça){
+                    jConsole.append(boardMatrix[i][j].getNome());
+                }
+                else {
+                    jConsole.append(" 0 ");
                 }
             }
-            
+            jConsole.append("\n");
         }
     }
     
@@ -122,14 +138,18 @@ public class Board extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jConsole = new javax.swing.JTextArea();
+        jButton26 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("StrategyGame");
+        setMaximumSize(new java.awt.Dimension(600, 600));
+        setMinimumSize(new java.awt.Dimension(600, 600));
         setName("Board"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(500, 500));
-        setSize(new java.awt.Dimension(700, 700));
+        setPreferredSize(new java.awt.Dimension(600, 600));
+        setSize(new java.awt.Dimension(500, 500));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        jButton1.setBackground(new java.awt.Color(204, 255, 204));
         jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton1.setName(""); // NOI18N
         jButton1.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -143,6 +163,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton1, gridBagConstraints);
 
+        jButton4.setBackground(new java.awt.Color(204, 255, 204));
         jButton4.setPreferredSize(new java.awt.Dimension(50, 50));
         jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -154,6 +175,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton4, gridBagConstraints);
 
+        jButton21.setBackground(new java.awt.Color(204, 255, 204));
         jButton21.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton21.setName(""); // NOI18N
         jButton21.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -167,6 +189,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton21, gridBagConstraints);
 
+        jButton22.setBackground(new java.awt.Color(204, 255, 204));
         jButton22.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton22.setName(""); // NOI18N
         jButton22.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -180,6 +203,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton22, gridBagConstraints);
 
+        jButton2.setBackground(new java.awt.Color(204, 255, 204));
         jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton2.setName(""); // NOI18N
         jButton2.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -193,6 +217,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton2, gridBagConstraints);
 
+        jButton8.setBackground(new java.awt.Color(204, 255, 204));
         jButton8.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton8.setName(""); // NOI18N
         jButton8.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -206,6 +231,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton8, gridBagConstraints);
 
+        jButton9.setBackground(new java.awt.Color(204, 255, 204));
         jButton9.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton9.setName(""); // NOI18N
         jButton9.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -219,6 +245,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton9, gridBagConstraints);
 
+        jButton12.setBackground(new java.awt.Color(204, 255, 255));
         jButton12.setEnabled(false);
         jButton12.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton12.setName(""); // NOI18N
@@ -228,6 +255,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton12, gridBagConstraints);
 
+        jButton23.setBackground(new java.awt.Color(204, 255, 204));
         jButton23.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton23.setName(""); // NOI18N
         jButton23.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -241,6 +269,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton23, gridBagConstraints);
 
+        jButton13.setBackground(new java.awt.Color(204, 255, 204));
         jButton13.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton13.setName(""); // NOI18N
         jButton13.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -254,6 +283,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton13, gridBagConstraints);
 
+        jButton16.setBackground(new java.awt.Color(204, 255, 204));
         jButton16.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton16.setName(""); // NOI18N
         jButton16.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -267,6 +297,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton16, gridBagConstraints);
 
+        jButton17.setBackground(new java.awt.Color(204, 255, 204));
         jButton17.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton17.setName(""); // NOI18N
         jButton17.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -280,6 +311,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton17, gridBagConstraints);
 
+        jButton3.setBackground(new java.awt.Color(204, 255, 204));
         jButton3.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton3.setName(""); // NOI18N
         jButton3.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -293,6 +325,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton3, gridBagConstraints);
 
+        jButton6.setBackground(new java.awt.Color(204, 255, 204));
         jButton6.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton6.setName(""); // NOI18N
         jButton6.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -306,6 +339,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton6, gridBagConstraints);
 
+        jButton7.setBackground(new java.awt.Color(204, 255, 204));
         jButton7.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton7.setName(""); // NOI18N
         jButton7.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -319,6 +353,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton7, gridBagConstraints);
 
+        jButton24.setBackground(new java.awt.Color(204, 255, 204));
         jButton24.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton24.setName(""); // NOI18N
         jButton24.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -332,6 +367,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton24, gridBagConstraints);
 
+        jButton5.setBackground(new java.awt.Color(204, 255, 204));
         jButton5.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton5.setName(""); // NOI18N
         jButton5.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -345,6 +381,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         getContentPane().add(jButton5, gridBagConstraints);
 
+        jButton11.setBackground(new java.awt.Color(204, 255, 204));
         jButton11.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton11.setName(""); // NOI18N
         jButton11.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -358,6 +395,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton11, gridBagConstraints);
 
+        jButton14.setBackground(new java.awt.Color(204, 255, 255));
         jButton14.setEnabled(false);
         jButton14.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton14.setName(""); // NOI18N
@@ -367,6 +405,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton14, gridBagConstraints);
 
+        jButton18.setBackground(new java.awt.Color(204, 255, 204));
         jButton18.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton18.setName(""); // NOI18N
         jButton18.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -380,6 +419,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton18, gridBagConstraints);
 
+        jButton10.setBackground(new java.awt.Color(204, 255, 204));
         jButton10.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton10.setName(""); // NOI18N
         jButton10.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -393,6 +433,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         getContentPane().add(jButton10, gridBagConstraints);
 
+        jButton25.setBackground(new java.awt.Color(204, 255, 204));
         jButton25.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton25.setName(""); // NOI18N
         jButton25.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -406,6 +447,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 4;
         getContentPane().add(jButton25, gridBagConstraints);
 
+        jButton20.setBackground(new java.awt.Color(204, 255, 204));
         jButton20.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton20.setName(""); // NOI18N
         jButton20.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -419,6 +461,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         getContentPane().add(jButton20, gridBagConstraints);
 
+        jButton15.setBackground(new java.awt.Color(204, 255, 204));
         jButton15.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton15.setName(""); // NOI18N
         jButton15.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -432,6 +475,7 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton15, gridBagConstraints);
 
+        jButton19.setBackground(new java.awt.Color(204, 255, 204));
         jButton19.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton19.setName(""); // NOI18N
         jButton19.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -515,6 +559,17 @@ public class Board extends javax.swing.JFrame {
         gridBagConstraints.gridheight = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         getContentPane().add(jScrollPane1, gridBagConstraints);
+
+        jButton26.setText("Imprime Matriz");
+        jButton26.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton26MouseClicked(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 6;
+        getContentPane().add(jButton26, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1068,8 +1123,33 @@ if ( numberSelectedFlag < 1){
         }
     }//GEN-LAST:event_jButtonPeça2MouseClicked
 
+    private void jButton26MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton26MouseClicked
+        imprimeMatriz( boardMatrix);
+    }//GEN-LAST:event_jButton26MouseClicked
+
     public static void main(String args[]) {
-        
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Metal".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Board().setVisible(true);
@@ -1096,6 +1176,7 @@ if ( numberSelectedFlag < 1){
     private javax.swing.JButton jButton23;
     private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton25;
+    private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
