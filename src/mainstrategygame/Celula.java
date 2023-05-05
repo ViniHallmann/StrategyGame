@@ -18,7 +18,7 @@ import javax.swing.JButton;
 public class Celula extends JButton implements MouseListener{
     private char tipo;
     private Peça peca;
-    boolean getPeça;
+    boolean getPeca;
     
     public Celula(char t , Peça peca)
     {
