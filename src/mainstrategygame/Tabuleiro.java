@@ -31,7 +31,15 @@ public class Tabuleiro extends JPanel{
     private String nomeDaPeça;
     private char tipoDePeça;
     
+    private boolean bandeiraDisponivel = true;
+    private boolean marechalDisponivel = true;
+    private boolean espiaoDisponivel = true;
+    private int soldadosDisponiveis = 3;
+    private int caboArmeiroDisponiveis = 2;
+    private int bombasDisponiveis = 2;
+    
     private Peça peçaPosicionada;
+    GridBagConstraints  g = new GridBagConstraints();
     
     public Tabuleiro()
     {
@@ -44,9 +52,11 @@ public class Tabuleiro extends JPanel{
         this.peçaSelecionada = peçaSelecionada;
         atualizaTabuleiro();
     }
+    
     public void setTipoDePeça(char tipoDePeça){
         this.tipoDePeça = tipoDePeça;
     }
+    
     public void setNomeDaPeça(String nomeDaPeça){
         this.nomeDaPeça = nomeDaPeça;
     }
@@ -103,38 +113,78 @@ public class Tabuleiro extends JPanel{
             }
         }
     }
-   
+    
+    public void iteradorPeçasDisponiveis(char tipoDePeça){
+        if( tipoDePeça == 'B')
+            bombasDisponiveis--;
+        if( tipoDePeça == 'C')
+            caboArmeiroDisponiveis--;
+        if( tipoDePeça == 'S')
+            soldadosDisponiveis--;
+        if( tipoDePeça == 'M')
+            marechalDisponivel = false;
+        if( tipoDePeça == 'E')
+            espiaoDisponivel = false;
+        if( tipoDePeça == 'F')
+            espiaoDisponivel = false;
+    }
+    public boolean verificaPeçasDisponiveis(char tipoDePeça){
+        switch(tipoDePeça){
+            case 'B':
+                return (bombasDisponiveis > 0);
+            case 'c':
+                return (caboArmeiroDisponiveis > 0);
+            case 'S':
+                return (soldadosDisponiveis > 0);
+            case 'M':
+                return marechalDisponivel;
+            case 'E':
+                return espiaoDisponivel;
+            case 'F':
+                return bandeiraDisponivel;
+            default:
+                return false;
+        }
+    }
     public void colocaPeçaNoTabuleiro(Celula botãoClicado, int x, int y)
     {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
             for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
             {
-                if (x == i && y == j){
-                    if (j > 2){
-                        
+                if (x == i && y == j)
+                {
+                    if (j > 2)
+                    {
+
                         Celula novaCelula = CelulaFactory.factory(getTipoDePeça());
-                        tabuleiro[i][j] = novaCelula;
+                        if (verificaPeçasDisponiveis(getTipoDePeça()))
+                        {
+                            iteradorPeçasDisponiveis(getTipoDePeça());
+                            if ( getTipoDePeça() == 'F' && y == 3)
+                            {
+                                System.out.println("Só é possivel colocar a bandeira na primeira fileira!!!, tente novamente");
+                                return;
+                            }
+                            tabuleiro[i][j] = novaCelula;
                         //Só copiei o botão já feito, mas não ta ficando igual, não sei o que mais tem que mudar nele
-                        //r.setBackground(new Color(255, 255, 255));
-                        GridBagConstraints  r = new GridBagConstraints();
-                        r.insets = new java.awt.Insets(20, 1, 1, 1); 
-                        r.gridx = x;
-                        r.gridy = y;
                         
-                        //ChatGPT fez a boa nessa daqui, pq eu não sabia como colocar um bagulho em cima do outro
+                        novaCelula.setBackground(new java.awt.Color(204, 255, 204));
+                        novaCelula.setPreferredSize(new java.awt.Dimension(50, 50));
+                        g.insets = new java.awt.Insets(1, 1, 1, 1); 
+                        g.gridx = x;
+                        g.gridy = y;
+                        
                         remove(botãoClicado);
-                        add(novaCelula, r);
+                        add(novaCelula, g);
                         revalidate();
                         repaint();
-                        
 
                         setPeçaSelecionada(null);
-                        //Não to conseguindo zerar o tipoDePeça????
                         //setTipoDePeça(null);
                         setNomeDaPeça(null);
+                        }
                     }
-                    
                 }
             }
         }
