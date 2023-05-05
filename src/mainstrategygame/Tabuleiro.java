@@ -4,20 +4,15 @@
  */
 package mainstrategygame;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import static java.lang.Math.sqrt;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.border.Border;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -33,6 +28,8 @@ public class Tabuleiro extends JPanel{
     
     private Peça peçaPosicionada;
     
+    GridBagConstraints  g = new GridBagConstraints();
+       
     public Tabuleiro()
     {
         tabuleiro = new Celula[(int)(sqrt(NUMERO_DE_CASAS))][(int)(sqrt(NUMERO_DE_CASAS))];
@@ -65,7 +62,6 @@ public class Tabuleiro extends JPanel{
                     
     private void constroiTabuleiro()
     {
-        GridBagConstraints  g = new GridBagConstraints();
         g.insets = new java.awt.Insets(1, 1, 1, 1);
         for(int i = 0 ; i < sqrt(NUMERO_DE_CASAS); i++)
         {
@@ -151,5 +147,39 @@ public class Tabuleiro extends JPanel{
             }
         }
     }
-
+    public void setPecasComputador(){
+        
+        
+        for(int i = 0; i < 5; i++)
+        {
+            for(int j = 0; j < 2; j++)
+            {
+                remove(tabuleiro[i][j]);
+                tabuleiro[i][j] = setPecaAleatoria();
+                
+                        g.insets = new java.awt.Insets(1, 1, 1, 1); 
+                        g.gridx = i;
+                        g.gridy = j;
+                add(tabuleiro[i][j], g);
+                atualizaTabuleiro();
+            }
+        }
+    }
+    private static Celula setPecaAleatoria()
+    {
+        List<Character> tipos = Arrays.asList('B','C','S','E','F','M'); 
+        Celula celula;
+        Random random = new Random();
+        
+        char escolhido = tipos.get(random.nextInt(5));
+        celula = CelulaFactory.factory(escolhido);
+        
+        celula.setBackground(new java.awt.Color(204, 255, 204));
+        celula.setPreferredSize(new java.awt.Dimension(50, 50));
+        System.out.println(celula.getTipo());
+        return celula;
+        
+    }
 }
+
+    

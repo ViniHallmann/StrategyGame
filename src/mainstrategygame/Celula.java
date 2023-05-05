@@ -27,6 +27,11 @@ public class Celula extends JButton implements MouseListener{
         this.peca = peca;
         setText(peca.getText());
     }
+    public Celula()
+    {
+        addMouseListener(this);
+        setText(peca.getText());
+    }
     
     public static void adicionaPeca(Celula botaoSelecionado, Tabuleiro tabuleiro)
     {
