@@ -11,6 +11,7 @@ package mainstrategygame;
 public class CaboArmeiro extends Peça {
     private boolean peçaEscondida;
     private char tipo;
+    private String nome = "🔧";
     
     public CaboArmeiro (){
         this.peçaEscondida = true;
