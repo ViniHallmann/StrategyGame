@@ -4,20 +4,15 @@
  */
 package mainstrategygame;
 
-import java.awt.Color;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import static java.lang.Math.sqrt;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.border.Border;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -35,12 +30,12 @@ public class Tabuleiro extends JPanel{
     private boolean marechalDisponivel = true;
     private boolean espiaoDisponivel = true;
     private int soldadosDisponiveis = 3;
-    private int caboArmeiroDisponiveis = 2;
+    private int caboArmeiroDisponiveis = 3;
     private int bombasDisponiveis = 2;
     
     private Peça peçaPosicionada;
     GridBagConstraints  g = new GridBagConstraints();
-    
+       
     public Tabuleiro()
     {
         tabuleiro = new Celula[(int)(sqrt(NUMERO_DE_CASAS))][(int)(sqrt(NUMERO_DE_CASAS))];
@@ -75,7 +70,6 @@ public class Tabuleiro extends JPanel{
                     
     private void constroiTabuleiro()
     {
-        GridBagConstraints  g = new GridBagConstraints();
         g.insets = new java.awt.Insets(1, 1, 1, 1);
         for(int i = 0 ; i < sqrt(NUMERO_DE_CASAS); i++)
         {
@@ -102,7 +96,6 @@ public class Tabuleiro extends JPanel{
                         colocaPeçaNoTabuleiro(botãoClicado, x, y);
                     }
                 });
-                //MUDEI AS POSIÇÕES DO LAGO!!!
                 if((i == 1 && j == 2)||(i == 3 && j == 2))
                 {
                     tabuleiro[i][j].setEnabled(false);
@@ -114,25 +107,35 @@ public class Tabuleiro extends JPanel{
         }
     }
     
-    public void iteradorPeçasDisponiveis(char tipoDePeça){
-        if( tipoDePeça == 'B')
-            bombasDisponiveis--;
-        if( tipoDePeça == 'C')
-            caboArmeiroDisponiveis--;
-        if( tipoDePeça == 'S')
-            soldadosDisponiveis--;
-        if( tipoDePeça == 'M')
-            marechalDisponivel = false;
-        if( tipoDePeça == 'E')
-            espiaoDisponivel = false;
-        if( tipoDePeça == 'F')
-            espiaoDisponivel = false;
+    public void iteradorPeçasDisponiveis(char tipoDePeça)
+    {
+        switch(tipoDePeça){
+            case 'B':
+                bombasDisponiveis--;
+                return;
+            case 'C':
+                caboArmeiroDisponiveis--;
+                return;
+            case 'S':
+                soldadosDisponiveis--;
+                return;
+            case 'M':
+                marechalDisponivel = false;
+                return;
+            case 'E':
+                espiaoDisponivel = false;
+                return;
+            case 'F':
+                bandeiraDisponivel = false;
+                return;
+        }
     }
+    
     public boolean verificaPeçasDisponiveis(char tipoDePeça){
         switch(tipoDePeça){
             case 'B':
                 return (bombasDisponiveis > 0);
-            case 'c':
+            case 'C':
                 return (caboArmeiroDisponiveis > 0);
             case 'S':
                 return (soldadosDisponiveis > 0);
@@ -146,43 +149,45 @@ public class Tabuleiro extends JPanel{
                 return false;
         }
     }
+    
     public void colocaPeçaNoTabuleiro(Celula botãoClicado, int x, int y)
     {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
-            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
+            for (int j = 3; j < sqrt(NUMERO_DE_CASAS); j++) 
             {
                 if (x == i && y == j)
                 {
                     if (j > 2)
                     {
-
                         Celula novaCelula = CelulaFactory.factory(getTipoDePeça());
+                        
                         if (verificaPeçasDisponiveis(getTipoDePeça()))
                         {
+                            System.out.println(verificaPeçasDisponiveis(getTipoDePeça()));
+                            System.out.println(getTipoDePeça());
                             iteradorPeçasDisponiveis(getTipoDePeça());
-                            if ( getTipoDePeça() == 'F' && y == 3)
+                            if ( getTipoDePeça() == 'F' && y == 3) // A bandeira só pode ficar na ultima linha da matriz!!
                             {
-                                System.out.println("Só é possivel colocar a bandeira na primeira fileira!!!, tente novamente");
                                 return;
                             }
                             tabuleiro[i][j] = novaCelula;
-                        //Só copiei o botão já feito, mas não ta ficando igual, não sei o que mais tem que mudar nele
+                            novaCelula.setBackground(new java.awt.Color(204, 255, 204));
+                            novaCelula.setPreferredSize(new java.awt.Dimension(50, 50));
+                            g.insets = new java.awt.Insets(1, 1, 1, 1); 
+                            g.gridx = x;
+                            g.gridy = y;
                         
-                        novaCelula.setBackground(new java.awt.Color(204, 255, 204));
-                        novaCelula.setPreferredSize(new java.awt.Dimension(50, 50));
-                        g.insets = new java.awt.Insets(1, 1, 1, 1); 
-                        g.gridx = x;
-                        g.gridy = y;
-                        
-                        remove(botãoClicado);
-                        add(novaCelula, g);
-                        revalidate();
-                        repaint();
+                            remove(botãoClicado);
+                            add(novaCelula, g);
+                            revalidate();
+                            repaint();
 
-                        setPeçaSelecionada(null);
-                        //setTipoDePeça(null);
-                        setNomeDaPeça(null);
+                            setPeçaSelecionada(null);
+                        }
+                        else
+                        {
+                            System.out.println("Peça indisponivel...");
                         }
                     }
                 }
@@ -190,16 +195,55 @@ public class Tabuleiro extends JPanel{
         }
     }
     
-    private void atualizaTabuleiro() {
-        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) {
-            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) {
-                if (peçaSelecionada != null) {
+    private void atualizaTabuleiro() 
+    {
+        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
+        {
+            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
+            {
+                if (peçaSelecionada != null) 
+                {
                     tabuleiro[i][j].setEnabled(true);
-                }   else {
+                }   
+                else 
+                {
                     tabuleiro[i][j].setEnabled(false);
                 }
             }
         }
     }
-
+    
+    public void setPecasComputador()
+    {
+        for(int i = 0; i < 5; i++)
+        {
+            for(int j = 0; j < 2; j++)
+            {
+                remove(tabuleiro[i][j]);
+                tabuleiro[i][j] = setPecaAleatoria();
+                g.insets = new java.awt.Insets(1, 1, 1, 1); 
+                g.gridx = i;
+                g.gridy = j;
+                add(tabuleiro[i][j], g);
+                atualizaTabuleiro();
+            }
+        }
+    }
+    
+    private static Celula setPecaAleatoria()
+    {
+        List<Character> tipos = Arrays.asList('B','C','S','E','F','M'); 
+        Celula celula;
+        Random random = new Random();
+        
+        char escolhido = tipos.get(random.nextInt(5));
+        celula = CelulaFactory.factory(escolhido);
+        
+        celula.setBackground(new java.awt.Color(204, 255, 204));
+        celula.setPreferredSize(new java.awt.Dimension(50, 50));
+        return celula;
+        
+    }
 }
+
+    
