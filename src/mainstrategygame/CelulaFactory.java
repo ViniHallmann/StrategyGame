@@ -68,5 +68,5 @@ public final class CelulaFactory{
         Celula celula = new Celula('S', new Soldado());
         celula.setBackground(new Color(255, 255, 255));
         return celula; 
-    }
+    }   
 }

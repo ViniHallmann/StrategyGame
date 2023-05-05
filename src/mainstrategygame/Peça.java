@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 public abstract class Peça extends JLabel{
     private int posX;
     private int posY;
-    
+    private String nome;
     public Peça() {
     }
     
@@ -21,6 +21,10 @@ public abstract class Peça extends JLabel{
     {
         this.posX = x;
         this.posY = y;
+    }
+
+    public String getNome() {
+        return nome;
     }
     
 }

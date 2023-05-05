@@ -14,10 +14,10 @@ import javax.swing.JFrame;
  */
 public class BoardSub extends JFrame{
     Tabuleiro tabuleiro = new Tabuleiro();
-    BotoesPecas botoesPecas = new BotoesPecas();
+    BotoesPecas botoesPecas = new BotoesPecas(tabuleiro);
     public BoardSub()
     {
-       setTitle("TESTE TESTE");
+       setTitle("STRATEGY GAME");
        setSize(700,500);
        setLocationRelativeTo(null);
        setDefaultCloseOperation(EXIT_ON_CLOSE);

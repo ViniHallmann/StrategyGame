@@ -6,6 +6,9 @@ package mainstrategygame;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -13,15 +16,21 @@ import javax.swing.JPanel;
  * @author jvlai
  */
 public final class BotoesPecas extends JPanel{
-    private final Celula[] botoes;
     public static final int NUMERO_DE_ROLES = 6;
     
-    public BotoesPecas()
+    private final Celula[] botoes;
+    
+    private Celula botãoSelecionado = null;
+    private Peça peçaSelecionada = null;
+    //Variavel criada pra eu conseguir acesso ao método de setter das váriaveis
+    private Tabuleiro tabuleiro;
+    
+    public BotoesPecas(Tabuleiro tabuleiro)
     {
+        this.tabuleiro = tabuleiro;
         botoes = new Celula[NUMERO_DE_ROLES];
         setLayout(new GridBagLayout());
         constroiBotoesPecas();
-        
     }
     public void constroiBotoesPecas(){
         GridBagConstraints  r = new GridBagConstraints();
@@ -52,8 +61,19 @@ public final class BotoesPecas extends JPanel{
         add(botoes[5],r);
         
         //
-        for(int i = 0; i < NUMERO_DE_ROLES ; i++)
+        for(int i = 0; i < NUMERO_DE_ROLES ; i++){
+            Celula botãoAtual = botoes[i];
             botoes[i].setPreferredSize(new java.awt.Dimension(50, 50));
-       
+            //Ao clicar no botão da peça seleciona ela e seta algumas informações nas variáveis
+            botoes[i].addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    Peça peça = botãoAtual.getPeca();
+                    String nome = peça.getNome();
+                    tabuleiro.setPeçaSelecionada(peça);
+                    tabuleiro.setTipoDePeça(botãoAtual.getTipo());
+                    tabuleiro.setNomeDaPeça(nome);
+                }
+            });
+        }   
     }
 }
