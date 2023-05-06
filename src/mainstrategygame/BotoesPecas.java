@@ -9,7 +9,9 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -60,20 +62,36 @@ public final class BotoesPecas extends JPanel{
         botoes[5] = CelulaFactory.factory('F');
         add(botoes[5],r);
         
+        r.gridy = 1;
+        r.insets = new java.awt.Insets(1, 1, 1, 1);
+        r.gridx = 0;
+        JLabel titulo_1 = new JLabel("TESTE");
+        add(titulo_1,r);
+        r.gridx = 1;
+        JLabel titulo_2 = new JLabel("TESTE");
+        add(titulo_2,r);
+
         //
-        for(int i = 0; i < NUMERO_DE_ROLES ; i++){
+        for(int i = 0; i < NUMERO_DE_ROLES ; i++)
+        {
             Celula botãoAtual = botoes[i];
             botoes[i].setPreferredSize(new java.awt.Dimension(50, 50));
-            //Ao clicar no botão da peça seleciona ela e seta algumas informações nas variáveis
-            botoes[i].addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
+            botoes[i].addMouseListener(new MouseAdapter() 
+            {
+                public void mouseClicked(MouseEvent e) 
+                {
                     Peça peça = botãoAtual.getPeca();
                     String nome = peça.getNome();
+                    char tipo = botãoAtual.getTipo();
+                    
                     tabuleiro.setPeçaSelecionada(peça);
-                    tabuleiro.setTipoDePeça(botãoAtual.getTipo());
+                    tabuleiro.setTipoDePeça(tipo);
                     tabuleiro.setNomeDaPeça(nome);
                 }
             });
-        }   
+        }
+        for ( int i = 0; i < NUMERO_DE_ROLES; i++){
+            
+        }
     }
 }

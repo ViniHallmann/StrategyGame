@@ -31,7 +31,7 @@ public class Tabuleiro extends JPanel{
     private boolean marechalDisponivel = true;
     private boolean espiaoDisponivel = true;
     private int soldadosDisponiveis = 3;
-    private int caboArmeiroDisponiveis = 2;
+    private int caboArmeiroDisponiveis = 3;
     private int bombasDisponiveis = 2;
     
     private Peça peçaPosicionada;
@@ -90,6 +90,7 @@ public class Tabuleiro extends JPanel{
                 final int y = j;
                 //Ao clicar no botão pega as "informações do botão" e chama a função que coloca uma peça na posição desse botão
                 tabuleiro[i][j].addActionListener(new ActionListener() 
+
                     {
                         public void actionPerformed(ActionEvent e) 
                         {   
@@ -98,6 +99,7 @@ public class Tabuleiro extends JPanel{
                         }
                     });
                 //MUDEI AS POSIÇÕES DO LAGO!!!
+
                 if((i == 1 && j == 2)||(i == 3 && j == 2))
                 {
                     tabuleiro[i][j].setEnabled(false);
@@ -109,27 +111,35 @@ public class Tabuleiro extends JPanel{
         }
     }
     
-    public void iteradorPeçasDisponiveis(char tipoDePeça){
-       switch(tipoDePeça){
+    public void iteradorPeçasDisponiveis(char tipoDePeça)
+    {
+        switch(tipoDePeça){
             case 'B':
                 bombasDisponiveis--;
+                return;
             case 'C':
                 caboArmeiroDisponiveis--;
+                return;
             case 'S':
                 soldadosDisponiveis--;
+                return;
             case 'M':
                 marechalDisponivel = false;
+                return;
             case 'E':
                 espiaoDisponivel = false;
+                return;
             case 'F':
                 bandeiraDisponivel = false;
+                return;
         }
     }
+    
     public boolean verificaPeçasDisponiveis(char tipoDePeça){
         switch(tipoDePeça){
             case 'B':
                 return (bombasDisponiveis > 0);
-            case 'c':
+            case 'C':
                 return (caboArmeiroDisponiveis > 0);
             case 'S':
                 return (soldadosDisponiveis > 0);
@@ -143,50 +153,51 @@ public class Tabuleiro extends JPanel{
                 return false;
         }
     }
+    
     public void colocaPeçaNoTabuleiro(Celula botãoClicado, int x, int y)
     {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
-            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
+            for (int j = 3; j < sqrt(NUMERO_DE_CASAS); j++) 
             {
                 if (x == i && y == j)
                 {
                     if (j > 2)
                     {
-
                         Celula novaCelula = CelulaFactory.factory(getTipoDePeça());
+                        
                         if (verificaPeçasDisponiveis(getTipoDePeça()))
                         {
+                            System.out.println(verificaPeçasDisponiveis(getTipoDePeça()));
+                            System.out.println(getTipoDePeça());
                             iteradorPeçasDisponiveis(getTipoDePeça());
-                            if ( getTipoDePeça() == 'F' && y == 3)
+                            if ( getTipoDePeça() == 'F' && y == 3) // A bandeira só pode ficar na ultima linha da matriz!!
                             {
-                                System.out.println("Só é possivel colocar a bandeira na primeira fileira!!!, tente novamente");
                                 return;
                             }
                             tabuleiro[i][j] = novaCelula;
-                        //Só copiei o botão já feito, mas não ta ficando igual, não sei o que mais tem que mudar nele
+                            novaCelula.setBackground(new java.awt.Color(204, 255, 204));
+                            novaCelula.setPreferredSize(new java.awt.Dimension(50, 50));
+                            g.insets = new java.awt.Insets(1, 1, 1, 1); 
+                            g.gridx = x;
+                            g.gridy = y;
                         
-                        novaCelula.setBackground(new java.awt.Color(204, 255, 204));
-                        novaCelula.setPreferredSize(new java.awt.Dimension(50, 50));
-                        g.insets = new java.awt.Insets(1, 1, 1, 1); 
-                        g.gridx = x;
-                        g.gridy = y;
-                        
-                        remove(botãoClicado);
-                        add(novaCelula, g);
-                        revalidate();
-                        repaint();
+                            remove(botãoClicado);
+                            add(novaCelula, g);
+                            revalidate();
+                            repaint();
 
-                        setPeçaSelecionada(null);
-                        //setTipoDePeça(null);
-                        setNomeDaPeça(null);
+                            setPeçaSelecionada(null);
+                        }
+                        else
+                        {
+                            System.out.println("Peça indisponivel...");
                         }
                     }
                 }
             }
         }
     }
-    
     private void atualizaTabuleiro() {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
@@ -203,6 +214,7 @@ public class Tabuleiro extends JPanel{
             }
         }
     }
+
     public void setPecasComputador(){
         Random rand = new Random();
         int gerado = rand.nextInt(5);
@@ -253,6 +265,7 @@ public class Tabuleiro extends JPanel{
             }
         }
     }
+
     private static Celula setPecaAleatoria(int bombas, int soldados, int cabos, boolean marechal, boolean espiao )
     {
         
@@ -276,6 +289,7 @@ public class Tabuleiro extends JPanel{
         celula.setBackground(new java.awt.Color(255, 204, 204));
         celula.setPreferredSize(new java.awt.Dimension(50, 50));
         //System.out.println(celula.getTipo());
+
         return celula;
         
     }
