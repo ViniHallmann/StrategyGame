@@ -4,6 +4,7 @@
  */
 package mainstrategygame;
 
+import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -111,6 +112,27 @@ public class Tabuleiro extends JPanel{
         }
     }
     
+    public void resetaTabuleiro()
+    {
+        for(int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
+        {
+            for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
+            {
+                remove(tabuleiro[i][j]);
+            }
+        }
+        
+        this.bandeiraDisponivel = true;
+        this.marechalDisponivel = true;
+        this.espiaoDisponivel = true;
+        this.soldadosDisponiveis = 3;
+        this.caboArmeiroDisponiveis = 3;
+        this.bombasDisponiveis = 2;
+        
+        constroiTabuleiro();
+        
+    }
+    
     public void iteradorPeçasDisponiveis(char tipoDePeça)
     {
         switch(tipoDePeça){
@@ -176,7 +198,7 @@ public class Tabuleiro extends JPanel{
                                 return;
                             }
                             tabuleiro[i][j] = novaCelula;
-                            novaCelula.setBackground(new java.awt.Color(204, 255, 204));
+                            novaCelula.setBackground(new java.awt.Color(175, 175, 255));
                             novaCelula.setPreferredSize(new java.awt.Dimension(50, 50));
                             g.insets = new java.awt.Insets(1, 1, 1, 1); 
                             g.gridx = x;
@@ -215,18 +237,35 @@ public class Tabuleiro extends JPanel{
         }
     }
 
-    public void setPecasComputador(){
+    public void setPecasAleatorias(boolean time){
         Random rand = new Random();
         int gerado = rand.nextInt(5);
-        
-        remove(tabuleiro[gerado][0]);
-        tabuleiro[gerado][0] = CelulaFactory.factory('F');
-        tabuleiro[gerado][0].setBackground(new java.awt.Color(255, 204, 204));
-        tabuleiro[gerado][0].setPreferredSize(new java.awt.Dimension(50, 50));
+        int ladoFlag;
+        int lado;
+        int ate;
+        Color cor;
+        if(time)
+        {
+            cor = new Color(175,175,255);
+            ladoFlag = 4;
+            lado = 3;
+            ate = 5;
+        }
+        else
+        {
+            cor = new Color(255,204,204);
+            ladoFlag = 0;
+            lado = 0;
+            ate = 2;
+        }
+        remove(tabuleiro[gerado][ladoFlag]);
+        tabuleiro[gerado][ladoFlag] = CelulaFactory.factory('F');
+        tabuleiro[gerado][ladoFlag].setBackground(cor);
+        tabuleiro[gerado][ladoFlag].setPreferredSize(new java.awt.Dimension(50, 50));
                 
         g.insets = new java.awt.Insets(1, 1, 1, 1); 
-        g.gridx = gerado; g.gridy = 0;
-        add(tabuleiro[gerado][0], g);
+        g.gridx = gerado; g.gridy = ladoFlag;
+        add(tabuleiro[gerado][ladoFlag], g);
         atualizaTabuleiro();
         
         
@@ -238,9 +277,9 @@ public class Tabuleiro extends JPanel{
         
         for(int i = 0; i < 5; i++)
         {            
-            for(int j = 0; j < 2; j++)
+            for(int j = lado; j < ate; j++)
             {
-                if((j != 0) || (i != gerado))
+                if((j != ladoFlag) || (i != gerado))
                 {
                     
                     remove(tabuleiro[i][j]);
@@ -259,11 +298,21 @@ public class Tabuleiro extends JPanel{
                     g.insets = new java.awt.Insets(1, 1, 1, 1); 
                     g.gridx = i;
                     g.gridy = j;
+                    tabuleiro[i][j].setBackground(cor);
                     add(tabuleiro[i][j], g);
                     atualizaTabuleiro();
                 }
             }
         }
+        if(time)
+        {
+            this.bombasDisponiveis = bombas;
+            this.soldadosDisponiveis = soldados;
+            this.caboArmeiroDisponiveis = cabos;
+            this.marechalDisponivel = marechal;
+            this.espiaoDisponivel = espiao;
+        }
+            
     }
 
     private static Celula setPecaAleatoria(int bombas, int soldados, int cabos, boolean marechal, boolean espiao )
@@ -286,7 +335,7 @@ public class Tabuleiro extends JPanel{
         char escolhido = tipos.get(random.nextInt(tipos.size()));
         celula = CelulaFactory.factory(escolhido);
         
-        celula.setBackground(new java.awt.Color(255, 204, 204));
+        
         celula.setPreferredSize(new java.awt.Dimension(50, 50));
         //System.out.println(celula.getTipo());
 

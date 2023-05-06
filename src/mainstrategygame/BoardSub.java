@@ -18,7 +18,9 @@ import javax.swing.JFrame;
 public class BoardSub extends JFrame{
     Tabuleiro tabuleiro = new Tabuleiro();
     BotoesPecas botoesPecas = new BotoesPecas(tabuleiro);
-    JButton pecasAdversario = new JButton("Colocar Pecas do Adversario");
+    JButton pecasAdversario = new JButton("Pecas do Adversario");
+    JButton pecasJogador = new JButton("Pecas Aleatorias");
+    JButton resetTabuleiro = new JButton("Resetar Tabuleiro");
     
     
     public BoardSub()
@@ -36,17 +38,42 @@ public class BoardSub extends JFrame{
        g.gridy = 1;
        add(botoesPecas,g);
        g.gridy = 2;
-       pecasAdversario.setSize(150, 10);
        g.insets = new java.awt.Insets(5, 1, 1, 1);
+
+       pecasAdversario.setSize(50, 10);
        pecasAdversario.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                   tabuleiro.setPecasComputador();
+                   tabuleiro.setPecasAleatorias(false);
                    tabuleiro.repaint();
                    tabuleiro.revalidate();
                    
                 }
             });
        add(pecasAdversario,g);
+       
+       g.gridy = 3;
+       pecasJogador.setSize(50, 10);
+       pecasJogador.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                   tabuleiro.setPecasAleatorias(true);
+                   tabuleiro.repaint();
+                   tabuleiro.revalidate();
+                   
+                }
+            });
+       add(pecasJogador,g);
+       
+       g.gridy = 0;
+       g.gridx = 1;
+       resetTabuleiro.setSize(50, 10);
+       resetTabuleiro.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                   tabuleiro.resetaTabuleiro();
+                   tabuleiro.repaint();
+                   tabuleiro.revalidate();
+                }
+            });
+       add(resetTabuleiro,g);
     }
     
     

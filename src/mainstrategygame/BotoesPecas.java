@@ -90,8 +90,5 @@ public final class BotoesPecas extends JPanel{
                 }
             });
         }
-        for ( int i = 0; i < NUMERO_DE_ROLES; i++){
-            
-        }
     }
 }
