@@ -68,6 +68,7 @@ public final class CelulaFactory{
             switch(tipo)
             {
                case ' ' :  nova = criaCelulaVazio(COR_VAZIO);
+                           nova.setEquipe(equipe);
                            return nova;
                case 'B' :  nova = criaCelulaBomba(COR_ADVERSARIO);
                            nova.setEquipe(equipe);

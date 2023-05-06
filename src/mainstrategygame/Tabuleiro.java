@@ -5,10 +5,13 @@
 package mainstrategygame;
 
 import java.awt.Color;
+import static java.awt.Color.GREEN;
 import java.awt.GridBagLayout;
 import static java.lang.Math.sqrt;
 import javax.swing.JPanel;
 import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -22,6 +25,10 @@ import java.util.Random;
 public class Tabuleiro extends JPanel{
     
     public static final int NUMERO_DE_CASAS = 25;
+    
+    private Celula ultimoBotaoClicado = null;
+    private int coordenadaXUltimoBotao;
+    private int coordenadaYUltimoBotao;
     private Celula[][] tabuleiro;
     private int rodada = 1;
     
@@ -123,7 +130,14 @@ public class Tabuleiro extends JPanel{
                 final int x = i;
                 final int y = j;
                 //Ao clicar no botão pega as "informações do botão" e chama a função que coloca uma peça na posição desse botão
-                
+                tabuleiro[i][j].addActionListener(new ActionListener() 
+                    {
+                        public void actionPerformed(ActionEvent e) 
+                        {   
+                            Celula botãoClicado = (Celula) e.getSource();
+                            colocaPeçaNoTabuleiro(botãoClicado, x, y);
+                        }
+                    });
                 if((i == 1 && j == 2)||(i == 3 && j == 2))
                 {
                     tabuleiro[i][j].setEnabled(false);
@@ -235,7 +249,6 @@ public class Tabuleiro extends JPanel{
                             {
                                 return;
                             }
-                            rodada++;
                             tabuleiro[i][j] = novaCelula;
                             
                             g.insets = new java.awt.Insets(1, 1, 1, 1); 
@@ -255,6 +268,151 @@ public class Tabuleiro extends JPanel{
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    public void limpaPeca(Celula ultimoBotaoClicado){
+        ultimoBotaoClicado.setIcon(null);
+        ultimoBotaoClicado.setText(null);
+        Color cor = new Color(204,255,204);
+        ultimoBotaoClicado.setBackground(cor);
+    }
+    
+    public void movePeca(Celula botaoClicado, int x, int y)
+    {
+        Celula origem = ultimoBotaoClicado;
+        int coordenadaXOrigem = coordenadaXUltimoBotao;
+        int coordenadaYOrigem = coordenadaYUltimoBotao;
+        Peça pecaOrigem = origem.getPeca();
+
+        Celula destino = botaoClicado;
+        int coordenadaXDestino = x;
+        int coordenadaYDestino = y;
+
+        //SWAP
+        tabuleiro[coordenadaXDestino][coordenadaYDestino] = destino;
+        destino.setBackground(new java.awt.Color(175, 175, 255));
+        destino.setPreferredSize(new java.awt.Dimension(50, 50));
+        g.insets = new java.awt.Insets(1, 1, 1, 1); 
+        g.gridx = coordenadaXDestino;
+        g.gridy = coordenadaYDestino;
+        remove(origem);
+        add(destino, g);
+
+        tabuleiro[coordenadaXOrigem][coordenadaYOrigem] = origem;
+        origem.setBackground(new java.awt.Color(204, 255, 204));
+        origem.setPreferredSize(new java.awt.Dimension(50, 50));
+        g.insets = new java.awt.Insets(1, 1, 1, 1); 
+        g.gridx = coordenadaXOrigem;
+        g.gridy = coordenadaYOrigem;
+        remove(ultimoBotaoClicado);
+        add(origem, g);
+        /////////////////////
+        
+        destino.setText(pecaOrigem.getNome());
+        origem.setText("");
+        destino.setPeça(pecaOrigem);
+        Celula celulaVazia = new Celula(' ',new Vazio(),false);
+        origem.setPeça(celulaVazia.getPeca());
+        revalidate();
+        repaint(); 
+    }
+    
+    public boolean validaMovimento(Celula botaoClicado, int x, int y)
+    {
+        /*boolean verifica(Celula botao)
+        {
+            if (!(botao.getPeca() instanceof Vazio))
+            {
+                return true;
+            }
+        }*/
+        if(botaoClicado.getEquipe() == ultimoBotaoClicado.getEquipe()){
+            if (!(botaoClicado.getPeca() instanceof Vazio))
+            {
+                return true;
+            }
+        }
+        if((x == 1 && y == 2)||(x == 3 && y == 2))
+        {
+            if (!(botaoClicado.getPeca() instanceof Vazio))
+            {
+                return true;
+            }
+        }
+        if ( ultimoBotaoClicado.getPeca() instanceof Bomba || ultimoBotaoClicado.getPeca() instanceof Bandeira)
+        {
+            resetaUltimoBotaoClicado();
+            if(!(botaoClicado.getPeca() instanceof Vazio))
+            {
+                return true;
+            }
+            else 
+            {
+                System.out.println("Movimento inválido. Bomba/Bandeira não se mexem!!");
+                return false;
+            }
+        }
+        else 
+        {
+            return true;
+        }
+    }
+    
+    public void resetaUltimoBotaoClicado(){
+        this.ultimoBotaoClicado = null;
+    }
+    
+    public void selecionaPeca(){
+        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
+        {
+            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
+            {
+                final int x = i;
+                final int y = j;
+                tabuleiro[i][j].addMouseListener(new MouseAdapter() 
+                {
+                    public void mouseClicked(MouseEvent e) 
+                    {   
+                        Celula botaoClicado = (Celula) e.getSource();
+                        if (ultimoBotaoClicado == null)
+                        {
+                            ultimoBotaoClicado = botaoClicado;
+                            System.out.println(ultimoBotaoClicado.getPeca());
+                            coordenadaXUltimoBotao = x;
+                            coordenadaYUltimoBotao = y;
+                            imprimePeca();
+                        }
+                        
+                        else if ( validaMovimento(botaoClicado,x,y))
+                        {
+                            movePeca(botaoClicado, x, y);
+                            resetaUltimoBotaoClicado();
+                            System.out.println(botaoClicado.getPeca());
+                        } 
+                    }
+                });
+            }
+        }
+    }
+    public String imprimePeca(){
+        if (ultimoBotaoClicado == null) 
+        {
+            return "Nenhuma peça selecionada ainda";
+        } else 
+        {
+            String nomePeca = ultimoBotaoClicado.getPeca().getNome();
+            return nomePeca;
+        }
+    }
+    
+    public void mudaRodada(){
+        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
+        {
+            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
+            {
+                tabuleiro[i][j].setEnabled(true);
             }
         }
     }
@@ -388,6 +546,25 @@ public class Tabuleiro extends JPanel{
             }
         }
     }
+    public static void clearConsole() {
+        for (int i = 0; i < 10; i++) {
+            System.out.println();
+    }
+}
+    public void imprimeMatriz()
+    {
+        clearConsole();
+        for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
+        {
+            for(int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
+            {
+                System.out.printf("[%d][%d] = %s",j,i,tabuleiro[i][j].getPeca().getNome());
+            }
+            System.out.println("\n");
+        }
+        clearConsole();
+    }
+
 }
 
     

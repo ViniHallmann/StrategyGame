@@ -17,6 +17,8 @@ import javax.swing.JButton;
  */
 public class Celula extends JButton implements MouseListener{
    // private char tipo;
+    private int posX;
+    private int posY;
     private Peça peca;
     private boolean equipe;
     //boolean getPeca;
@@ -73,7 +75,9 @@ public class Celula extends JButton implements MouseListener{
     {
         this.equipe = equipe;
     }
-    
+    public boolean getEquipe(){
+        return this.equipe;
+    }
     @Override
     public void mousePressed(MouseEvent e) {
     }
