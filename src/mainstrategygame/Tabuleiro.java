@@ -158,7 +158,7 @@ public class Tabuleiro extends JPanel{
         this.marechalDisponivel = true;
         this.espiaoDisponivel = true;
         this.soldadosDisponiveis = 3;
-        this.caboArmeiroDisponiveis = 3;
+        this.caboArmeiroDisponiveis = 2;
         this.bombasDisponiveis = 2;
         
         constroiTabuleiro();
@@ -314,15 +314,15 @@ public class Tabuleiro extends JPanel{
                 {
                     remove(tabuleiro[i][j]);
                     tabuleiro[i][j] = setPecaAleatoria(bombas,soldados,cabos,marechal,espiao);
-                    if(tabuleiro[i][j].getTipo() == 'B')
+                    if(tabuleiro[i][j].getPeca().getTipo() == 'B')
                         bombas--;
-                    if(tabuleiro[i][j].getTipo() == 'S')
+                    if(tabuleiro[i][j].getPeca().getTipo() == 'S')
                         soldados--;
-                    if(tabuleiro[i][j].getTipo() == 'C')
+                    if(tabuleiro[i][j].getPeca().getTipo() == 'C')
                         cabos--;
-                    if(tabuleiro[i][j].getTipo() == 'M')
+                    if(tabuleiro[i][j].getPeca().getTipo() == 'M')
                         marechal = false;
-                    if(tabuleiro[i][j].getTipo() == 'E')
+                    if(tabuleiro[i][j].getPeca().getTipo() == 'E')
                         espiao = false;
                     
                     g.insets = new java.awt.Insets(1, 1, 1, 1); 

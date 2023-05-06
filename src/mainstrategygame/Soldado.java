@@ -14,6 +14,6 @@ public class Soldado extends Peça {
     
     public Soldado (){
         this.peçaEscondida = true;
-        this.setText("S");
+        this.setNome("S");
     }
 }

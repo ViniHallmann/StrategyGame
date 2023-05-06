@@ -16,21 +16,21 @@ import javax.swing.JButton;
  * @author jvlai
  */
 public class Celula extends JButton implements MouseListener{
-    private char tipo;
+   // private char tipo;
     private Peça peca;
-    boolean getPeca;
+    //boolean getPeca;
     
     public Celula(char t , Peça peca)
     {
         addMouseListener(this);
-        this.tipo = t;
         this.peca = peca;
-        setText(peca.getText());
+        this.peca.setTipo(t);
+        setText(peca.getNome());
     }
     public Celula()
     {
         addMouseListener(this);
-        setText(peca.getText());
+        setText(peca.getNome());
     }
     
     public static void adicionaPeca(Celula botaoSelecionado, Tabuleiro tabuleiro)
@@ -45,19 +45,13 @@ public class Celula extends JButton implements MouseListener{
     {
         
     }
-    public void setTipo(char tipo)
-    {
-        this.tipo = tipo;
-    }
+    
     public void setPeça(Peça peça)
     {
         this.peca = peça;
     }
     
-    public char getTipo()
-    {
-        return this.tipo;
-    }
+    
     public Peça getPeca()
     {
         return this.peca;
