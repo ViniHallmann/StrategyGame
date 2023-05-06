@@ -34,7 +34,7 @@ public class Tabuleiro extends JPanel{
     private boolean marechalDisponivel = true;
     private boolean espiaoDisponivel = true;
     private int soldadosDisponiveis = 3;
-    private int caboArmeiroDisponiveis = 3;
+    private int caboArmeiroDisponiveis = 2;
     private int bombasDisponiveis = 2;
     
     GridBagConstraints  g = new GridBagConstraints();

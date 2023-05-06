@@ -65,19 +65,7 @@ public final class BotoesPecas extends JPanel{
         r.gridx = 5;
         botoes[5] = CelulaFactory.factory('F');
         add(botoes[5],r);
-        
-        if (tabuleiro.getRodada() == 1){
-            for( int i = 0; i < 5; i++)
-            botoes[i].setEnabled(false);
-        }
-        else 
-        {
-            for( int i = 0; i < 5; i++){
-                botoes[i].setEnabled(true);
-                botoes[5].setEnabled(false);
-            }
-            
-        }
+
         
         r.gridy = 1;
         r.insets = new java.awt.Insets(1, 1, 1, 1);
