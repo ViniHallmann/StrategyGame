@@ -74,6 +74,7 @@ public class BoardSub extends JFrame{
                 }
             });
        add(resetTabuleiro,g);
+       
     }
     
     
