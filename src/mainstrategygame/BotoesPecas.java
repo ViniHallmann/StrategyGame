@@ -128,7 +128,6 @@ public final class BotoesPecas extends JPanel{
         for(int i = 0; i < NUMERO_DE_ROLES ; i++)
         {   
             Celula botãoAtual = botoes[i];
-            botoes[i].setPreferredSize(new java.awt.Dimension(50, 50));
             botoes[i].addMouseListener(new MouseAdapter() 
             {
                 public void mouseClicked(MouseEvent e) 
