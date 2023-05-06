@@ -318,35 +318,37 @@ public class Tabuleiro extends JPanel{
         revalidate();
         repaint(); 
     }
+    public boolean verifica(Celula botao)
+    {
+        if (!(botao.getPeca() instanceof Vazio))
+        {
+            return true;
+        }
+        return false;
+    }
     
     public boolean validaMovimento(Celula botaoClicado, int x, int y)
     {
-        /*boolean verifica(Celula botao)
+        if (verifica (botaoClicado)){
+            resetaUltimoBotaoClicado();
+            //return false;
+        }
+  
+        if(botaoClicado.getEquipe() == ultimoBotaoClicado.getEquipe())
         {
-            if (!(botao.getPeca() instanceof Vazio))
-            {
-                return true;
-            }
-        }*/
-        if(botaoClicado.getEquipe() == ultimoBotaoClicado.getEquipe()){
-            if (!(botaoClicado.getPeca() instanceof Vazio))
-            {
-                return true;
-            }
+            verifica(botaoClicado);
         }
         if((x == 1 && y == 2)||(x == 3 && y == 2))
         {
-            if (!(botaoClicado.getPeca() instanceof Vazio))
-            {
-                return true;
-            }
+            resetaUltimoBotaoClicado();
+            return false;
         }
         if ( ultimoBotaoClicado.getPeca() instanceof Bomba || ultimoBotaoClicado.getPeca() instanceof Bandeira)
         {
             resetaUltimoBotaoClicado();
             if(!(botaoClicado.getPeca() instanceof Vazio))
             {
-                return true;
+                verifica(botaoClicado);
             }
             else 
             {
@@ -354,10 +356,7 @@ public class Tabuleiro extends JPanel{
                 return false;
             }
         }
-        else 
-        {
             return true;
-        }
     }
     
     public void resetaUltimoBotaoClicado(){
@@ -382,7 +381,7 @@ public class Tabuleiro extends JPanel{
                             System.out.println(ultimoBotaoClicado.getPeca());
                             coordenadaXUltimoBotao = x;
                             coordenadaYUltimoBotao = y;
-                            imprimePeca();
+                            //imprimePeca();
                         }
                         
                         else if ( validaMovimento(botaoClicado,x,y))
@@ -396,6 +395,7 @@ public class Tabuleiro extends JPanel{
             }
         }
     }
+    
     public String imprimePeca(){
         if (ultimoBotaoClicado == null) 
         {
@@ -416,6 +416,7 @@ public class Tabuleiro extends JPanel{
             }
         }
     }
+    
     private void atualizaTabuleiro() {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
@@ -551,6 +552,7 @@ public class Tabuleiro extends JPanel{
             System.out.println();
     }
 }
+    
     public void imprimeMatriz()
     {
         clearConsole();
