@@ -13,23 +13,23 @@ import javax.swing.BorderFactory;
  */
 public final class CelulaFactory{
     
-    private static final Color corAdversario = new Color(255,204,204);
-    private static final Color corJogador = new Color(175,175,255);
-    private static final Color corVazio = new Color(204,255,204);
-    private static final Color corBranco = new Color(255,255,255);
+    private static final Color COR_ADVERSARIO = new Color(255,204,204);
+    private static final Color COR_JOGADOR = new Color(175,175,255);
+    private static final Color COR_VAZIO = new Color(204,255,204);
+    private static final Color COR_BRANCO = new Color(255,255,255);
     
     private static boolean equipe = false;
     public static Celula factory(char tipo)
     {
        switch(tipo)
        {
-           case ' ' : return criaCelulaVazio(corBranco);
-           case 'B' : return criaCelulaBomba(corBranco);
-           case 'C' : return criaCelulaCabo(corBranco);
-           case 'S' : return criaCelulaSoldado(corBranco);
-           case 'E' : return criaCelulaEspiao(corBranco);
-           case 'F' : return criaCelulaBandeira(corBranco);
-           case 'M' : return criaCelulaMarechal(corBranco);
+           case ' ' : return criaCelulaVazio(COR_BRANCO);
+           case 'B' : return criaCelulaBomba(COR_BRANCO);
+           case 'C' : return criaCelulaCabo(COR_BRANCO);
+           case 'S' : return criaCelulaSoldado(COR_BRANCO);
+           case 'E' : return criaCelulaEspiao(COR_BRANCO);
+           case 'F' : return criaCelulaBandeira(COR_BRANCO);
+           case 'M' : return criaCelulaMarechal(COR_BRANCO);
        }
         return null;
     }
@@ -41,24 +41,24 @@ public final class CelulaFactory{
         {
             switch(tipo)
             {
-               case ' ' :  nova = criaCelulaVazio(corVazio);
+               case ' ' :  nova = criaCelulaVazio(COR_VAZIO);
                            return nova;
-               case 'B' :  nova = criaCelulaBomba(corJogador);
+               case 'B' :  nova = criaCelulaBomba(COR_JOGADOR);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'C' :  nova = criaCelulaCabo(corJogador);
+               case 'C' :  nova = criaCelulaCabo(COR_JOGADOR);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'S' :  nova = criaCelulaSoldado(corJogador);
+               case 'S' :  nova = criaCelulaSoldado(COR_JOGADOR);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'E' :  nova = criaCelulaEspiao(corJogador);
+               case 'E' :  nova = criaCelulaEspiao(COR_JOGADOR);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'F' :  nova = criaCelulaBandeira(corJogador);
+               case 'F' :  nova = criaCelulaBandeira(COR_JOGADOR);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'M' :  nova = criaCelulaMarechal(corJogador);
+               case 'M' :  nova = criaCelulaMarechal(COR_JOGADOR);
                            nova.setEquipe(equipe);
                            return nova;
             }
@@ -67,24 +67,24 @@ public final class CelulaFactory{
         {
             switch(tipo)
             {
-               case ' ' :  nova = criaCelulaVazio(corVazio);
+               case ' ' :  nova = criaCelulaVazio(COR_VAZIO);
                            return nova;
-               case 'B' :  nova = criaCelulaBomba(corAdversario);
+               case 'B' :  nova = criaCelulaBomba(COR_ADVERSARIO);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'C' :  nova = criaCelulaCabo(corAdversario);
+               case 'C' :  nova = criaCelulaCabo(COR_ADVERSARIO);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'S' :  nova = criaCelulaSoldado(corAdversario);
+               case 'S' :  nova = criaCelulaSoldado(COR_ADVERSARIO);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'E' :  nova = criaCelulaEspiao(corAdversario);
+               case 'E' :  nova = criaCelulaEspiao(COR_ADVERSARIO);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'F' :  nova = criaCelulaBandeira(corAdversario);
+               case 'F' :  nova = criaCelulaBandeira(COR_ADVERSARIO);
                            nova.setEquipe(equipe);
                            return nova;
-               case 'M' :  nova = criaCelulaMarechal(corAdversario);
+               case 'M' :  nova = criaCelulaMarechal(COR_ADVERSARIO);
                            nova.setEquipe(equipe);
                            return nova;
             }
