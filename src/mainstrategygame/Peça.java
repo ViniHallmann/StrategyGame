@@ -14,17 +14,31 @@ public abstract class Peça extends JLabel{
     private int posX;
     private int posY;
     private String nome;
+    private char tipo;    
     public Peça() {
+        //setText(nome);
     }
     
-    public void setCoord(int x ,int y)
+    public void setTipo(char tipo)
     {
-        this.posX = x;
-        this.posY = y;
+        this.tipo = tipo;
     }
+    public char getTipo()
+    {
+        return tipo;
+    }
+   // public void setCoord(int x ,int y)
+   // {
+   //     this.posX = x;
+   //     this.posY = y;
+   // }
 
     public String getNome() {
         return nome;
+    }
+    public void setNome(String nome)
+    {
+        this.nome = nome;
     }
     
 }

@@ -14,6 +14,6 @@ public class Marechal extends Peça{
     
     public Marechal(){
         this.peçaEscondida = true;
-        this.setText("🎖");
+        this.setNome("🎖");
     }
 }

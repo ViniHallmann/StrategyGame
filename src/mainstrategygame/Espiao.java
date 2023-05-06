@@ -14,6 +14,6 @@ public class Espiao extends Peça {
     
     public Espiao(){
         this.peçaEscondida = true;
-        this.setText("🕵");
+        this.setNome("🕵");
     }
 }

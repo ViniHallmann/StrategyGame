@@ -11,14 +11,9 @@ package mainstrategygame;
 public class Bomba extends Peça{
     private boolean peçaEscondida;
     private char tipo;
-    private String nome = "💣";
-    
-    @Override
-    public String getNome(){
-        return nome;
-    }
+  
     public Bomba (){
         this.peçaEscondida = true;
-        this.setText("💣");
+        this.setNome("💣");
     }
 }

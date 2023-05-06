@@ -147,7 +147,7 @@ public final class BotoesPecas extends JPanel{
                 {   
                     Peça peça = botãoAtual.getPeca();
                     String nome = peça.getNome();
-                    char tipo = botãoAtual.getTipo();
+                    char tipo = botãoAtual.getPeca().getTipo();
 
                     tabuleiro.setPeçaSelecionada(peça);
                     tabuleiro.setTipoDePeça(tipo);

@@ -14,7 +14,7 @@ public class Bandeira extends Peça{
     
     public Bandeira(){
         this.peçaEscondida = true;
-        this.setText("🏴");
+        this.setNome("🏴");
     }
 
    
