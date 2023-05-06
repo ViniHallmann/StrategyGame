@@ -21,8 +21,10 @@ import java.util.Random;
  * @author jvlai
  */
 public class Tabuleiro extends JPanel{
+    
     public static final int NUMERO_DE_CASAS = 25;
     private Celula[][] tabuleiro;
+    private int rodada = 1;
     
     private Peça peçaSelecionada;
     private String nomeDaPeça;
@@ -35,7 +37,6 @@ public class Tabuleiro extends JPanel{
     private int caboArmeiroDisponiveis = 3;
     private int bombasDisponiveis = 2;
     
-    private Peça peçaPosicionada;
     GridBagConstraints  g = new GridBagConstraints();
        
     public Tabuleiro()
@@ -44,7 +45,12 @@ public class Tabuleiro extends JPanel{
         setLayout(new GridBagLayout());
         constroiTabuleiro();
     }
-    //Coloquei esses getters e setters pra conseguir fazer os bagulho
+    
+    public void atualizaPeçasDisponiveis(){
+        int numerosCabosArmeiros = getCaboArmeiroDisponiveis();
+        int numerosBombas = getBombasDisponiveis();
+        int numerosSoldados = getSoldadosDisponiveis();
+    }
     public void setPeçaSelecionada(Peça peçaSelecionada) {
         this.peçaSelecionada = peçaSelecionada;
         atualizaTabuleiro();
@@ -68,6 +74,33 @@ public class Tabuleiro extends JPanel{
 
     public char getTipoDePeça() {
         return tipoDePeça;
+    }
+    
+    public int getRodada(){
+        return rodada;
+    }
+    public int getSoldadosDisponiveis() {
+        return soldadosDisponiveis;
+    }
+    
+    public int getCaboArmeiroDisponiveis() {
+        return caboArmeiroDisponiveis;
+    }
+    
+    public int getBombasDisponiveis() {
+        return bombasDisponiveis;
+    }
+    
+    public boolean isBandeiraDisponivel() {
+        return bandeiraDisponivel;
+    }
+
+    public boolean isMarechalDisponivel() {
+        return marechalDisponivel;
+    }
+
+    public boolean isEspiaoDisponivel() {
+        return espiaoDisponivel;
     }
                     
     private void constroiTabuleiro()
@@ -99,7 +132,6 @@ public class Tabuleiro extends JPanel{
                             colocaPeçaNoTabuleiro(botãoClicado, x, y);
                         }
                     });
-                //MUDEI AS POSIÇÕES DO LAGO!!!
 
                 if((i == 1 && j == 2)||(i == 3 && j == 2))
                 {
@@ -162,15 +194,15 @@ public class Tabuleiro extends JPanel{
             case 'B':
                 return (bombasDisponiveis > 0);
             case 'C':
-                return (caboArmeiroDisponiveis > 0);
+                return (getCaboArmeiroDisponiveis() > 0);
             case 'S':
-                return (soldadosDisponiveis > 0);
+                return (getSoldadosDisponiveis() > 0);
             case 'M':
-                return marechalDisponivel;
+                return isMarechalDisponivel();
             case 'E':
-                return espiaoDisponivel;
+                return isEspiaoDisponivel();
             case 'F':
-                return bandeiraDisponivel;
+                return isBandeiraDisponivel();
             default:
                 return false;
         }
@@ -190,13 +222,12 @@ public class Tabuleiro extends JPanel{
                         
                         if (verificaPeçasDisponiveis(getTipoDePeça()))
                         {
-                            System.out.println(verificaPeçasDisponiveis(getTipoDePeça()));
-                            System.out.println(getTipoDePeça());
                             iteradorPeçasDisponiveis(getTipoDePeça());
                             if ( getTipoDePeça() == 'F' && y == 3) // A bandeira só pode ficar na ultima linha da matriz!!
                             {
                                 return;
                             }
+                            rodada++;
                             tabuleiro[i][j] = novaCelula;
                             novaCelula.setBackground(new java.awt.Color(175, 175, 255));
                             novaCelula.setPreferredSize(new java.awt.Dimension(50, 50));
@@ -281,7 +312,6 @@ public class Tabuleiro extends JPanel{
             {
                 if((j != ladoFlag) || (i != gerado))
                 {
-                    
                     remove(tabuleiro[i][j]);
                     tabuleiro[i][j] = setPecaAleatoria(bombas,soldados,cabos,marechal,espiao);
                     if(tabuleiro[i][j].getTipo() == 'B')

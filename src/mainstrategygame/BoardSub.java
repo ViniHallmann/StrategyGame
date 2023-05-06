@@ -16,7 +16,7 @@ import javax.swing.JFrame;
  * @author jvlai
  */
 public class BoardSub extends JFrame{
-    Tabuleiro tabuleiro = new Tabuleiro();
+    Tabuleiro tabuleiro     = new Tabuleiro();
     BotoesPecas botoesPecas = new BotoesPecas(tabuleiro);
     JButton pecasAdversario = new JButton("Pecas do Adversario");
     JButton pecasJogador = new JButton("Pecas Aleatorias");
@@ -39,7 +39,6 @@ public class BoardSub extends JFrame{
        add(botoesPecas,g);
        g.gridy = 2;
        g.insets = new java.awt.Insets(5, 1, 1, 1);
-
        pecasAdversario.setSize(50, 10);
        pecasAdversario.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
@@ -47,8 +46,8 @@ public class BoardSub extends JFrame{
                    tabuleiro.repaint();
                    tabuleiro.revalidate();
                    
-                }
-            });
+            }
+        });
        add(pecasAdversario,g);
        
        g.gridy = 3;
