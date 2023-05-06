@@ -16,11 +16,12 @@ import javax.swing.JFrame;
  * @author jvlai
  */
 public class BoardSub extends JFrame{
-    Tabuleiro tabuleiro     = new Tabuleiro();
+    Tabuleiro tabuleiro = new Tabuleiro();
     BotoesPecas botoesPecas = new BotoesPecas(tabuleiro);
     JButton pecasAdversario = new JButton("Pecas do Adversario");
     JButton pecasJogador = new JButton("Pecas Aleatorias");
     JButton resetTabuleiro = new JButton("Resetar Tabuleiro");
+    JButton debug = new JButton("debug");
     
     
     public BoardSub()
@@ -73,6 +74,16 @@ public class BoardSub extends JFrame{
                 }
             });
        add(resetTabuleiro,g);
+       
+       g.gridy = 1;
+       g.gridx = 2;
+       debug.setSize(50, 10);
+       debug.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                   tabuleiro.debugBoard();
+                }
+            });
+       add(debug,g);
        
     }
     
