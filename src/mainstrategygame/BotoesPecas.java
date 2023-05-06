@@ -24,8 +24,11 @@ public final class BotoesPecas extends JPanel{
     
     private Celula botãoSelecionado = null;
     private Peça peçaSelecionada = null;
-    //Variavel criada pra eu conseguir acesso ao método de setter das váriaveis
     private Tabuleiro tabuleiro;
+    
+    int numerosCabosArmeiros;
+    int numerosBombas;
+    int numerosSoldados;
     
     public BotoesPecas(Tabuleiro tabuleiro)
     {
@@ -34,6 +37,7 @@ public final class BotoesPecas extends JPanel{
         setLayout(new GridBagLayout());
         constroiBotoesPecas();
     }
+    
     public void constroiBotoesPecas(){
         GridBagConstraints  r = new GridBagConstraints();
         r.insets = new java.awt.Insets(40, 1, 1, 1);
@@ -62,36 +66,94 @@ public final class BotoesPecas extends JPanel{
         botoes[5] = CelulaFactory.factory('F');
         add(botoes[5],r);
         
+        if (tabuleiro.getRodada() == 1){
+            for( int i = 0; i < 5; i++)
+            botoes[i].setEnabled(false);
+        }
+        else 
+        {
+            for( int i = 0; i < 5; i++){
+                botoes[i].setEnabled(true);
+                botoes[5].setEnabled(false);
+            }
+            
+        }
+        
         r.gridy = 1;
         r.insets = new java.awt.Insets(1, 1, 1, 1);
+      
+        int numeroMarechal;
+        int numeroEspiao;
+        int numeroBandeira;
+        
+        if ( tabuleiro.isMarechalDisponivel())
+        {
+            numeroMarechal = 1;
+        }
+        else {
+            numeroMarechal = 0;
+        }
+        if ( tabuleiro.isEspiaoDisponivel())
+        {
+            numeroEspiao = 1;
+        }
+        else {
+            numeroEspiao = 0;
+        }
+        if ( tabuleiro.isBandeiraDisponivel())
+        {
+            numeroBandeira = 1;
+        }
+        else {
+            numeroBandeira = 0;
+        }
+        /*numerosBombas = tabuleiro.getBombasDisponiveis();
+        numerosCabosArmeiros = tabuleiro.getBombasDisponiveis();
+        numerosSoldados = tabuleiro.getBombasDisponiveis();
         r.gridx = 0;
-        JLabel titulo_1 = new JLabel("TESTE");
+        JLabel titulo_1 = new JLabel(" "+numerosBombas);
         add(titulo_1,r);
+        
         r.gridx = 1;
-        JLabel titulo_2 = new JLabel("TESTE");
+        
+        JLabel titulo_2 = new JLabel(" "+numerosCabosArmeiros);
         add(titulo_2,r);
+        
+        r.gridx = 2;
+        JLabel titulo_3 = new JLabel(" " +numerosSoldados);
+        add(titulo_3,r);
+        
+        r.gridx = 3;
+        JLabel titulo_4 = new JLabel(" "+numeroMarechal);
+        add(titulo_4,r);
+        
+        r.gridx = 4;
+        JLabel titulo_5 = new JLabel(" "+numeroEspiao);
+        add(titulo_5,r);
+        
+        r.gridx = 5;
+        JLabel titulo_6 = new JLabel(" "+numeroBandeira);
+        add(titulo_6,r);
+        */
 
         //
         for(int i = 0; i < NUMERO_DE_ROLES ; i++)
-        {
+        {   
             Celula botãoAtual = botoes[i];
             botoes[i].setPreferredSize(new java.awt.Dimension(50, 50));
             botoes[i].addMouseListener(new MouseAdapter() 
             {
                 public void mouseClicked(MouseEvent e) 
-                {
+                {   
                     Peça peça = botãoAtual.getPeca();
                     String nome = peça.getNome();
                     char tipo = botãoAtual.getTipo();
-                    
+
                     tabuleiro.setPeçaSelecionada(peça);
                     tabuleiro.setTipoDePeça(tipo);
                     tabuleiro.setNomeDaPeça(nome);
                 }
             });
-        }
-        for ( int i = 0; i < NUMERO_DE_ROLES; i++){
-            
         }
     }
 }

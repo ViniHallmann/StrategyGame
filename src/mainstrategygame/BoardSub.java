@@ -16,7 +16,7 @@ import javax.swing.JFrame;
  * @author jvlai
  */
 public class BoardSub extends JFrame{
-    Tabuleiro tabuleiro = new Tabuleiro();
+    Tabuleiro tabuleiro     = new Tabuleiro();
     BotoesPecas botoesPecas = new BotoesPecas(tabuleiro);
     JButton pecasAdversario = new JButton("Colocar Pecas do Adversario");
     
@@ -38,14 +38,16 @@ public class BoardSub extends JFrame{
        g.gridy = 2;
        pecasAdversario.setSize(150, 10);
        g.insets = new java.awt.Insets(5, 1, 1, 1);
-       pecasAdversario.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                   tabuleiro.setPecasComputador();
-                   tabuleiro.repaint();
-                   tabuleiro.revalidate();
+       pecasAdversario.addMouseListener(new MouseAdapter() 
+       {
+            public void mouseClicked(MouseEvent e) 
+            {
+                tabuleiro.setPecasComputador();
+                tabuleiro.repaint();
+                tabuleiro.revalidate();
                    
-                }
-            });
+            }
+        });
        add(pecasAdversario,g);
     }
     
