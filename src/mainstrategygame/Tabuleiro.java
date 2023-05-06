@@ -5,12 +5,15 @@
 package mainstrategygame;
 
 import java.awt.Color;
+import static java.awt.Color.GREEN;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Math.sqrt;
 import javax.swing.JPanel;
 import java.awt.GridBagConstraints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +26,10 @@ import java.util.Random;
 public class Tabuleiro extends JPanel{
     
     public static final int NUMERO_DE_CASAS = 25;
+    
+    private Celula ultimoBotaoClicado = null;
+    private int coordenadaXUltimoBotao;
+    private int coordenadaYUltimoBotao;
     private Celula[][] tabuleiro;
     private int rodada = 1;
     
@@ -124,7 +131,6 @@ public class Tabuleiro extends JPanel{
                 final int y = j;
                 //Ao clicar no botão pega as "informações do botão" e chama a função que coloca uma peça na posição desse botão
                 tabuleiro[i][j].addActionListener(new ActionListener() 
-
                     {
                         public void actionPerformed(ActionEvent e) 
                         {   
@@ -248,6 +254,106 @@ public class Tabuleiro extends JPanel{
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    public void limpaPeca(Celula ultimoBotaoClicado){
+        ultimoBotaoClicado.setIcon(null);
+        ultimoBotaoClicado.setText(null);
+        Color cor = new Color(204,255,204);
+        ultimoBotaoClicado.setBackground(cor);
+    }
+    
+    public void movePeca(Celula botaoClicado, int x, int y)
+    {
+        Celula origem = ultimoBotaoClicado;
+        int coordenadaXOrigem = coordenadaXUltimoBotao;
+        int coordenadaYOrigem = coordenadaYUltimoBotao;
+        
+        Celula destino = botaoClicado;
+        int coordenadaXDestino = x;
+        int coordenadaYDestino = y;
+        
+        
+        Peça pecaOrigem = origem.getPeca();
+        
+        //Celula novoDestino = CelulaFactory.factory(pecaOrigem.getTipo());
+        
+        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
+        {
+            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
+            {
+                Celula novoDestino = CelulaFactory.factory(pecaOrigem.getTipo());
+                novoDestino.setBackground(new java.awt.Color(175, 175, 255));
+                novoDestino.setPreferredSize(new java.awt.Dimension(50, 50));
+                g.insets = new java.awt.Insets(1, 1, 1, 1); 
+                g.gridx = coordenadaXDestino;
+                g.gridy = coordenadaYDestino;
+
+                remove(botaoClicado);
+                add(novoDestino, g);
+                Celula novaOrigem = CelulaFactory.factory(' ');
+                novaOrigem.setPeça(pecaOrigem);
+                novaOrigem.setBackground(new java.awt.Color(204, 255, 204));
+                novaOrigem.setPreferredSize(new java.awt.Dimension(50, 50));
+                g.insets = new java.awt.Insets(1, 1, 1, 1);
+                g.gridx = coordenadaXOrigem;
+                g.gridy = coordenadaYOrigem;
+                remove(ultimoBotaoClicado);
+                add(novaOrigem, g);
+                revalidate();
+                repaint();
+            }
+        }
+        /*
+        destino.setBorder(origem.getBorder());
+        destino.setMargin(origem.getMargin());
+        destino.setIcon(origem.getIcon());
+        destino.setText(origem.getText());
+        destino.setFont(origem.getFont());
+        destino.setBackground(origem.getBackground());
+        destino.setForeground(origem.getForeground());*/
+    }
+    
+    public void selecionaPeca(){
+        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
+        {
+            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
+            {
+                final int x = i;
+                final int y = j;
+                tabuleiro[i][j].addMouseListener(new MouseAdapter() 
+                {
+                    public void mouseClicked(MouseEvent e) 
+                    {   
+                        Celula botaoClicado = (Celula) e.getSource();
+                        if (ultimoBotaoClicado == null)
+                        {
+                            ultimoBotaoClicado = botaoClicado;
+                            System.out.println(ultimoBotaoClicado.getText());
+                            coordenadaXUltimoBotao = x;
+                            coordenadaYUltimoBotao = y;
+                        }
+                        else 
+                        {
+                            movePeca(botaoClicado, x, y);
+                            limpaPeca(ultimoBotaoClicado);
+                            ultimoBotaoClicado = null;
+                        }
+
+                    }
+                });
+            }
+        }
+    }
+    
+    public void mudaRodada(){
+        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
+        {
+            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
+            {
+                tabuleiro[i][j].setEnabled(true);
             }
         }
     }

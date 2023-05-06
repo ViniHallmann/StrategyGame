@@ -21,6 +21,7 @@ public class BoardSub extends JFrame{
     JButton pecasAdversario = new JButton("Pecas do Adversario");
     JButton pecasJogador = new JButton("Pecas Aleatorias");
     JButton resetTabuleiro = new JButton("Resetar Tabuleiro");
+    JButton mudaRodada = new JButton("Muda Rodada");
     
     
     public BoardSub()
@@ -73,6 +74,18 @@ public class BoardSub extends JFrame{
                 }
             });
        add(resetTabuleiro,g);
+       
+       g.gridy = 0;
+       g.gridx = 2;
+       mudaRodada.setSize(50, 10);
+       mudaRodada.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                   tabuleiro.mudaRodada();
+                   tabuleiro.selecionaPeca();
+                   tabuleiro.repaint();
+                }
+            });
+       add(mudaRodada,g);
        
     }
     

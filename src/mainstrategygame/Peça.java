@@ -11,8 +11,6 @@ import javax.swing.JLabel;
  * @author vinic
  */
 public abstract class Peça extends JLabel{
-    private int posX;
-    private int posY;
     private String nome;
     private char tipo;    
     public Peça() {
