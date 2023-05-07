@@ -291,14 +291,16 @@ public class Tabuleiro extends JPanel{
         
         if (resultadoCombate == -1){
             Celula novaOrigem = CelulaFactory.factory(' ');
+            adicionarListener(novaOrigem);
             g.gridx = coordenadaXUltimoBotao;
             g.gridy = coordenadaYUltimoBotao;
             remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
             tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaXUltimoBotao);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
 
             add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
             
+            ultimoBotaoClicado = null;
             revalidate();
             repaint();
         }
@@ -306,42 +308,17 @@ public class Tabuleiro extends JPanel{
         else if (resultadoCombate == 0)
         {
             Celula novaOrigem = CelulaFactory.factory(' ');
-            novaOrigem.addMouseListener(new MouseAdapter() 
-                        {
-                            public void mouseClicked(MouseEvent e) 
-                            {
-                                Celula botaoClicado = (Celula) e.getSource();
-                                System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
-                                if ( ultimoBotaoClicado != null && validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
-                                {
-                                    movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
-                                    resetaUltimoBotaoClicado();
-                                    //System.out.println(botaoClicado.getPeca());
-                                } 
-                            }
-                        });
+            adicionarListener(novaOrigem);
             g.gridx = coordenadaXUltimoBotao;
             g.gridy = coordenadaYUltimoBotao;
             remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
             tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaXUltimoBotao);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
             add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
             
             Celula novoDestino = CelulaFactory.factory(' ');
-            novoDestino.addMouseListener(new MouseAdapter() 
-                        {
-                            public void mouseClicked(MouseEvent e) 
-                            {
-                                Celula botaoClicado = (Celula) e.getSource();
-                                System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
-                                if ( ultimoBotaoClicado != null && validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
-                                {
-                                    movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
-                                    resetaUltimoBotaoClicado();
-                                    //System.out.println(botaoClicado.getPeca());
-                                } 
-                            }
-                        });
+            adicionarListener(novoDestino);
+                        
             g.gridx = coordenadaXDestino;
             g.gridy = coordenadaYDestino;
             remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
@@ -356,14 +333,15 @@ public class Tabuleiro extends JPanel{
         else if (resultadoCombate == 1)
         {
             Celula novaOrigem = CelulaFactory.factory(' ');
+            adicionarListener(novaOrigem);
+            
             g.gridx = coordenadaXUltimoBotao;
             g.gridy = coordenadaYUltimoBotao;
             remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
             tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaXUltimoBotao);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
             add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
             
-            Celula novoDestino = CelulaFactory.factory(' ');
             g.gridx = coordenadaXDestino;
             g.gridy = coordenadaYDestino;
             remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
@@ -378,7 +356,8 @@ public class Tabuleiro extends JPanel{
         else if (resultadoCombate == 2)
         {
             Celula novaOrigem = CelulaFactory.factory(' ');
-        
+            adicionarListener(novaOrigem);
+            
             origem = ultimoBotaoClicado;
             g.gridx = coordenadaXDestino;
             g.gridy = coordenadaYDestino;
@@ -718,9 +697,22 @@ public class Tabuleiro extends JPanel{
         coordenadaYFinal = Math.abs(coordenadaYUltimoBotaoClicado - coordenadaYBotaoClicado);
         return (coordenadaXFinal == 1 && coordenadaYFinal == 0) || (coordenadaXFinal == 0 && coordenadaYFinal == 1);
     }
-    public void adicionaFunciona()
+    public void adicionarListener(Celula celula)
     {
         
+        celula.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) 
+            {
+                Celula botaoClicado = (Celula) e.getSource();
+                System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
+                if ( ultimoBotaoClicado != null && validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
+                {
+                    movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                    resetaUltimoBotaoClicado();
+                    //System.out.println(botaoClicado.getPeca());
+                } 
+            }
+        });
     }
 }
 
