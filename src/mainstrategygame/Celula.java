@@ -40,7 +40,7 @@ public class Celula extends JButton implements MouseListener{
         setText(peca.getNome());
     }
     
-    public void debugCelula()
+    public void revelaCelula()
     {
         if(equipe == -1)
         {

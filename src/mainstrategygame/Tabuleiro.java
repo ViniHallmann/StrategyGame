@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  *
@@ -30,6 +31,8 @@ public class Tabuleiro extends JPanel{
     private int coordenadaYUltimoBotao;
     private Celula[][] tabuleiro;
     private int rodada = 1;
+    
+    private int dicasDisponiveis = 2;
     
     private Peça peçaSelecionada;
     private String nomeDaPeça;
@@ -290,6 +293,7 @@ public class Tabuleiro extends JPanel{
         System.out.println(resultadoCombate);
         
         if (resultadoCombate == -1){
+            botaoClicado.revelaCelula();
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
             g.gridx = coordenadaXUltimoBotao;
@@ -454,7 +458,7 @@ public class Tabuleiro extends JPanel{
                 
             case 'E' -> 
             {
-                if      (pecaInimiga instanceof Marechal)    { resultadoCombate = 1; }
+                if      (pecaInimiga instanceof Marechal)   { resultadoCombate = 1; }
                 else if (pecaInimiga instanceof Espiao)     { resultadoCombate = 0; }
                 else if (pecaInimiga instanceof Vazio)      { resultadoCombate = 2; }
                 else                                        { resultadoCombate = -1;}
@@ -660,7 +664,7 @@ public class Tabuleiro extends JPanel{
         {
             for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
             {
-                tabuleiro[i][j].debugCelula();
+                tabuleiro[i][j].revelaCelula();
             }
         }
     }
@@ -684,6 +688,43 @@ public class Tabuleiro extends JPanel{
         }
         clearConsole();
     }
+    
+    public void dicaBomba()
+    {
+        imprimeMatriz();
+        Scanner scannerDica = new Scanner(System.in);
+        
+        System.out.println("Digite a linha da matriz: ");
+        int coluna = scannerDica.nextInt();
+        
+        System.out.println(dicasDisponiveis);
+        if(dicasDisponiveis > 0){
+            for (int i = 0; i < 5; i++)
+            if (tabuleiro[i][coluna].getPeca() instanceof Bomba bomba)
+            {
+                if (bomba.isBombaEscondida())
+                {
+                    bomba.setBombaEscondida(false);
+                    System.out.println("Bomba nessa posição!!");
+                    tabuleiro[i][coluna].revelaCelula();
+                    this.dicasDisponiveis--;
+                    
+                }
+                else 
+                {
+                    System.out.println("Bomba já revelada!!!");
+                }
+            }
+            else
+            {
+                System.out.println("Nenhuma bomba nessa posição!");
+            }
+        }
+        else
+        {
+            System.out.println("Sem dicas disponiveis");
+        }
+    }
 
     public boolean calculaDistancia(Celula botaoClicado)
     {
@@ -697,6 +738,7 @@ public class Tabuleiro extends JPanel{
         coordenadaYFinal = Math.abs(coordenadaYUltimoBotaoClicado - coordenadaYBotaoClicado);
         return (coordenadaXFinal == 1 && coordenadaYFinal == 0) || (coordenadaXFinal == 0 && coordenadaYFinal == 1);
     }
+    
     public void adicionarListener(Celula celula)
     {
         

@@ -146,7 +146,7 @@ public class BoardSub extends JFrame{
         imprimeMatriz.setSize(50, 10);
         imprimeMatriz.addMouseListener(new MouseAdapter() {
                  public void mouseClicked(MouseEvent e) {
-                    tabuleiro.imprimeMatriz();
+                    tabuleiro.dicaBomba();
                  }
              });
         add(imprimeMatriz,g);

@@ -9,6 +9,7 @@ package mainstrategygame;
  * @author vinic
  */
 public class Bomba extends Peça{
+
     private boolean peçaEscondida;
     private char tipo;
     private int nivel;
@@ -23,4 +24,11 @@ public class Bomba extends Peça{
         return nivel;
     }
     
+    public void setBombaEscondida(boolean peçaEscondida) {
+        this.peçaEscondida = peçaEscondida;
+    }
+    
+    public boolean isBombaEscondida() {
+        return peçaEscondida;
+    }
 }
