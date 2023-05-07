@@ -295,7 +295,7 @@ public class Tabuleiro extends JPanel{
             g.gridy = coordenadaYUltimoBotao;
             remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
             tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaXUltimoBotao);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
 
             add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
             
@@ -324,7 +324,7 @@ public class Tabuleiro extends JPanel{
             g.gridy = coordenadaYUltimoBotao;
             remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
             tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaXUltimoBotao);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
             add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
             
             Celula novoDestino = CelulaFactory.factory(' ');
@@ -360,7 +360,7 @@ public class Tabuleiro extends JPanel{
             g.gridy = coordenadaYUltimoBotao;
             remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
             tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaXUltimoBotao);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
             add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
             
             Celula novoDestino = CelulaFactory.factory(' ');
