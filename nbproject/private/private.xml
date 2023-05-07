@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Board.txt</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Vazio.java</file>
             <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/BoardSub.java</file>
-            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Peça.java</file>
             <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/CelulaFactory.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Soldado.java</file>
             <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Tabuleiro.java</file>
-            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/MainStrategyGame.java</file>
             <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/BotoesPecas.java</file>
             <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Celula.java</file>
         </group>

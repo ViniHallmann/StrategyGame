@@ -313,46 +313,51 @@ public class Tabuleiro extends JPanel{
         revalidate();
         repaint(); 
     }
-    
-    public boolean validaMovimento(Celula botaoClicado, int x, int y)
+    public boolean verifica(Celula botao)
     {
-        /*boolean verifica(Celula botao)
-        {
-            if (!(botao.getPeca() instanceof Vazio))
-            {
-                return true;
-            }
-        }*/
-        if(botaoClicado.getEquipe() == ultimoBotaoClicado.getEquipe()){
-            if (!(botaoClicado.getPeca() instanceof Vazio))
-            {
-                return true;
-            }
-        }
-        if((x == 1 && y == 2)||(x == 3 && y == 2))
-        {
-            if (!(botaoClicado.getPeca() instanceof Vazio))
-            {
-                return true;
-            }
-        }
-        if ( ultimoBotaoClicado.getPeca() instanceof Bomba || ultimoBotaoClicado.getPeca() instanceof Bandeira)
-        {
-            resetaUltimoBotaoClicado();
-            if(!(botaoClicado.getPeca() instanceof Vazio))
-            {
-                return true;
-            }
-            else 
-            {
-                System.out.println("Movimento inválido. Bomba/Bandeira não se mexem!!");
-                return false;
-            }
-        }
-        else 
+        if (!(botao.getPeca() instanceof Vazio))
         {
             return true;
         }
+        else
+        {
+            return false;
+        }
+    }
+    
+    public boolean validaMovimento(Celula botaoClicado, int x, int y)
+    {
+        if (verifica (botaoClicado)){
+            /*if (ultimoBotaoClicado.getPeca() instanceof Vazio)
+            {
+                return false;
+            }*/
+            if(botaoClicado.getEquipe() == ultimoBotaoClicado.getEquipe())
+            {
+                verifica(botaoClicado);
+            }
+            if((x == 1 && y == 2)||(x == 3 && y == 2))
+            {
+                resetaUltimoBotaoClicado();
+                return false;
+            }
+            if ( ultimoBotaoClicado.getPeca() instanceof Bomba    ||
+                 ultimoBotaoClicado.getPeca() instanceof Bandeira || 
+                 ultimoBotaoClicado.getPeca() instanceof Vazio)
+            {
+                resetaUltimoBotaoClicado();
+                if(!(botaoClicado.getPeca() instanceof Vazio))
+                {
+                    verifica(botaoClicado);
+                }
+                else 
+                {
+                    System.out.println("Movimento inválido. Bomba/Bandeira não se mexem!!");
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     
     public void resetaUltimoBotaoClicado(){
@@ -374,14 +379,16 @@ public class Tabuleiro extends JPanel{
                         if (ultimoBotaoClicado == null)
                         {
                             ultimoBotaoClicado = botaoClicado;
-                            System.out.println(ultimoBotaoClicado.getPeca());
                             coordenadaXUltimoBotao = x;
                             coordenadaYUltimoBotao = y;
-                            imprimePeca();
+                            System.out.println(ultimoBotaoClicado.getPeca());
+                            if (ultimoBotaoClicado.getPeca() instanceof Vazio)
+                                ultimoBotaoClicado = null;
                         }
                         
-                        else if ( validaMovimento(botaoClicado,x,y))
+                        else if (validaMovimento(botaoClicado,x,y))
                         {
+                            
                             movePeca(botaoClicado, x, y);
                             resetaUltimoBotaoClicado();
                             System.out.println(botaoClicado.getPeca());
@@ -455,6 +462,7 @@ public class Tabuleiro extends JPanel{
             }
         }
     }
+    
     private void atualizaTabuleiro() {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
@@ -592,6 +600,7 @@ public class Tabuleiro extends JPanel{
             System.out.println();
     }
 }
+    
     public void imprimeMatriz()
     {
         clearConsole();
