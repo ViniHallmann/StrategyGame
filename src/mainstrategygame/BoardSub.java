@@ -34,7 +34,7 @@ public class BoardSub extends JFrame{
     public BoardSub()
     {
        setTitle("STRATEGY GAME");
-       setSize(800,600);
+       setSize(600,600);
        setLocationRelativeTo(null);
        setDefaultCloseOperation(EXIT_ON_CLOSE);
        
