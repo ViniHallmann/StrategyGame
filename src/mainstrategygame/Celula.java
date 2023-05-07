@@ -20,16 +20,17 @@ public class Celula extends JButton implements MouseListener{
     private int posX;
     private int posY;
     private Peça peca;
-    private boolean equipe;
+    private int equipe;
     //boolean getPeca;
     
-    public Celula(char t , Peça peca, boolean equipe)
+    public Celula(char t , Peça peca, int equipe)
     {
         addMouseListener(this);
         this.peca = peca;
         this.equipe = equipe;
-        if(equipe)
+        if(equipe > -1)
             setText(peca.getNome());
+        
         this.peca.setTipo(t);
         setPreferredSize(new java.awt.Dimension(50, 50));
     }
@@ -41,7 +42,7 @@ public class Celula extends JButton implements MouseListener{
     
     public void debugCelula()
     {
-        if(!equipe)
+        if(equipe == -1)
         {
             setText(peca.getNome());
             repaint();
@@ -71,12 +72,26 @@ public class Celula extends JButton implements MouseListener{
         return this.peca;
     }
     
-    public void setEquipe(boolean equipe)
+    public void setEquipe(int equipe)
     {
         this.equipe = equipe;
     }
-    public boolean getEquipe(){
+    public int getEquipe(){
         return this.equipe;
+    }
+    public void setCoord(int posx, int posy)
+    {
+        this.posX = posx;
+        this.posY = posy;
+    }
+    
+    public int getPosX()
+    {
+        return this.posX;
+    }
+    public int getPosY()
+    {
+        return this.posY;
     }
     @Override
     public void mousePressed(MouseEvent e) {
