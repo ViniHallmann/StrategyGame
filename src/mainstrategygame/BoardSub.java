@@ -27,6 +27,8 @@ public class BoardSub extends JFrame{
     JButton imprimeMatriz = new JButton("Imprime Matriz");
     JLabel imprimePeca = new JLabel("Nenhuma peça selecionada");
     
+    private final int NUMERO_DE_ROLES = 6; 
+    private boolean flagPosicionada = false;
     
     public BoardSub()
     {
@@ -49,6 +51,7 @@ public class BoardSub extends JFrame{
        addMudaRodada(g);
        addDebug(g);
        addImprimeMatriz(g);
+       rodadaPosicionarFlag();
        
     }
     
@@ -89,6 +92,16 @@ public class BoardSub extends JFrame{
         resetTabuleiro.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.resetaTabuleiro();
+                   flagPosicionada = false;
+                   g.gridx = 0;
+                   g.gridy = 1;
+                   add(botoesPecas,g);
+                   botoesPecas.resetaBotoesPecas();
+                   rodadaPosicionarFlag();
+                   remove(pecasJogador);
+                   remove(pecasAdversario);
+                   addPecasJogador(g);
+                   addPecasAdversario(g);
                    tabuleiro.repaint();
                    tabuleiro.revalidate();
                 }
@@ -103,7 +116,10 @@ public class BoardSub extends JFrame{
         mudaRodada.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.mudaRodada();
-                 //  tabuleiro.selecionaPeca();
+                   remove(pecasAdversario);
+                   remove(pecasJogador);
+                   remove(botoesPecas);
+                   repaint();
                    tabuleiro.repaint();
                 }
             });
@@ -143,6 +159,70 @@ public class BoardSub extends JFrame{
         imprimePeca.setSize(50, 10);
         imprimePeca.setText(tabuleiro.imprimePeca());
         //add(imprimePeca,g);
+    }
+    public void rodadaPosicionarFlag()
+    {
+        for(int i = 0 ; i < NUMERO_DE_ROLES-1; i++)
+        {
+            botoesPecas.getBotoes(i).setEnabled(false);
+        }
+            botoesPecas.getBotoes(5).setEnabled(true);
+            botoesPecas.getBotoes(5).addMouseListener(new MouseAdapter() 
+                {
+                    public void mouseClicked(MouseEvent e) 
+                    {   
+                        Celula botaoClicado = (Celula)e.getSource();
+                        System.out.println(botaoClicado.getPeca().getTipo()+" selecionado");
+                        tabuleiro.setCelulaSelecionada(botaoClicado);
+                        tabuleiro.atualizaTabuleiro();
+                    }
+                });
+        for(int i = 0; i < 5; i++)
+        {
+            for(int j = 3; j < 5; j++)
+            {
+                tabuleiro.getCelula(i,j).addMouseListener(new MouseAdapter(){
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                            if(tabuleiro.getCelulaSelecionada() != null)
+                            {    
+                                System.out.println("CLICADO");
+                                Celula botaoClicado = (Celula) e.getSource();
+                                tabuleiro.colocaPeçaNoTabuleiro(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                                revalidate();
+                                repaint();
+                                tabuleiro.setCelulaSelecionada(null);
+                                tabuleiro.atualizaTabuleiro();
+                                if(!flagPosicionada)
+                                {
+                                    flagPosicionada = true;
+                                    rodadaPosicionarResto();
+                                }
+                                
+                            }
+                        }
+                    });
+            }
+        }
+        
+    }
+    public void rodadaPosicionarResto()
+    {
+        for(int i = 0 ; i < NUMERO_DE_ROLES-1; i++)
+        {
+            botoesPecas.getBotoes(i).setEnabled(true);
+            botoesPecas.getBotoes(i).addMouseListener(new MouseAdapter() 
+                {
+                    public void mouseClicked(MouseEvent e) 
+                    {   
+                        Celula botaoClicado = (Celula)e.getSource();
+                        System.out.println(botaoClicado.getPeca().getTipo()+" selecionado");
+                        tabuleiro.setCelulaSelecionada(botaoClicado);
+                        tabuleiro.atualizaTabuleiro();
+                    }
+                });
+        }
+        botoesPecas.getBotoes(5).setEnabled(false);
     }
 
 }

@@ -8,10 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  *
@@ -22,9 +19,9 @@ public final class BotoesPecas extends JPanel{
     
     private final Celula[] botoes;
     
-    private Celula botãoSelecionado = null;
-    private Peça peçaSelecionada = null;
-    private Tabuleiro tabuleiro;
+    private boolean flagColocada = false;
+    
+    GridBagConstraints  r = new GridBagConstraints();
     
     int numerosCabosArmeiros;
     int numerosBombas;
@@ -32,14 +29,13 @@ public final class BotoesPecas extends JPanel{
     
     public BotoesPecas(Tabuleiro tabuleiro)
     {
-        this.tabuleiro = tabuleiro;
         botoes = new Celula[NUMERO_DE_ROLES];
         setLayout(new GridBagLayout());
         constroiBotoesPecas();
     }
     
     public void constroiBotoesPecas(){
-        GridBagConstraints  r = new GridBagConstraints();
+        
         r.insets = new java.awt.Insets(40, 1, 1, 1);
         
         r.gridx = 0;
@@ -66,52 +62,62 @@ public final class BotoesPecas extends JPanel{
         botoes[5] = CelulaFactory.factory('F');
         add(botoes[5],r);
 
+        for(int i = 0 ; i < NUMERO_DE_ROLES; i ++)
+            botoes[i].setEnabled(false);
         
         r.gridy = 1;
         r.insets = new java.awt.Insets(1, 1, 1, 1);
-      
-        int numeroMarechal;
-        int numeroEspiao;
-        int numeroBandeira;
-        
-        if ( tabuleiro.isMarechalDisponivel())
+    }
+    
+    public void setFlagPosicionada(boolean flagPosicionada)
+    {
+        this.flagColocada = flagPosicionada;
+    }
+    public void resetaBotoesPecas()
+    {
+        for(int i = 0 ; i < NUMERO_DE_ROLES; i++)
         {
-            numeroMarechal = 1;
+            remove(botoes[i]);
         }
-        else {
-            numeroMarechal = 0;
-        }
-        if ( tabuleiro.isEspiaoDisponivel())
+        constroiBotoesPecas();
+    }
+   /* public void setMouseListeners(Tabuleiro tabuleiro)
+    {
+        if(flagColocada)
         {
-            numeroEspiao = 1;
+            for(int i = 0; i < NUMERO_DE_ROLES-1 ; i++)
+            {   
+                botoes[i].setEnabled(true);
+                botoes[5].setEnabled(false);
+                botoes[i].addMouseListener(new MouseAdapter() 
+                {
+                    public void mouseClicked(MouseEvent e) 
+                    {   
+                        Celula botaoClicado = (Celula)e.getSource();
+                        System.out.println(botaoClicado.getPeca().getTipo()+" selecionado");
+                        tabuleiro.setCelulaSelecionada(botaoClicado);
+                        tabuleiro.atualizaTabuleiro();
+                    }
+                });
+            }
         }
-        else {
-            numeroEspiao = 0;
-        }
-        if ( tabuleiro.isBandeiraDisponivel())
+        else
         {
-            numeroBandeira = 1;
+            botoes[5].setEnabled(true);
+            botoes[5].addMouseListener(new MouseAdapter() 
+                {
+                    public void mouseClicked(MouseEvent e) 
+                    {   
+                        Celula botaoClicado = (Celula)e.getSource();
+                        System.out.println(botaoClicado.getPeca().getTipo()+" selecionado");
+                        tabuleiro.setCelulaSelecionada(botaoClicado);
+                        tabuleiro.atualizaTabuleiro();
+                    }
+                });
         }
-        else {
-            numeroBandeira = 0;
-        }
-        
-        for(int i = 0; i < NUMERO_DE_ROLES ; i++)
-        {   
-            Celula botãoAtual = botoes[i];
-            botoes[i].addMouseListener(new MouseAdapter() 
-            {
-                public void mouseClicked(MouseEvent e) 
-                {   
-                    Peça peça = botãoAtual.getPeca();
-                    String nome = peça.getNome();
-                    char tipo = botãoAtual.getPeca().getTipo();
-
-                    tabuleiro.setPeçaSelecionada(peça);
-                    tabuleiro.setTipoDePeça(tipo);
-                    tabuleiro.setNomeDaPeça(nome);
-                }
-            });
-        }
+    }*/
+    public Celula getBotoes(int index)
+    {
+        return botoes[index];
     }
 }

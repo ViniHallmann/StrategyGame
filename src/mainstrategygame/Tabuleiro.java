@@ -5,7 +5,6 @@
 package mainstrategygame;
 
 import java.awt.Color;
-import static java.awt.Color.GREEN;
 import java.awt.GridBagLayout;
 import static java.lang.Math.sqrt;
 import javax.swing.JPanel;
@@ -35,6 +34,7 @@ public class Tabuleiro extends JPanel{
     private Peça peçaSelecionada;
     private String nomeDaPeça;
     private char tipoDePeça;
+    private Celula celulaSelecionada;
     
     private Color corAdversario = new Color(255,204,204);
     private Color corJogador = new Color(175,175,255);
@@ -61,6 +61,14 @@ public class Tabuleiro extends JPanel{
         int numerosSoldados = getSoldadosDisponiveis();
     }
     
+    public Celula getCelula(int x,int y)
+    {
+        return tabuleiro[x][y];
+    }
+    public void setCelulaSelecionada(Celula celulaSelecionada)
+    {
+        this.celulaSelecionada = celulaSelecionada; 
+    }
     public void setPeçaSelecionada(Peça peçaSelecionada) {
         this.peçaSelecionada = peçaSelecionada;
         atualizaTabuleiro();
@@ -101,6 +109,10 @@ public class Tabuleiro extends JPanel{
     public int getBombasDisponiveis() {
         return bombasDisponiveis;
     }
+    public Celula getCelulaSelecionada()
+    {
+        return celulaSelecionada;
+    }
     
     public boolean isBandeiraDisponivel() {
         return bandeiraDisponivel;
@@ -129,38 +141,29 @@ public class Tabuleiro extends JPanel{
                 //Seta o tabuleiro como falso
                 tabuleiro[i][j].setEnabled(false);
                 //Pega as coordenadas da matriz
-                final int x = i;
-                final int y = j;
                 //Ao clicar no botão pega as "informações do botão" e chama a função que coloca uma peça na posição desse botão
-                tabuleiro[i][j].addActionListener(new ActionListener() 
-                    {
-                        public void actionPerformed(ActionEvent e) 
-                        {   
-                            Celula botãoClicado = (Celula) e.getSource();
-                            colocaPeçaNoTabuleiro(botãoClicado, x, y);
-                        }
-                    });
+                
                 if((i == 1 && j == 2)||(i == 3 && j == 2))
                 {
-                    tabuleiro[i][j].setEnabled(false);
                     tabuleiro[i][j].setBackground(new java.awt.Color(204, 204, 255));
                 }
-                else
+                if( j > 2)
                 {
-                    tabuleiro[i][j].addMouseListener(new MouseAdapter(){
+                /*    tabuleiro[i][j].addMouseListener(new MouseAdapter(){
                             @Override
                             public void mouseClicked(MouseEvent e) {
-                            if(peçaSelecionada != null)
+                            if(celulaSelecionada != null)
                             {    
+                                System.out.println("CLICADO");
                                 Celula botaoClicado = (Celula) e.getSource();
-                                colocaPeçaNoTabuleiro(botaoClicado, x, y);
+                                colocaPeçaNoTabuleiro(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
                                 revalidate();
                                 repaint();
-
-                                setPeçaSelecionada(null);
+                                setCelulaSelecionada(null);
+                                atualizaTabuleiro();
                             }
                         }
-                    });
+                    });*/
                 }
                 
                 add(tabuleiro[i][j],g);
@@ -232,47 +235,37 @@ public class Tabuleiro extends JPanel{
         }
     }
     
-    public void colocaPeçaNoTabuleiro(Celula botãoClicado, int x, int y)
+    public void colocaPeçaNoTabuleiro(Celula botaoClicado, int x, int y)
     {
-        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
-        {
-            for (int j = 3; j < sqrt(NUMERO_DE_CASAS); j++) 
-            {
-                if (x == i && y == j)
-                {
-                    if (j > 2)
-                    {
-                        Celula novaCelula = CelulaFactory.factory(getTipoDePeça(),1);
-                        
-                        if (verificaPeçasDisponiveis(getTipoDePeça()))
-                        {
-                            iteradorPeçasDisponiveis(getTipoDePeça());
-                            if ( getTipoDePeça() == 'F' && y == 3) // A bandeira só pode ficar na ultima linha da matriz!!
-                            {
-                                return;
-                            }
-                            tabuleiro[i][j] = novaCelula;
-                            
-                            g.insets = new java.awt.Insets(1, 1, 1, 1); 
-                            g.gridx = x;
-                            g.gridy = y;
-                        
-                            remove(botãoClicado);
-                            add(novaCelula, g);
-                            revalidate();
-                            repaint();
+        Celula novaCelula = CelulaFactory.factory(celulaSelecionada.getPeca().getTipo(),1);
 
-                            setPeçaSelecionada(null);
-                        }
-                        else
-                        {
-                            System.out.println("Peça indisponivel...");
-                        }
-                    }
-                }
+        if (verificaPeçasDisponiveis(celulaSelecionada.getPeca().getTipo()))
+        {
+            iteradorPeçasDisponiveis(celulaSelecionada.getPeca().getTipo());
+            if ( getTipoDePeça() == 'F' && y == 3) // A bandeira só pode ficar na ultima linha da matriz!!
+            {
+                return;
             }
+            tabuleiro[x][y] = novaCelula;
+            tabuleiro[x][y].setCoord(x,y);
+
+            g.insets = new java.awt.Insets(1, 1, 1, 1); 
+            g.gridx = x;
+            g.gridy = y;
+
+            remove(botaoClicado);
+            add(novaCelula, g);
+            revalidate();
+            repaint();
+
+        }
+        else
+        {
+            System.out.println("Peça indisponivel...");
         }
     }
+
+           
     
     public void limpaPeca(Celula ultimoBotaoClicado){
         ultimoBotaoClicado.setIcon(null);
@@ -383,13 +376,9 @@ public class Tabuleiro extends JPanel{
     public boolean verifica(Celula botao)
     {
         if (!(botao.getPeca() instanceof Vazio))
-        {
             return true;
-        }
-        else
-        {
-            return false;
-        }
+        
+        return false;
     }
     
     public boolean validaMovimento(Celula botaoClicado, int x, int y)
@@ -476,7 +465,6 @@ public class Tabuleiro extends JPanel{
     public void resetaUltimoBotaoClicado(){
         this.ultimoBotaoClicado = null;
     }
-    
     public String imprimePeca(){
         if (ultimoBotaoClicado == null) 
         {
@@ -494,14 +482,13 @@ public class Tabuleiro extends JPanel{
             for (int j = 0; j < 3; j++) 
             {
                 tabuleiro[i][j].setEnabled(true);
-                        final int x = i;
-                        final int y = j;
                         tabuleiro[i][j].addMouseListener(new MouseAdapter() 
                         {
                             public void mouseClicked(MouseEvent e) 
                             {
                                 Celula botaoClicado = (Celula) e.getSource();
-                                if ( ultimoBotaoClicado!= null && validaMovimento(botaoClicado,x,y))
+                                System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
+                                if ( ultimoBotaoClicado != null && validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
                                 {
                                     movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
                                     resetaUltimoBotaoClicado();
@@ -517,8 +504,6 @@ public class Tabuleiro extends JPanel{
             for (int j = 3; j < 5; j++)
             {
                 tabuleiro[i][j].setEnabled(true);
-                final int x = i;
-                final int y = j;
                 tabuleiro[i][j].addMouseListener(new MouseAdapter() 
                 {
                     @Override
@@ -540,12 +525,12 @@ public class Tabuleiro extends JPanel{
         }
     }
     
-    private void atualizaTabuleiro() {
+    public void atualizaTabuleiro() {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
             for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
             {
-                if (peçaSelecionada != null) 
+                if (celulaSelecionada != null) 
                 {
                     tabuleiro[i][j].setEnabled(true);
                 }

@@ -14,10 +14,5 @@ public class MainStrategyGame{
     public static void main(String[] args) {
         BoardSub board = new BoardSub();
         board.setVisible(true);
-        
-        
     }
-    
-    
-    
 }
