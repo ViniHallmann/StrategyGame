@@ -600,7 +600,7 @@ public class Tabuleiro extends JPanel{
                 if((j != ladoFlag) || (i != gerado))
                 {
                     remove(tabuleiro[i][j]);
-                    tabuleiro[i][j] = setPecaAleatoria(bombas,soldados,cabos,marechal,espiao,time);
+                    tabuleiro[i][j] = getPecaAleatoria(bombas,soldados,cabos,marechal,espiao,time);
                     if(tabuleiro[i][j].getPeca().getTipo() == 'B')
                         bombas--;
                     if(tabuleiro[i][j].getPeca().getTipo() == 'S')
@@ -632,7 +632,7 @@ public class Tabuleiro extends JPanel{
             
     }
 
-    private static Celula setPecaAleatoria(int bombas, int soldados, int cabos, boolean marechal, boolean espiao, int equipe)
+    private static Celula getPecaAleatoria(int bombas, int soldados, int cabos, boolean marechal, boolean espiao, int equipe)
     {
         
         List<Character> tipos = new ArrayList<>();

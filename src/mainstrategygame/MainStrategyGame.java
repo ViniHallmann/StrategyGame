@@ -4,6 +4,8 @@
  */
 package mainstrategygame;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 /**
@@ -12,7 +14,18 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
  */
 public class MainStrategyGame{
     public static void main(String[] args) {
-        BoardSub board = new BoardSub();
-        board.setVisible(true);
+       
+       BoardSub board = new BoardSub();
+       Menu menu = new Menu();
+       menu.setVisible(true);
+       
+       menu.getBotao().addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                
+                    menu.setVisible(false);
+                    board.setVisible(true);
+            }
+        });
+       
     }
 }

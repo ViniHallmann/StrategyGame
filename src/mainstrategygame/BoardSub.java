@@ -18,13 +18,14 @@ import javax.swing.JLabel;
  */
 public class BoardSub extends JFrame{
     Tabuleiro tabuleiro = new Tabuleiro();
-    BotoesPecas botoesPecas = new BotoesPecas(tabuleiro);
-    JButton pecasAdversario = new JButton("Pecas do Adversario");
+    BotoesPecas botoesPecas = new BotoesPecas();
+    BotoesUtil botoesUtil = new BotoesUtil();
+    /*JButton pecasAdversario = new JButton("Pecas do Adversario");
     JButton pecasJogador = new JButton("Pecas Aleatorias");
     JButton resetTabuleiro = new JButton("Resetar Tabuleiro");
     JButton mudaRodada = new JButton("Muda Rodada");
     JButton debug = new JButton("debug");
-    JButton imprimeMatriz = new JButton("Imprime Matriz");
+    JButton imprimeMatriz = new JButton("Imprime Matriz");*/
     JLabel imprimePeca = new JLabel("Nenhuma peça selecionada");
     
     private final int NUMERO_DE_ROLES = 6; 
@@ -33,7 +34,7 @@ public class BoardSub extends JFrame{
     public BoardSub()
     {
        setTitle("STRATEGY GAME");
-       setSize(800,600);
+       setSize(600,600);
        setLocationRelativeTo(null);
        setDefaultCloseOperation(EXIT_ON_CLOSE);
        
@@ -44,22 +45,21 @@ public class BoardSub extends JFrame{
        add(tabuleiro,g);
        g.gridy = 1;
        add(botoesPecas,g);
+       g.gridy = 2;
+       add(botoesUtil,g);
        g.insets = new java.awt.Insets(5, 1, 1, 1);
-       addPecasAdversario(g);
-       addPecasJogador(g);
-       addResetTabuleiro(g);
-       addMudaRodada(g);
-       addDebug(g);
-       addImprimeMatriz(g);
+       
+       addPecasAdversario(botoesUtil.getBotao(0));
+       addPecasJogador(botoesUtil.getBotao(1));
+       addResetTabuleiro(g,botoesUtil.getBotao(2));
+       addMudaRodada(botoesUtil.getBotao(3));
+       addDebug(botoesUtil.getBotao(4));
+       addImprimeMatriz(botoesUtil.getBotao(5));
        rodadaPosicionarFlag();
        
     }
     
-    public void addPecasAdversario(GridBagConstraints g){
-        g.gridx = 1;
-        g.gridy = 0;
-        
-        pecasAdversario.setSize(50, 10);
+    public void addPecasAdversario( JButton pecasAdversario){
         pecasAdversario.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.setPecasAleatorias(-1);
@@ -67,13 +67,9 @@ public class BoardSub extends JFrame{
                    tabuleiro.revalidate();     
             }
         });
-        add(pecasAdversario,g);
     }
     
-    public void addPecasJogador(GridBagConstraints g){
-        g.gridx = 2;
-        g.gridy = 0;
-        pecasJogador.setSize(50, 10);
+    public void addPecasJogador( JButton pecasJogador){
         pecasJogador.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.setPecasAleatorias(1);
@@ -82,13 +78,9 @@ public class BoardSub extends JFrame{
                    
                 }
             });
-        add(pecasJogador,g);
     }
        
-    public void addResetTabuleiro(GridBagConstraints g){
-        g.gridx = 1;
-        g.gridy = 1;
-        resetTabuleiro.setSize(50, 10);
+    public void addResetTabuleiro(GridBagConstraints g,JButton resetTabuleiro){
         resetTabuleiro.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.resetaTabuleiro();
@@ -98,68 +90,53 @@ public class BoardSub extends JFrame{
                    add(botoesPecas,g);
                    botoesPecas.resetaBotoesPecas();
                    rodadaPosicionarFlag();
-                   remove(pecasJogador);
-                   remove(pecasAdversario);
-                   addPecasJogador(g);
-                   addPecasAdversario(g);
+                   botoesUtil.remove(botoesUtil.getBotao(0));
+                   botoesUtil.remove(botoesUtil.getBotao(1));
+                   GridBagConstraints r = botoesUtil.getConstrains();
+                   r.gridx = 0;
+                   r.gridy = 0;
+                   botoesUtil.add(botoesUtil.getBotao(0),r);
+                   r.gridy = 1;
+                   botoesUtil.add(botoesUtil.getBotao(1),r);
+                   addPecasAdversario(botoesUtil.getBotao(0));
+                   addPecasJogador(botoesUtil.getBotao(1));
                    tabuleiro.repaint();
                    tabuleiro.revalidate();
                 }
             });
-        add(resetTabuleiro,g);
     }
     
-    public void addMudaRodada(GridBagConstraints g){
-        g.gridx = 2;
-        g.gridy = 1;
-        mudaRodada.setSize(50, 10);
+    public void addMudaRodada(JButton mudaRodada){
         mudaRodada.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.mudaRodada();
-                   remove(pecasAdversario);
-                   remove(pecasJogador);
+                   botoesUtil.remove(botoesUtil.getBotao(0));
+                   botoesUtil.remove(botoesUtil.getBotao(1));
                    remove(botoesPecas);
                    repaint();
                    tabuleiro.repaint();
+                   tabuleiro.revalidate();
                 }
             });
-        add(mudaRodada,g);
     }
     
-    public void addDebug(GridBagConstraints g){
-        g.gridx = 1;
-        g.gridy = 3;
-       
-        debug.setSize(50, 10);
+    public void addDebug(JButton debug){
         debug.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.debugBoard();
                 }
             });
-        add(debug,g);
     }
        
-    public void addImprimeMatriz(GridBagConstraints g){
-        g.gridx = 2;
-        g.gridy = 3;
-       
+    public void addImprimeMatriz(JButton imprimeMatriz){
         imprimeMatriz.setSize(50, 10);
         imprimeMatriz.addMouseListener(new MouseAdapter() {
                  public void mouseClicked(MouseEvent e) {
                     tabuleiro.dicaBomba();
                  }
              });
-        add(imprimeMatriz,g);
     }
        
-    public void addImprimePeca(GridBagConstraints g){
-        g.gridx = 2;
-        g.gridy = 2;
-
-        imprimePeca.setSize(50, 10);
-        imprimePeca.setText(tabuleiro.imprimePeca());
-        //add(imprimePeca,g);
-    }
     public void rodadaPosicionarFlag()
     {
         for(int i = 0 ; i < NUMERO_DE_ROLES-1; i++)
