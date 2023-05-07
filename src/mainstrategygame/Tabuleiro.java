@@ -60,6 +60,7 @@ public class Tabuleiro extends JPanel{
         int numerosBombas = getBombasDisponiveis();
         int numerosSoldados = getSoldadosDisponiveis();
     }
+    
     public void setPeçaSelecionada(Peça peçaSelecionada) {
         this.peçaSelecionada = peçaSelecionada;
         atualizaTabuleiro();
@@ -88,6 +89,7 @@ public class Tabuleiro extends JPanel{
     public int getRodada(){
         return rodada;
     }
+    
     public int getSoldadosDisponiveis() {
         return soldadosDisponiveis;
     }
@@ -281,6 +283,7 @@ public class Tabuleiro extends JPanel{
     
     public void movePeca(Celula botaoClicado, int x, int y)
     {
+        
         Celula origem = ultimoBotaoClicado;
         int coordenadaXOrigem = coordenadaXUltimoBotao;
         int coordenadaYOrigem = coordenadaYUltimoBotao;
@@ -290,29 +293,93 @@ public class Tabuleiro extends JPanel{
         int coordenadaXDestino = x;
         int coordenadaYDestino = y;
         
-        origem = ultimoBotaoClicado;
-        //SWAP
-        //tabuleiro[coordenadaXDestino][coordenadaYDestino] = destino;
-        //g.insets = new java.awt.Insets(1, 1, 1, 1); 
-        g.gridx = coordenadaXDestino;
-        g.gridy = coordenadaYDestino;
-        remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
-        remove(tabuleiro[coordenadaXOrigem][coordenadaYOrigem]);
-        tabuleiro[coordenadaXDestino][coordenadaYDestino] = origem;
-        tabuleiro[coordenadaXDestino][coordenadaYDestino].setCoord(coordenadaXDestino,coordenadaYDestino);
-        add(tabuleiro[coordenadaXDestino][coordenadaYDestino], g);
+        int resultadoCombate = combate(botaoClicado);
+        System.out.println(resultadoCombate);
         
-       
-      
-        g.gridx = coordenadaXOrigem;
-        g.gridy = coordenadaYOrigem;
-        tabuleiro[coordenadaXOrigem][coordenadaYOrigem] = destino;
-        tabuleiro[coordenadaXOrigem][coordenadaYOrigem].setCoord(coordenadaXOrigem,coordenadaYOrigem);
-        add(tabuleiro[coordenadaXOrigem][coordenadaYOrigem], g);
-        ultimoBotaoClicado = null;
-        revalidate();
-        repaint(); 
+        if (resultadoCombate == -1){
+            Celula novaOrigem = CelulaFactory.factory(' ');
+            g.gridx = coordenadaXUltimoBotao;
+            g.gridy = coordenadaYUltimoBotao;
+            remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaXUltimoBotao);
+
+            add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
+            
+            revalidate();
+            repaint();
+        }
+        
+        else if (resultadoCombate == 0)
+        {
+            Celula novaOrigem = CelulaFactory.factory(' ');
+            g.gridx = coordenadaXUltimoBotao;
+            g.gridy = coordenadaYUltimoBotao;
+            remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaXUltimoBotao);
+            add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
+            
+            Celula novoDestino = CelulaFactory.factory(' ');
+            g.gridx = coordenadaXDestino;
+            g.gridy = coordenadaYDestino;
+            remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
+            tabuleiro[coordenadaXDestino][coordenadaYDestino] = novoDestino;
+            tabuleiro[coordenadaXDestino][coordenadaYDestino].setCoord(coordenadaXDestino,coordenadaYDestino);
+            add(tabuleiro[coordenadaXDestino][coordenadaYDestino], g);
+            
+            ultimoBotaoClicado = null;
+            revalidate();
+            repaint();
+        }
+        else if (resultadoCombate == 1)
+        {
+            Celula novaOrigem = CelulaFactory.factory(' ');
+            g.gridx = coordenadaXUltimoBotao;
+            g.gridy = coordenadaYUltimoBotao;
+            remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaXUltimoBotao);
+            add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
+            
+            Celula novoDestino = CelulaFactory.factory(' ');
+            g.gridx = coordenadaXDestino;
+            g.gridy = coordenadaYDestino;
+            remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
+            tabuleiro[coordenadaXDestino][coordenadaYDestino] = origem;
+            tabuleiro[coordenadaXDestino][coordenadaYDestino].setCoord(coordenadaXDestino,coordenadaYDestino);
+            add(tabuleiro[coordenadaXDestino][coordenadaYDestino], g);
+            ultimoBotaoClicado = null;
+            revalidate();
+            repaint();
+        }
+        
+        else if (resultadoCombate == 2)
+        {
+            Celula novaOrigem = CelulaFactory.factory(' ');
+        
+            origem = ultimoBotaoClicado;
+            g.gridx = coordenadaXDestino;
+            g.gridy = coordenadaYDestino;
+            remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
+            tabuleiro[coordenadaXDestino][coordenadaYDestino] = origem;
+            tabuleiro[coordenadaXDestino][coordenadaYDestino].setCoord(coordenadaXDestino,coordenadaYDestino);
+            add(tabuleiro[coordenadaXDestino][coordenadaYDestino], g);
+            
+            g.gridx = coordenadaXOrigem;
+            g.gridy = coordenadaYOrigem;
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem] = destino;
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem].setCoord(coordenadaXOrigem,coordenadaYOrigem);
+            add(tabuleiro[coordenadaXOrigem][coordenadaYOrigem], g);
+            ultimoBotaoClicado = null;
+            revalidate();
+            repaint();
+        }
     }
+    /*public void limpaOrigem(Celula botaoClicado, int x, int y)
+    {
+        A FAZER, LIMPAORIGEM E LIMPADESTINO, ESPERO REDUZIR O CÓDIGO DO MOVEPEÇA COM ISSO
+    }*/
     public boolean verifica(Celula botao)
     {
         if (!(botao.getPeca() instanceof Vazio))
@@ -327,18 +394,13 @@ public class Tabuleiro extends JPanel{
     
     public boolean validaMovimento(Celula botaoClicado, int x, int y)
     {
-        if (verifica (botaoClicado)){
-            /*if (ultimoBotaoClicado.getPeca() instanceof Vazio)
-            {
-                return false;
-            }*/
+        if (calculaDistancia(botaoClicado)){
             if(botaoClicado.getEquipe() == ultimoBotaoClicado.getEquipe())
             {
                 verifica(botaoClicado);
             }
             if((x == 1 && y == 2)||(x == 3 && y == 2))
             {
-                resetaUltimoBotaoClicado();
                 return false;
             }
             if ( ultimoBotaoClicado.getPeca() instanceof Bomba    ||
@@ -357,46 +419,64 @@ public class Tabuleiro extends JPanel{
                 }
             }
         }
+        else
+        {
+            return false;
+        }
         return true;
     }
-    
+    public int combate(Celula botaoClicado)
+    {
+        Celula recebePeca = ultimoBotaoClicado;
+        Peça pecaSelecionada = recebePeca.getPeca();
+        Peça pecaInimiga = botaoClicado.getPeca();
+        int resultadoCombate = 0;
+        
+        if (pecaInimiga.getTipo() == 'F')
+        {
+            ((Bandeira)pecaInimiga).setBandeiraCapturada(true);
+            return 3;
+        }
+        
+        switch (pecaSelecionada.getTipo())
+        {
+            case 'S' -> 
+            {
+                if      (pecaInimiga instanceof Espiao)     { resultadoCombate = 1; }
+                else if (pecaInimiga instanceof Soldado)    { resultadoCombate = 0; }
+                else if (pecaInimiga instanceof Vazio)      { resultadoCombate = 2; }
+                else                                        { resultadoCombate = -1;}
+            }
+                
+            case 'C' -> 
+            {
+                if      (pecaInimiga instanceof CaboArmeiro){ resultadoCombate = 0; }
+                else if (pecaInimiga instanceof Marechal)   { resultadoCombate = -1;}
+                else if (pecaInimiga instanceof Vazio)      { resultadoCombate = 2; }
+                else                                        { resultadoCombate = 1; }
+            }
+                
+            case 'E' -> 
+            {
+                if      (pecaInimiga instanceof Marechal)    { resultadoCombate = 1; }
+                else if (pecaInimiga instanceof Espiao)     { resultadoCombate = 0; }
+                else if (pecaInimiga instanceof Vazio)      { resultadoCombate = 2; }
+                else                                        { resultadoCombate = -1;}
+            }
+            case 'M' -> 
+            {
+                if      (pecaInimiga instanceof Bomba || pecaInimiga instanceof Espiao)      { resultadoCombate = -1;}
+                else if (pecaInimiga instanceof Marechal)   { resultadoCombate = 0; }
+                else if (pecaInimiga instanceof Vazio)      { resultadoCombate = 2; }
+                else                                        { resultadoCombate = 1; }
+            }
+        }  
+        return resultadoCombate;
+    }
     public void resetaUltimoBotaoClicado(){
         this.ultimoBotaoClicado = null;
     }
     
-    /*public void selecionaPeca(){
-        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
-        {
-            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
-            {
-                final int x = i;
-                final int y = j;
-                tabuleiro[i][j].addMouseListener(new MouseAdapter() 
-                {
-                    public void mouseClicked(MouseEvent e) 
-                    {   
-                        Celula botaoClicado = (Celula) e.getSource();
-                        if (ultimoBotaoClicado == null)
-                        {
-                            ultimoBotaoClicado = botaoClicado;
-                            coordenadaXUltimoBotao = x;
-                            coordenadaYUltimoBotao = y;
-                            System.out.println(ultimoBotaoClicado.getPeca());
-                            if (ultimoBotaoClicado.getPeca() instanceof Vazio)
-                                ultimoBotaoClicado = null;
-                        }
-                        
-                        else if (validaMovimento(botaoClicado,x,y))
-                        {
-                            movePeca(botaoClicado, x, y);
-                            resetaUltimoBotaoClicado();
-                            System.out.println(botaoClicado.getPeca());
-                        } 
-                    }
-                });
-            }
-        }
-    }*/
     public String imprimePeca(){
         if (ultimoBotaoClicado == null) 
         {
@@ -445,16 +525,14 @@ public class Tabuleiro extends JPanel{
                     public void mouseClicked(MouseEvent e) 
                     {   
                         Celula botaoClicado = (Celula) e.getSource();
-                        if (ultimoBotaoClicado == null)
-                        {
-                            ultimoBotaoClicado = botaoClicado;
-                            System.out.println(ultimoBotaoClicado.getPeca());
-                            
-                            coordenadaXUltimoBotao = botaoClicado.getPosX();
-                            coordenadaYUltimoBotao = botaoClicado.getPosY();
-                            
-                            System.out.println(botaoClicado.getPosX() +" "+ botaoClicado.getPosY());
-                        }
+
+                        ultimoBotaoClicado = botaoClicado;
+                        System.out.println(ultimoBotaoClicado.getPeca());
+
+                        coordenadaXUltimoBotao = botaoClicado.getPosX();
+                        coordenadaYUltimoBotao = botaoClicado.getPosY();
+
+                        System.out.println(botaoClicado.getPosX() +" "+ botaoClicado.getPosY());
                        
                     }
                 });   
@@ -594,6 +672,7 @@ public class Tabuleiro extends JPanel{
             }
         }
     }
+    
     public static void clearConsole() {
         for (int i = 0; i < 10; i++) {
             System.out.println();
@@ -614,6 +693,18 @@ public class Tabuleiro extends JPanel{
         clearConsole();
     }
 
+    public boolean calculaDistancia(Celula botaoClicado)
+    {
+        int coordenadaXUltimoBotaoClicado = this.coordenadaXUltimoBotao;
+        int coordenadaYUltimoBotaoClicado = this.coordenadaYUltimoBotao;
+        int coordenadaXBotaoClicado = botaoClicado.getPosX();
+        int coordenadaYBotaoClicado = botaoClicado.getPosY();
+        int coordenadaXFinal;
+        int coordenadaYFinal;
+        coordenadaXFinal = Math.abs(coordenadaXUltimoBotaoClicado - coordenadaXBotaoClicado);
+        coordenadaYFinal = Math.abs(coordenadaYUltimoBotaoClicado - coordenadaYBotaoClicado);
+        return (coordenadaXFinal == 1 && coordenadaYFinal == 0) || (coordenadaXFinal == 0 && coordenadaYFinal == 1);
+    }
 }
 
     

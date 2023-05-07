@@ -12,7 +12,8 @@ import javax.swing.JLabel;
  */
 public abstract class Peça extends JLabel{
     private String nome;
-    private char tipo;    
+    private char tipo;   
+    private int nivel;
     public Peça() {
         //setText(nome);
     }

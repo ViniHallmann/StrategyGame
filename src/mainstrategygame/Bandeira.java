@@ -9,13 +9,23 @@ package mainstrategygame;
  * @author vinic
  */
 public class Bandeira extends Peça{
+
     private boolean peçaEscondida;
+    private boolean bandeiraSegura;
     private char tipo;
     
     public Bandeira(){
-        this.peçaEscondida = true;
+        this.peçaEscondida  = true;
+        this.bandeiraSegura = true;
         this.setNome("🏴");
     }
 
-   
+    public boolean isBandeiraSegura() {
+        return bandeiraSegura;
+    }
+    
+    public void setBandeiraCapturada(boolean bandeiraSegura) {
+        this.bandeiraSegura = bandeiraSegura;
+    }
+    
 }

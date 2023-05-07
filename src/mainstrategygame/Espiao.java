@@ -10,10 +10,12 @@ package mainstrategygame;
  */
 public class Espiao extends Peça {
     private boolean peçaEscondida;
+    private boolean derrotaMarechal;
     private char tipo;
     
     public Espiao(){
-        this.peçaEscondida = true;
+        this.peçaEscondida   = true;
+        this.derrotaMarechal = true;
         this.setNome("🕵");
     }
 }

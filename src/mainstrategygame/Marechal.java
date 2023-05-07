@@ -10,10 +10,16 @@ package mainstrategygame;
  */
 public class Marechal extends Peça{
     private boolean peçaEscondida;
+    private int nivel;
     private char tipo;
     
     public Marechal(){
         this.peçaEscondida = true;
         this.setNome("🎖");
+        this.nivel = 10;
+    }
+
+    public int getNivel() {
+        return nivel;
     }
 }

@@ -95,36 +95,7 @@ public final class BotoesPecas extends JPanel{
         else {
             numeroBandeira = 0;
         }
-        /*numerosBombas = tabuleiro.getBombasDisponiveis();
-        numerosCabosArmeiros = tabuleiro.getBombasDisponiveis();
-        numerosSoldados = tabuleiro.getBombasDisponiveis();
-        r.gridx = 0;
-        JLabel titulo_1 = new JLabel(" "+numerosBombas);
-        add(titulo_1,r);
         
-        r.gridx = 1;
-        
-        JLabel titulo_2 = new JLabel(" "+numerosCabosArmeiros);
-        add(titulo_2,r);
-        
-        r.gridx = 2;
-        JLabel titulo_3 = new JLabel(" " +numerosSoldados);
-        add(titulo_3,r);
-        
-        r.gridx = 3;
-        JLabel titulo_4 = new JLabel(" "+numeroMarechal);
-        add(titulo_4,r);
-        
-        r.gridx = 4;
-        JLabel titulo_5 = new JLabel(" "+numeroEspiao);
-        add(titulo_5,r);
-        
-        r.gridx = 5;
-        JLabel titulo_6 = new JLabel(" "+numeroBandeira);
-        add(titulo_6,r);
-        */
-
-        //
         for(int i = 0; i < NUMERO_DE_ROLES ; i++)
         {   
             Celula botãoAtual = botoes[i];
