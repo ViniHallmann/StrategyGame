@@ -19,12 +19,12 @@ public class BotoesUtil extends JPanel{
     
     GridBagConstraints g = new GridBagConstraints();
     List<JButton> botoes = new ArrayList<>();
-    JButton pecasAdversario = new JButton("Pecas do Adversario");
-    JButton pecasJogador = new JButton("Pecas Aleatorias");
-    JButton resetTabuleiro = new JButton("Resetar Tabuleiro");
-    JButton mudaRodada = new JButton("Muda Rodada");
-    JButton debug = new JButton("debug");
-    JButton imprimeMatriz = new JButton("Imprime Matriz");
+    JButton pecasAdversario = new JButton("Set Adversario");
+    JButton pecasJogador = new JButton("Set Pecas Aleatorias");
+    JButton resetTabuleiro = new JButton("Reset");
+    JButton mudaRodada = new JButton("Inicia Jogo");
+    JButton debug = new JButton("DEBUG");
+    JButton dica = new JButton("Dica");
     
     BotoesUtil()
     {
@@ -33,8 +33,7 @@ public class BotoesUtil extends JPanel{
         botoes.add(resetTabuleiro);
         botoes.add(mudaRodada);
         botoes.add(debug);
-        botoes.add(imprimeMatriz);
-        
+        botoes.add(dica);
         setLayout(new GridBagLayout());
         constroiBotoesUtil();
     }
@@ -47,7 +46,6 @@ public class BotoesUtil extends JPanel{
         {
             for(int j = 0; j < 2; j++)
             {
-                
                 botoes.get(qnt).setPreferredSize(new java.awt.Dimension(100, 50));
                 botoes.get(qnt).setBackground(new java.awt.Color(204,204,204));
                

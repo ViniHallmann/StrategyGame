@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -30,6 +31,7 @@ public class Tabuleiro extends JPanel{
     private int coordenadaXUltimoBotao;
     private int coordenadaYUltimoBotao;
     private Celula[][] tabuleiro;
+    private Celula[][] copiaTabuleiro = new Celula[(int) sqrt(NUMERO_DE_CASAS)][(int) sqrt(NUMERO_DE_CASAS)];
     private int rodada = 1;
     
     private int dicasDisponiveis = 2;
@@ -68,10 +70,12 @@ public class Tabuleiro extends JPanel{
     {
         return tabuleiro[x][y];
     }
+    
     public void setCelulaSelecionada(Celula celulaSelecionada)
     {
         this.celulaSelecionada = celulaSelecionada; 
     }
+    
     public void setPeçaSelecionada(Peça peçaSelecionada) {
         this.peçaSelecionada = peçaSelecionada;
         atualizaTabuleiro();
@@ -83,6 +87,10 @@ public class Tabuleiro extends JPanel{
     
     public void setNomeDaPeça(String nomeDaPeça){
         this.nomeDaPeça = nomeDaPeça;
+    }
+    
+    public int getDicasDisponiveis() {
+        return dicasDisponiveis;
     }
     
     public Peça getPeçaSelecionada() {
@@ -112,6 +120,7 @@ public class Tabuleiro extends JPanel{
     public int getBombasDisponiveis() {
         return bombasDisponiveis;
     }
+    
     public Celula getCelulaSelecionada()
     {
         return celulaSelecionada;
@@ -183,16 +192,14 @@ public class Tabuleiro extends JPanel{
                 remove(tabuleiro[i][j]);
             }
         }
-        
         this.bandeiraDisponivel = true;
         this.marechalDisponivel = true;
         this.espiaoDisponivel = true;
         this.soldadosDisponiveis = 3;
         this.caboArmeiroDisponiveis = 2;
         this.bombasDisponiveis = 2;
-        
+        this.dicasDisponiveis = 2;
         constroiTabuleiro();
-        
     }
     
     public void iteradorPeçasDisponiveis(char tipoDePeça)
@@ -260,7 +267,6 @@ public class Tabuleiro extends JPanel{
             add(novaCelula, g);
             revalidate();
             repaint();
-
         }
         else
         {
@@ -268,8 +274,6 @@ public class Tabuleiro extends JPanel{
         }
     }
 
-           
-    
     public void limpaPeca(Celula ultimoBotaoClicado){
         ultimoBotaoClicado.setIcon(null);
         ultimoBotaoClicado.setText(null);
@@ -279,7 +283,8 @@ public class Tabuleiro extends JPanel{
     
     public void movePeca(Celula botaoClicado, int x, int y)
     {
-        
+        this.rodada++;
+        System.out.println(rodada);
         Celula origem = ultimoBotaoClicado;
         int coordenadaXOrigem = coordenadaXUltimoBotao;
         int coordenadaYOrigem = coordenadaYUltimoBotao;
@@ -379,11 +384,33 @@ public class Tabuleiro extends JPanel{
             revalidate();
             repaint();
         }
+        else if (resultadoCombate == 3)
+        {
+            vitoriaDoJogador();
+            Celula novaOrigem = CelulaFactory.factory(' ');
+            adicionarListener(novaOrigem);
+            g.gridx = coordenadaXUltimoBotao;
+            g.gridy = coordenadaYUltimoBotao;
+            remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
+            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
+            add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
+            
+            Celula novoDestino = CelulaFactory.factory(' ');
+            adicionarListener(novoDestino);
+                        
+            g.gridx = coordenadaXDestino;
+            g.gridy = coordenadaYDestino;
+            remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
+            tabuleiro[coordenadaXDestino][coordenadaYDestino] = novoDestino;
+            tabuleiro[coordenadaXDestino][coordenadaYDestino].setCoord(coordenadaXDestino,coordenadaYDestino);
+            add(tabuleiro[coordenadaXDestino][coordenadaYDestino], g);
+            
+            ultimoBotaoClicado = null;
+            revalidate();
+        }
     }
-    /*public void limpaOrigem(Celula botaoClicado, int x, int y)
-    {
-        A FAZER, LIMPAORIGEM E LIMPADESTINO, ESPERO REDUZIR O CÓDIGO DO MOVEPEÇA COM ISSO
-    }*/
+    
     public boolean verifica(Celula botao)
     {
         if (!(botao.getPeca() instanceof Vazio))
@@ -425,6 +452,7 @@ public class Tabuleiro extends JPanel{
         }
         return true;
     }
+    
     public int combate(Celula botaoClicado)
     {
         Celula recebePeca = ultimoBotaoClicado;
@@ -473,18 +501,9 @@ public class Tabuleiro extends JPanel{
         }  
         return resultadoCombate;
     }
+    
     public void resetaUltimoBotaoClicado(){
         this.ultimoBotaoClicado = null;
-    }
-    public String imprimePeca(){
-        if (ultimoBotaoClicado == null) 
-        {
-            return "Nenhuma peça selecionada ainda";
-        } else 
-        {
-            String nomePeca = ultimoBotaoClicado.getPeca().getNome();
-            return nomePeca;
-        }
     }
     
     public void mudaRodada(){
@@ -493,20 +512,19 @@ public class Tabuleiro extends JPanel{
             for (int j = 0; j < 3; j++) 
             {
                 tabuleiro[i][j].setEnabled(true);
-                        tabuleiro[i][j].addMouseListener(new MouseAdapter() 
+                tabuleiro[i][j].addMouseListener(new MouseAdapter() 
+                {
+                    public void mouseClicked(MouseEvent e) 
+                    {
+                        Celula botaoClicado = (Celula) e.getSource();
+                        System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
+                        if ( ultimoBotaoClicado != null && validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
                         {
-                            public void mouseClicked(MouseEvent e) 
-                            {
-                                Celula botaoClicado = (Celula) e.getSource();
-                                System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
-                                if ( ultimoBotaoClicado != null && validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
-                                {
-                                    movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
-                                    resetaUltimoBotaoClicado();
-                                    //System.out.println(botaoClicado.getPeca());
-                                } 
-                            }
-                        });
+                            movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                            resetaUltimoBotaoClicado();
+                        } 
+                    }
+                });
             }
         }
         
@@ -651,8 +669,6 @@ public class Tabuleiro extends JPanel{
         
         char escolhido = tipos.get(random.nextInt(tipos.size()));
         celula = CelulaFactory.factory(escolhido,equipe);
-        
-        //System.out.println(celula.getTipo());
 
         return celula;
         
@@ -678,54 +694,17 @@ public class Tabuleiro extends JPanel{
     public void imprimeMatriz()
     {
         clearConsole();
-        for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
+        for(int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
         {
-            for(int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
+            for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
             {
-                System.out.printf("[%d][%d] = %s",j,i,tabuleiro[i][j].getPeca().getNome());
+                System.out.printf("[%d][%d] = %s  ",j,i,tabuleiro[j][i].getPeca().getNome());
             }
             System.out.println("\n");
         }
         clearConsole();
     }
     
-    public void dicaBomba()
-    {
-        imprimeMatriz();
-        Scanner scannerDica = new Scanner(System.in);
-        
-        System.out.println("Digite a linha da matriz: ");
-        int coluna = scannerDica.nextInt();
-        
-        System.out.println(dicasDisponiveis);
-        if(dicasDisponiveis > 0){
-            for (int i = 0; i < 5; i++)
-            if (tabuleiro[i][coluna].getPeca() instanceof Bomba bomba)
-            {
-                if (bomba.isBombaEscondida())
-                {
-                    bomba.setBombaEscondida(false);
-                    System.out.println("Bomba nessa posição!!");
-                    tabuleiro[i][coluna].revelaCelula();
-                    this.dicasDisponiveis--;
-                    
-                }
-                else 
-                {
-                    System.out.println("Bomba já revelada!!!");
-                }
-            }
-            else
-            {
-                System.out.println("Nenhuma bomba nessa posição!");
-            }
-        }
-        else
-        {
-            System.out.println("Sem dicas disponiveis");
-        }
-    }
-
     public boolean calculaDistancia(Celula botaoClicado)
     {
         int coordenadaXUltimoBotaoClicado = this.coordenadaXUltimoBotao;
@@ -756,6 +735,86 @@ public class Tabuleiro extends JPanel{
             }
         });
     }
-}
-
     
+    public void dicaBomba()
+    {
+        imprimeMatriz();
+        if(dicasDisponiveis > 0)
+        {
+            Scanner scannerDica = new Scanner(System.in);
+            String colunaString= JOptionPane.showInputDialog("Digite a coluna da matriz [0] até [4]:");
+            if (colunaString != null)
+            {
+                int coluna = Integer.parseInt(colunaString);
+                for (int i = 0; i < 5; i++){
+                    if (tabuleiro[coluna][i].getPeca() instanceof Bomba){
+                        tabuleiro[coluna][i].revelaCelula();
+                    }
+                }
+            }
+            dicasDisponiveis--;
+        }
+        else 
+        {
+            JOptionPane.showMessageDialog(null, "Sem dicas disponiveis...");
+        }
+    }
+    
+    public void vitoriaDoJogador()
+    {
+        Object[] opcoes = {"Fechar jogo", "Reiniciar Jogo", "Novo Jogo"};
+        int opcao = JOptionPane.showOptionDialog(null,"O Jogador venceu o jogo!", "",JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[2]);
+        
+        if (opcao == 0)
+        {
+            System.exit(0);
+        }
+        if (opcao == 1)
+        {
+            trocaTabuleiro();
+        }
+        if (opcao == 2)
+        {
+            resetaTabuleiro();
+        }
+    }
+    
+    public void copiaTabuleiro()
+    {
+        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
+        {
+            for (int j =0; j < sqrt(NUMERO_DE_CASAS); j++)
+            {
+                this.copiaTabuleiro[i][j] = tabuleiro[i][j];
+            }
+        }
+        for(int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
+        {
+            for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
+            {
+                System.out.printf("[%d][%d] = %s  ",j,i,copiaTabuleiro[j][i].getPeca().getNome());
+            }
+            System.out.println("\n");
+        }
+    }
+    
+    public void trocaTabuleiro()
+    {
+        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++){
+            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++){
+                //g.gridx = i;
+                //g.gridy = j;
+                remove(tabuleiro[i][j]);
+                
+                //add(copiaTabuleiro[i][j], g);
+            }
+        }
+        this.bandeiraDisponivel = true;
+        this.marechalDisponivel = true;
+        this.espiaoDisponivel = true;
+        this.soldadosDisponiveis = 3;
+        this.caboArmeiroDisponiveis = 2;
+        this.bombasDisponiveis = 2;
+        this.dicasDisponiveis = 2;
+    }
+}
