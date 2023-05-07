@@ -324,39 +324,45 @@ public class Tabuleiro extends JPanel{
         {
             return true;
         }
-        return false;
+        else
+        {
+            return false;
+        }
     }
     
     public boolean validaMovimento(Celula botaoClicado, int x, int y)
     {
         if (verifica (botaoClicado)){
-            resetaUltimoBotaoClicado();
-            //return false;
-        }
-  
-        if(botaoClicado.getEquipe() == ultimoBotaoClicado.getEquipe())
-        {
-            verifica(botaoClicado);
-        }
-        if((x == 1 && y == 2)||(x == 3 && y == 2))
-        {
-            resetaUltimoBotaoClicado();
-            return false;
-        }
-        if ( ultimoBotaoClicado.getPeca() instanceof Bomba || ultimoBotaoClicado.getPeca() instanceof Bandeira)
-        {
-            resetaUltimoBotaoClicado();
-            if(!(botaoClicado.getPeca() instanceof Vazio))
+            /*if (ultimoBotaoClicado.getPeca() instanceof Vazio)
+            {
+                return false;
+            }*/
+            if(botaoClicado.getEquipe() == ultimoBotaoClicado.getEquipe())
             {
                 verifica(botaoClicado);
             }
-            else 
+            if((x == 1 && y == 2)||(x == 3 && y == 2))
             {
-                System.out.println("Movimento inválido. Bomba/Bandeira não se mexem!!");
+                resetaUltimoBotaoClicado();
                 return false;
             }
+            if ( ultimoBotaoClicado.getPeca() instanceof Bomba    ||
+                 ultimoBotaoClicado.getPeca() instanceof Bandeira || 
+                 ultimoBotaoClicado.getPeca() instanceof Vazio)
+            {
+                resetaUltimoBotaoClicado();
+                if(!(botaoClicado.getPeca() instanceof Vazio))
+                {
+                    verifica(botaoClicado);
+                }
+                else 
+                {
+                    System.out.println("Movimento inválido. Bomba/Bandeira não se mexem!!");
+                    return false;
+                }
+            }
         }
-            return true;
+        return true;
     }
     
     public void resetaUltimoBotaoClicado(){
@@ -378,14 +384,16 @@ public class Tabuleiro extends JPanel{
                         if (ultimoBotaoClicado == null)
                         {
                             ultimoBotaoClicado = botaoClicado;
-                            System.out.println(ultimoBotaoClicado.getPeca());
                             coordenadaXUltimoBotao = x;
                             coordenadaYUltimoBotao = y;
-                            //imprimePeca();
+                            System.out.println(ultimoBotaoClicado.getPeca());
+                            if (ultimoBotaoClicado.getPeca() instanceof Vazio)
+                                ultimoBotaoClicado = null;
                         }
                         
-                        else if ( validaMovimento(botaoClicado,x,y))
+                        else if (validaMovimento(botaoClicado,x,y))
                         {
+                            
                             movePeca(botaoClicado, x, y);
                             resetaUltimoBotaoClicado();
                             System.out.println(botaoClicado.getPeca());
