@@ -42,7 +42,7 @@ public class BoardSub extends JFrame{
        add(tabuleiro,g);
        g.gridy = 1;
        add(botoesPecas,g);
-       
+       g.insets = new java.awt.Insets(5, 1, 1, 1);
        addPecasAdversario(g);
        addPecasJogador(g);
        addResetTabuleiro(g);
@@ -55,11 +55,11 @@ public class BoardSub extends JFrame{
     public void addPecasAdversario(GridBagConstraints g){
         g.gridx = 1;
         g.gridy = 0;
-        g.insets = new java.awt.Insets(5, 1, 1, 1);
+        
         pecasAdversario.setSize(50, 10);
         pecasAdversario.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                   tabuleiro.setPecasAleatorias(false);
+                   tabuleiro.setPecasAleatorias(-1);
                    tabuleiro.repaint();
                    tabuleiro.revalidate();     
             }
@@ -73,7 +73,7 @@ public class BoardSub extends JFrame{
         pecasJogador.setSize(50, 10);
         pecasJogador.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                   tabuleiro.setPecasAleatorias(true);
+                   tabuleiro.setPecasAleatorias(1);
                    tabuleiro.repaint();
                    tabuleiro.revalidate();
                    
@@ -103,7 +103,7 @@ public class BoardSub extends JFrame{
         mudaRodada.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.mudaRodada();
-                   tabuleiro.selecionaPeca();
+                 //  tabuleiro.selecionaPeca();
                    tabuleiro.repaint();
                 }
             });

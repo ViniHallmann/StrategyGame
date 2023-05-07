@@ -18,12 +18,12 @@ public final class CelulaFactory{
     private static final Color COR_VAZIO = new Color(204,255,204);
     private static final Color COR_BRANCO = new Color(255,255,255);
     
-    private static boolean equipe = false;
+    private static int equipe = 0;
     public static Celula factory(char tipo)
     {
        switch(tipo)
        {
-           case ' ' : return criaCelulaVazio(COR_BRANCO);
+           case ' ' : return criaCelulaVazio();
            case 'B' : return criaCelulaBomba(COR_BRANCO);
            case 'C' : return criaCelulaCabo(COR_BRANCO);
            case 'S' : return criaCelulaSoldado(COR_BRANCO);
@@ -33,16 +33,14 @@ public final class CelulaFactory{
        }
         return null;
     }
-    public static Celula factory(char tipo, boolean equipe)
+    public static Celula factory(char tipo, int equipe)
     {
         Celula nova;
         CelulaFactory.equipe = equipe;
-        if(equipe)
+        if(equipe == 1 && tipo != ' ')
         {
             switch(tipo)
             {
-               case ' ' :  nova = criaCelulaVazio(COR_VAZIO);
-                           return nova;
                case 'B' :  nova = criaCelulaBomba(COR_JOGADOR);
                            nova.setEquipe(equipe);
                            return nova;
@@ -63,13 +61,10 @@ public final class CelulaFactory{
                            return nova;
             }
             
-        }else
+        }else if(equipe == -1 && tipo != ' ')
         {
             switch(tipo)
             {
-               case ' ' :  nova = criaCelulaVazio(COR_VAZIO);
-                           nova.setEquipe(equipe);
-                           return nova;
                case 'B' :  nova = criaCelulaBomba(COR_ADVERSARIO);
                            nova.setEquipe(equipe);
                            return nova;
@@ -90,13 +85,20 @@ public final class CelulaFactory{
                            return nova;
             }
         }
+        else
+        {
+            nova = criaCelulaVazio();
+            return nova;
+        }
+        
         return null;
     }
     
-    public static Celula criaCelulaVazio(Color cor)
+    public static Celula criaCelulaVazio()
     {
         Celula celula = new Celula(' ',new Vazio(),equipe);
-        celula.setBackground(cor);
+        celula.setBackground(COR_VAZIO);
+        celula.setEquipe(0);
         return celula;
     }
     public static Celula criaCelulaBomba(Color cor)
