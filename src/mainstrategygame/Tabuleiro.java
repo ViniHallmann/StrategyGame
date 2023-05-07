@@ -393,7 +393,6 @@ public class Tabuleiro extends JPanel{
                         
                         else if (validaMovimento(botaoClicado,x,y))
                         {
-                            
                             movePeca(botaoClicado, x, y);
                             resetaUltimoBotaoClicado();
                             System.out.println(botaoClicado.getPeca());
