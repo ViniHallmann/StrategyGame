@@ -27,7 +27,7 @@ public final class BotoesPecas extends JPanel{
     int numerosBombas;
     int numerosSoldados;
     
-    public BotoesPecas(Tabuleiro tabuleiro)
+    public BotoesPecas()
     {
         botoes = new Celula[NUMERO_DE_ROLES];
         setLayout(new GridBagLayout());

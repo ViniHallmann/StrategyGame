@@ -660,7 +660,7 @@ public class Tabuleiro extends JPanel{
         {
             for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
             {
-                tabuleiro[i][j].debugCelula();
+                tabuleiro[i][j].revelaCelula();
             }
         }
     }
