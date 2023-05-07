@@ -8,9 +8,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Scanner;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,13 +22,6 @@ public class BoardSub extends JFrame{
     Tabuleiro tabuleiro = new Tabuleiro();
     BotoesPecas botoesPecas = new BotoesPecas();
     BotoesUtil botoesUtil = new BotoesUtil();
-    /*JButton pecasAdversario = new JButton("Pecas do Adversario");
-    JButton pecasJogador = new JButton("Pecas Aleatorias");
-    JButton resetTabuleiro = new JButton("Resetar Tabuleiro");
-    JButton mudaRodada = new JButton("Muda Rodada");
-    JButton debug = new JButton("debug");
-    JButton imprimeMatriz = new JButton("Imprime Matriz");*/
-    JLabel imprimePeca = new JLabel("Nenhuma peça selecionada");
     
     private final int NUMERO_DE_ROLES = 6; 
     private boolean flagPosicionada = false;
@@ -54,7 +49,7 @@ public class BoardSub extends JFrame{
        addResetTabuleiro(g,botoesUtil.getBotao(2));
        addMudaRodada(botoesUtil.getBotao(3));
        addDebug(botoesUtil.getBotao(4));
-       addImprimeMatriz(botoesUtil.getBotao(5));
+       addDica(botoesUtil.getBotao(5));
        rodadaPosicionarFlag();
        
     }
@@ -109,6 +104,7 @@ public class BoardSub extends JFrame{
     public void addMudaRodada(JButton mudaRodada){
         mudaRodada.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
+                   tabuleiro.copiaTabuleiro();
                    tabuleiro.mudaRodada();
                    botoesUtil.remove(botoesUtil.getBotao(0));
                    botoesUtil.remove(botoesUtil.getBotao(1));
@@ -128,11 +124,11 @@ public class BoardSub extends JFrame{
             });
     }
        
-    public void addImprimeMatriz(JButton imprimeMatriz){
+    public void addDica(JButton imprimeMatriz){
         imprimeMatriz.setSize(50, 10);
         imprimeMatriz.addMouseListener(new MouseAdapter() {
                  public void mouseClicked(MouseEvent e) {
-                    tabuleiro.imprimeMatriz();
+                    tabuleiro.dicaBomba();
                  }
              });
     }
@@ -183,6 +179,7 @@ public class BoardSub extends JFrame{
         }
         
     }
+    
     public void rodadaPosicionarResto()
     {
         for(int i = 0 ; i < NUMERO_DE_ROLES-1; i++)
@@ -201,5 +198,5 @@ public class BoardSub extends JFrame{
         }
         botoesPecas.getBotoes(5).setEnabled(false);
     }
-
+   
 }
