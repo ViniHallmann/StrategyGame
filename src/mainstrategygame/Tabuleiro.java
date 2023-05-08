@@ -889,7 +889,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
             {   
                 x = rand.nextInt(5);
                 y = rand.nextInt(5);
-                System.out.print(". ");
+                //System.out.print(". ");
             }
 
             index = rand.nextInt(3);
@@ -902,7 +902,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
             {
                 index = rand.nextInt(3);
                 index2 = rand.nextInt(3);  
-                System.out.print("* ");
+                //System.out.print("* ");
             }
 
             proxX = x+listaMovimento[index];
@@ -923,10 +923,10 @@ public class Tabuleiro extends JPanel implements Cloneable{
             }
                   
                 
-            System.out.println(x+""+y+""+proxX+""+proxY);
+            //System.out.println(x+""+y+""+proxX+""+proxY);
         }while(tabuleiro[proxX][proxY].getEquipe() == -1 || tabuleiro[proxX][proxY].getLago() == true);
-        System.out.println("Peca adversaria selecionada:"+x+" "+y);
-        System.out.println("Proxima jogada adversario: "+proxX+" "+proxY);
+       // System.out.println("Peca adversaria selecionada:"+x+" "+y);
+        //System.out.println("Proxima jogada adversario: "+proxX+" "+proxY);
                 
         
         movePeca(tabuleiro[proxX][proxY], proxX, proxY, tabuleiro[x][y], x, y);

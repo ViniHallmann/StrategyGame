@@ -231,9 +231,15 @@ public class BoardSub extends JFrame{
                             tabuleiro.movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY(),tabuleiro.getUltimoBotaoClicado(), tabuleiro.getCoordenadasUltimoBotao('x'),tabuleiro.getCoordenadasUltimoBotao('y'));
                             tabuleiro.resetaUltimoBotaoClicado();
                             if(tabuleiro.getResuldadoCombate() == 3)
-                                vitoriaDoJogador();
+                                vitoriaDoJogador(true);
                             else
+                            {
                                 tabuleiro.movePecaAdversaria();
+                                if(tabuleiro.getResuldadoCombate() == 3)
+                                    vitoriaDoJogador(false);
+                                
+                            }
+                                
                         } 
                     }
                 });
@@ -282,13 +288,21 @@ public class BoardSub extends JFrame{
                     }
                 });
     }
+<<<<<<< HEAD
     
     public void vitoriaDoJogador()
+=======
+    public void vitoriaDoJogador(boolean equipeGanhadora)
+>>>>>>> acdf66a4d62bb5f6b7cfaa3e2ccdeb42e2e02e7b
     {
         
         Object[] opcoes = {"Fechar jogo", "Reiniciar Jogo", "Novo Jogo"};
-        int opcao = JOptionPane.showOptionDialog(null,"O Jogador venceu o jogo!", "",JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[2]);
-        
+        int opcao;
+        if(equipeGanhadora)
+            opcao = JOptionPane.showOptionDialog(null,"O Jogador venceu o jogo!", "",JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[2]);
+        else
+            opcao = JOptionPane.showOptionDialog(null,"O Jogador PERDEU o jogo!", "",JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes,opcoes[2]);
+            
         if (opcao == 0)
         {
             System.exit(0);
