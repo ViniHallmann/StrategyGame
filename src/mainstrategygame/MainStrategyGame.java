@@ -24,7 +24,12 @@ public class MainStrategyGame{
        menu.getBotao().addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     menu.setVisible(false);
-                    //tela.setVisible(true);
+                    tela.setVisible(true);
+            } 
+        });
+        tela.getBotaoContinuar().addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    tela.setVisible(false);
                     board.setVisible(true);
             } 
         });
