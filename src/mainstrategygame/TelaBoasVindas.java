@@ -36,11 +36,14 @@ public class TelaBoasVindas extends JFrame{
        boasVindas.setFont(new Font("Segoe UI", Font.PLAIN, 20));
        add(boasVindas,g);
        
-       g.gridx = 0;
-       g.gridy = 2;
-       add(textoBoasVindas,g);
-       textoBoasVindas.setMinimumSize(new Dimension(400, textoBoasVindas.getPreferredSize().height));
-       //textoBoasVindas.setPreferedSize()
+        g.gridx = 0;
+        g.gridy = 2;
+        g.weightx = 1.0;
+        g.weighty = 1.0;
+        g.anchor = GridBagConstraints.NORTHWEST;
+        g.fill = GridBagConstraints.BOTH;
+        g.gridwidth = GridBagConstraints.REMAINDER;
+        add(textoBoasVindas, g);
     }
     
 }

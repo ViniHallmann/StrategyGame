@@ -866,6 +866,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
         this.coordenadaXUltimoBotao = x;
         this.coordenadaYUltimoBotao = y;
     }
+    
     public int getCoordenadasUltimoBotao(char xy)
     {
         if(xy == 'x')
@@ -873,10 +874,12 @@ public class Tabuleiro extends JPanel implements Cloneable{
         else
             return this.coordenadaYUltimoBotao;
     }
+    
     public int getResuldadoCombate()
     {
         return this.resultadoCombate;
     }
+    
     public void movePecaAdversaria()
     {
         Random rand = new Random();
@@ -890,45 +893,42 @@ public class Tabuleiro extends JPanel implements Cloneable{
         int proxY;
         do
         {
-                x = rand.nextInt(5);
-                y = rand.nextInt(5);
+            x = rand.nextInt(5);
+            y = rand.nextInt(5);
             while(tabuleiro[x][y].getEquipe() != -1 || tabuleiro[x][y].getPeca().getTipo() == 'B' || tabuleiro[x][y].getPeca().getTipo() == 'F')
             {   
                 x = rand.nextInt(5);
                 y = rand.nextInt(5);
             }
 
-            
             index = rand.nextInt(3);
             index2 = rand.nextInt(3);
-            
-            //System.out.println((x+listaMovimento[index])+" "+(y+listaMovimento[index2]));
-            
-                while( (!(0 < x+listaMovimento[index] && x+listaMovimento[index] < 5) ||  
-                       !( 0 < y+listaMovimento[index2] && y+listaMovimento[index2]< 5 )) ||
-                        (x == x+listaMovimento[index] && y == y+listaMovimento[index2])
-                    )
+
+            while( (!(0 < x+listaMovimento[index] && x+listaMovimento[index] < 5) ||  
+                   !( 0 < y+listaMovimento[index2] && y+listaMovimento[index2]< 5 )) ||
+                    (x == x+listaMovimento[index] && y == y+listaMovimento[index2])
+                )
+            {
+                index = rand.nextInt(3);
+                index2 = rand.nextInt(3);    
+            }
+
+            proxX = x+listaMovimento[index];
+            proxY = y+listaMovimento[index2];
+
+            if(x != x+listaMovimento[index] && y != y+listaMovimento[index2])
+            {
+                Random temp = new Random();
+                int temp2 = rand.nextInt(2);
+                if(temp2 == 1)
                 {
-                    index = rand.nextInt(3);
-                    index2 = rand.nextInt(3);    
+                    proxX = x;
                 }
-                
-                proxX = x+listaMovimento[index];
-                proxY = y+listaMovimento[index2];
-                
-                if(x != x+listaMovimento[index] && y != y+listaMovimento[index2])
+                if(temp2 == 0)
                 {
-                    Random temp = new Random();
-                    int temp2 = rand.nextInt(2);
-                    if(temp2 == 1)
-                    {
-                        proxX = x;
-                    }
-                    if(temp2 == 0)
-                    {
-                        proxY = y;
-                    }
+                    proxY = y;
                 }
+            }
                   
                 
             
@@ -938,22 +938,22 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 
         Celula destino;
             
-            destino = tabuleiro[proxX][proxY];
-            g.gridx = proxX;
-            g.gridy = proxY;
-            remove(tabuleiro[proxX][proxY]);
-            tabuleiro[proxX][proxY] = tabuleiro[x][y];
-            tabuleiro[proxX][proxY].setCoord(proxX,proxY);
-            add(tabuleiro[proxX][proxY], g);
-            
-            g.gridx = x;
-            g.gridy = y;
-            tabuleiro[x][y] = destino;
-            tabuleiro[x][y].setCoord(x,y);
-            add(tabuleiro[x][y], g);
-            ultimoBotaoClicado = null;
-            revalidate();
-            repaint();
+        destino = tabuleiro[proxX][proxY];
+        g.gridx = proxX;
+        g.gridy = proxY;
+        remove(tabuleiro[proxX][proxY]);
+        tabuleiro[proxX][proxY] = tabuleiro[x][y];
+        tabuleiro[proxX][proxY].setCoord(proxX,proxY);
+        add(tabuleiro[proxX][proxY], g);
+
+        g.gridx = x;
+        g.gridy = y;
+        tabuleiro[x][y] = destino;
+        tabuleiro[x][y].setCoord(x,y);
+        add(tabuleiro[x][y], g);
+        ultimoBotaoClicado = null;
+        revalidate();
+        repaint();
         
     }
     
