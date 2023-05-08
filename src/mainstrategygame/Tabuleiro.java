@@ -790,25 +790,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
         }
     }
     
-  /*  public void vitoriaDoJogador()
-    {
-        Object[] opcoes = {"Fechar jogo", "Reiniciar Jogo", "Novo Jogo"};
-        int opcao = JOptionPane.showOptionDialog(null,"O Jogador venceu o jogo!", "",JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[2]);
-
-        if (opcao == 0)
-        {
-            System.exit(0);
-        }
-        if (opcao == 1)
-        {
-            trocaTabuleiro();
-        }
-        if (opcao == 2)
-        {
-            resetaTabuleiro();
-        }
-    }*/
-    
     public void copiaTabuleiro()
     {
         g.insets = new java.awt.Insets(1, 1, 1, 1);
@@ -827,8 +808,14 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 }
             }
         }
-        repaint();
-        revalidate();
+        for(int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
+        {
+            for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
+            {
+                System.out.printf("[%d][%d] = %s  ",j,i,copiaTabuleiro[j][i].getPeca().getNome());
+            }
+            System.out.println("\n");
+        }
     }
     
     public void trocaTabuleiro()
@@ -850,7 +837,8 @@ public class Tabuleiro extends JPanel implements Cloneable{
         this.caboArmeiroDisponiveis = 2;
         this.bombasDisponiveis = 2;
         this.dicasDisponiveis = 2;
-        //mudaRodada();
+        repaint();
+        revalidate();
     }
 
     public Celula getUltimoBotaoClicado() {

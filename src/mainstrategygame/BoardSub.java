@@ -112,7 +112,7 @@ public class BoardSub extends JFrame{
     public void addMudaRodada(JButton mudaRodada){
         mudaRodada.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                   //tabuleiro.copiaTabuleiro();
+                   tabuleiro.copiaTabuleiro();
                    mudaRodada();
                    botoesUtil.remove(botoesUtil.getBotao(0));
                    botoesUtil.remove(botoesUtil.getBotao(1));
@@ -282,8 +282,10 @@ public class BoardSub extends JFrame{
                     }
                 });
     }
+    
     public void vitoriaDoJogador()
     {
+        
         Object[] opcoes = {"Fechar jogo", "Reiniciar Jogo", "Novo Jogo"};
         int opcao = JOptionPane.showOptionDialog(null,"O Jogador venceu o jogo!", "",JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[2]);
         
@@ -293,6 +295,8 @@ public class BoardSub extends JFrame{
         }
         if (opcao == 1)
         {
+            tabuleiro.trocaTabuleiro();
+            mudaRodada();
         }
         if (opcao == 2)
         {

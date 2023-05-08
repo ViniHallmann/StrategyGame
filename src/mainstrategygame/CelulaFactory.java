@@ -12,7 +12,7 @@ import javax.swing.BorderFactory;
  * @author jvlai
  */
 public final class CelulaFactory{
-    
+     
     private static final Color COR_ADVERSARIO = new Color(255,204,204);
     private static final Color COR_JOGADOR = new Color(175,175,255);
     private static final Color COR_VAZIO = new Color(204,255,204);

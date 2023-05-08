@@ -24,7 +24,7 @@ public class Menu extends JFrame{
     public Menu()
     {
        setTitle("STRATEGY GAME");
-       setSize(500,500);
+       setSize(800,600);
        setLocationRelativeTo(null);
        setDefaultCloseOperation(EXIT_ON_CLOSE);
        setLayout(new GridBagLayout());
