@@ -23,7 +23,7 @@ public class Soldado extends Peça {
         this.nivel = 2;
     }
 
-    public boolean isPodeCorrer() {
+    /*public boolean isPodeCorrer() {
         return podeCorrer;
     }
 
@@ -37,7 +37,7 @@ public class Soldado extends Peça {
 
     public void setPodeAtacar(boolean podeAtacar) {
         this.podeAtacar = podeAtacar;
-    }
+    }*/
 
     public int getNivel() {
         return nivel;

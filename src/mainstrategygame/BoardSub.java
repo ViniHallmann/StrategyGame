@@ -55,6 +55,7 @@ public class BoardSub extends JFrame{
        addMudaRodada(botoesUtil.getBotao(3));
        addDebug(botoesUtil.getBotao(4));
        addDica(botoesUtil.getBotao(5));
+       
        rodadaPosicionarFlag();
        
     }
@@ -111,11 +112,6 @@ public class BoardSub extends JFrame{
                 public void mouseClicked(MouseEvent e) {
                    //tabuleiro.copiaTabuleiro();
                    mudaRodada();
-                    try {
-                        reserva = (Tabuleiro)tabuleiro.clone();
-                    } catch (CloneNotSupportedException ex) {
-                        Logger.getLogger(BoardSub.class.getName()).log(Level.SEVERE, null, ex);
-                    }
                    botoesUtil.remove(botoesUtil.getBotao(0));
                    botoesUtil.remove(botoesUtil.getBotao(1));
                    remove(botoesPecas);
@@ -165,26 +161,26 @@ public class BoardSub extends JFrame{
             for(int j = 3; j < 5; j++)
             {
                 tabuleiro.getCelula(i,j).addMouseListener(new MouseAdapter(){
-                            @Override
-                            public void mouseClicked(MouseEvent e) {
-                            if(tabuleiro.getCelulaSelecionada() != null)
-                            {    
-                                System.out.println("CLICADO");
-                                Celula botaoClicado = (Celula) e.getSource();
-                                tabuleiro.colocaPeçaNoTabuleiro(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
-                                revalidate();
-                                repaint();
-                                tabuleiro.setCelulaSelecionada(null);
-                                tabuleiro.atualizaTabuleiro();
-                                if(!flagPosicionada)
-                                {
-                                    flagPosicionada = true;
-                                    rodadaPosicionarResto();
-                                }
-                                
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                        if(tabuleiro.getCelulaSelecionada() != null)
+                        {    
+                            System.out.println("CLICADO");
+                            Celula botaoClicado = (Celula) e.getSource();
+                            tabuleiro.colocaPeçaNoTabuleiro(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                            revalidate();
+                            repaint();
+                            tabuleiro.setCelulaSelecionada(null);
+                            tabuleiro.atualizaTabuleiro();
+                            if(!flagPosicionada)
+                            {
+                                flagPosicionada = true;
+                                rodadaPosicionarResto();
                             }
+
                         }
-                    });
+                    }
+                });
             }
         }
         
