@@ -76,7 +76,7 @@ public final class BotoesPecas extends JPanel{
             remove(botoes[i]);
         }
         constroiBotoesPecas();
-    }
+    } 
    /* public void setMouseListeners(Tabuleiro tabuleiro)
     {
         if(flagColocada)

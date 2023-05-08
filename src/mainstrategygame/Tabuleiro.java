@@ -182,7 +182,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 if((i == 1 && j == 2)||(i == 3 && j == 2))
                 {
                     tabuleiro[i][j].setBackground(new java.awt.Color(204, 204, 255));
-                    tabuleiro[i][j].setLago();
+                    tabuleiro[i][j].setLago(); 
                 }
                 if( j > 2)
                 {

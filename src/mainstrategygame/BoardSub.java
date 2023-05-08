@@ -23,7 +23,7 @@ import static mainstrategygame.Tabuleiro.NUMERO_DE_CASAS;
  * @author jvlai
  */
 public class BoardSub extends JFrame{
-    Tabuleiro tabuleiro = new Tabuleiro();
+    Tabuleiro tabuleiro = new Tabuleiro();  
     Tabuleiro reserva;
     BotoesPecas botoesPecas = new BotoesPecas();
     BotoesUtil botoesUtil = new BotoesUtil();
