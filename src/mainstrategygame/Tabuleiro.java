@@ -306,31 +306,31 @@ public class Tabuleiro extends JPanel implements Cloneable{
         ultimoBotaoClicado.setBackground(cor);
     }
     
-    public void movePeca(Celula botaoClicado, int x, int y)
+    public void movePeca(Celula botaoClicado, int x, int y, Celula origem, int coordenadaXOrigem, int coordenadaYOrigem)
     {
-        Celula origem = ultimoBotaoClicado;
-        int coordenadaXOrigem = coordenadaXUltimoBotao;
-        int coordenadaYOrigem = coordenadaYUltimoBotao;
+       //  = ultimoBotaoClicado;
+       // int coordenadaXOrigem = coordenadaXUltimoBotao;
+       // int coordenadaYOrigem = coordenadaYUltimoBotao;
         Peça pecaOrigem = origem.getPeca();
 
         Celula destino = botaoClicado;
         int coordenadaXDestino = x;
         int coordenadaYDestino = y;
         
-        this.resultadoCombate = combate(botaoClicado);
+        this.resultadoCombate = combate(botaoClicado, origem);
         System.out.println(resultadoCombate);
         
         if (this.resultadoCombate == -1){
             botaoClicado.revelaCelula();
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
-            g.gridx = coordenadaXUltimoBotao;
-            g.gridy = coordenadaYUltimoBotao;
-            remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
+            g.gridx = coordenadaXOrigem;
+            g.gridy = coordenadaYOrigem;
+            remove(tabuleiro[coordenadaXOrigem][coordenadaYOrigem]);
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem] = novaOrigem;
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem].setCoord(coordenadaXOrigem,coordenadaYOrigem);
 
-            add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
+            add(tabuleiro[coordenadaXOrigem][coordenadaYOrigem],g);
             
             ultimoBotaoClicado = null;
             revalidate();
@@ -367,12 +367,13 @@ public class Tabuleiro extends JPanel implements Cloneable{
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
             
-            g.gridx = coordenadaXUltimoBotao;
-            g.gridy = coordenadaYUltimoBotao;
-            remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
-            add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
+            
+            g.gridx = coordenadaXOrigem;
+            g.gridy = coordenadaYOrigem;
+            remove(tabuleiro[coordenadaXOrigem][coordenadaYOrigem]);
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem] = novaOrigem;
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem].setCoord(coordenadaXOrigem,coordenadaYOrigem);
+            add(tabuleiro[coordenadaXOrigem][coordenadaYOrigem],g);
             
             g.gridx = coordenadaXDestino;
             g.gridy = coordenadaYDestino;
@@ -380,6 +381,8 @@ public class Tabuleiro extends JPanel implements Cloneable{
             tabuleiro[coordenadaXDestino][coordenadaYDestino] = origem;
             tabuleiro[coordenadaXDestino][coordenadaYDestino].setCoord(coordenadaXDestino,coordenadaYDestino);
             add(tabuleiro[coordenadaXDestino][coordenadaYDestino], g);
+            
+            
             ultimoBotaoClicado = null;
             revalidate();
             repaint();
@@ -390,7 +393,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
             
-            origem = ultimoBotaoClicado;
             g.gridx = coordenadaXDestino;
             g.gridy = coordenadaYDestino;
             remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
@@ -412,19 +414,19 @@ public class Tabuleiro extends JPanel implements Cloneable{
            // vitoriaDoJogador();
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
-            g.gridx = coordenadaXUltimoBotao;
-            g.gridy = coordenadaYUltimoBotao;
-            remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
-            add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
+            g.gridx = coordenadaXOrigem;
+            g.gridy = coordenadaYOrigem;
+            remove(tabuleiro[coordenadaXOrigem][coordenadaYOrigem]);
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem] = novaOrigem;
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem].setCoord(coordenadaXOrigem,coordenadaYOrigem);
+            add(tabuleiro[coordenadaXOrigem][coordenadaYOrigem],g);
             
             Celula novoDestino = CelulaFactory.factory(' ');
             adicionarListener(novoDestino); 
             g.gridx = coordenadaXDestino;
             g.gridy = coordenadaYDestino;
             remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
-            tabuleiro[coordenadaXDestino][coordenadaYDestino] = novoDestino;
+            tabuleiro[coordenadaXDestino][coordenadaYDestino] = origem;
             tabuleiro[coordenadaXDestino][coordenadaYDestino].setCoord(coordenadaXDestino,coordenadaYDestino);
             add(tabuleiro[coordenadaXDestino][coordenadaYDestino], g);
             //vitoriaDoJogador();
@@ -476,9 +478,9 @@ public class Tabuleiro extends JPanel implements Cloneable{
         return true;
     }
     
-    public int combate(Celula botaoClicado)
+    public int combate(Celula botaoClicado, Celula recebePeca)
     {
-        Celula recebePeca = ultimoBotaoClicado;
+        
         Peça pecaSelecionada = recebePeca.getPeca();
         Peça pecaInimiga = botaoClicado.getPeca();
         
@@ -757,7 +759,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
                 if ( ultimoBotaoClicado != null && validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
                 {
-                    movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                    movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY(),getUltimoBotaoClicado(), getCoordenadasUltimoBotao('x'),getCoordenadasUltimoBotao('y'));
                     resetaUltimoBotaoClicado();
                     //System.out.println(botaoClicado.getPeca());
                     movePecaAdversaria();
@@ -899,6 +901,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
             {   
                 x = rand.nextInt(5);
                 y = rand.nextInt(5);
+                System.out.print(". ");
             }
 
             index = rand.nextInt(3);
@@ -910,7 +913,8 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 )
             {
                 index = rand.nextInt(3);
-                index2 = rand.nextInt(3);    
+                index2 = rand.nextInt(3);  
+                System.out.print("* ");
             }
 
             proxX = x+listaMovimento[index];
@@ -931,12 +935,16 @@ public class Tabuleiro extends JPanel implements Cloneable{
             }
                   
                 
-            
-        }while(tabuleiro[proxX][proxY].getPeca().getTipo() != ' ' || tabuleiro[proxX][proxY].getLago() == true);
+            System.out.println(x+""+y+""+proxX+""+proxY);
+        }while(tabuleiro[proxX][proxY].getEquipe() == -1 || tabuleiro[proxX][proxY].getLago() == true);
         System.out.println("Peca adversaria selecionada:"+x+" "+y);
         System.out.println("Proxima jogada adversario: "+proxX+" "+proxY);
                 
-        Celula destino;
+        
+        movePeca(tabuleiro[proxX][proxY], proxX, proxY, tabuleiro[x][y], x, y);
+        
+        
+        /*Celula destino;
             
         destino = tabuleiro[proxX][proxY];
         g.gridx = proxX;
@@ -953,7 +961,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
         add(tabuleiro[x][y], g);
         ultimoBotaoClicado = null;
         revalidate();
-        repaint();
+        repaint();*/
         
     }
     
