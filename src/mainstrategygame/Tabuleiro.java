@@ -9,8 +9,6 @@ import java.awt.GridBagLayout;
 import static java.lang.Math.sqrt;
 import javax.swing.JPanel;
 import java.awt.GridBagConstraints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -23,7 +21,7 @@ import javax.swing.JOptionPane;
  *
  * @author jvlai
  */
-public class Tabuleiro extends JPanel{
+public class Tabuleiro extends JPanel implements Cloneable{
     
     public static final int NUMERO_DE_CASAS = 25;
     
@@ -50,16 +48,40 @@ public class Tabuleiro extends JPanel{
     private int soldadosDisponiveis = 3;
     private int caboArmeiroDisponiveis = 2;
     private int bombasDisponiveis = 2;
+    public int original;
     
-    private int resultadoCombate = 0;
+    private int resultadoCombate;
     
     GridBagConstraints  g = new GridBagConstraints();
        
     public Tabuleiro()
     {
         tabuleiro = new Celula[(int)(sqrt(NUMERO_DE_CASAS))][(int)(sqrt(NUMERO_DE_CASAS))];
+        original = 1;
         setLayout(new GridBagLayout());
         constroiTabuleiro();
+    }
+
+    public Tabuleiro(Tabuleiro clone) {
+        this.coordenadaXUltimoBotao = clone.coordenadaXUltimoBotao;
+        this.coordenadaYUltimoBotao = clone.coordenadaYUltimoBotao;
+        this.tabuleiro = clone.tabuleiro;
+        this.peçaSelecionada = clone.peçaSelecionada;
+        this.nomeDaPeça = clone.nomeDaPeça;
+        this.tipoDePeça = clone.tipoDePeça;
+        this.celulaSelecionada = clone.celulaSelecionada;
+        this.resultadoCombate = clone.resultadoCombate;
+        this.bandeiraDisponivel = clone.bandeiraDisponivel;
+        this.marechalDisponivel = clone.marechalDisponivel;
+        this.espiaoDisponivel = clone.espiaoDisponivel;
+        this.soldadosDisponiveis = clone.soldadosDisponiveis;
+        this.caboArmeiroDisponiveis = clone.caboArmeiroDisponiveis;
+        this.bombasDisponiveis = clone.bombasDisponiveis;
+        setLayout(new GridBagLayout());
+        this.g = clone.g;
+        original = 0;
+       // copiaTabuleiro();
+        
     }
     
     public void atualizaPeçasDisponiveis(){
@@ -160,6 +182,7 @@ public class Tabuleiro extends JPanel{
                 if((i == 1 && j == 2)||(i == 3 && j == 2))
                 {
                     tabuleiro[i][j].setBackground(new java.awt.Color(204, 204, 255));
+                    tabuleiro[i][j].setLago();
                 }
                 if( j > 2)
                 {
@@ -294,9 +317,10 @@ public class Tabuleiro extends JPanel{
         int coordenadaXDestino = x;
         int coordenadaYDestino = y;
         
-        int resultadoCombate = combate(botaoClicado);
+        this.resultadoCombate = combate(botaoClicado);
+        System.out.println(resultadoCombate);
         
-        if (resultadoCombate == -1){
+        if (this.resultadoCombate == -1){
             botaoClicado.revelaCelula();
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
@@ -313,7 +337,7 @@ public class Tabuleiro extends JPanel{
             repaint();
         }
         
-        else if (resultadoCombate == 0)
+        else if (this.resultadoCombate == 0)
         {
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
@@ -338,7 +362,7 @@ public class Tabuleiro extends JPanel{
             revalidate();
             repaint();
         }
-        else if (resultadoCombate == 1)
+        else if (this.resultadoCombate == 1)
         {
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
@@ -361,7 +385,7 @@ public class Tabuleiro extends JPanel{
             repaint();
         }
         
-        else if (resultadoCombate == 2)
+        else if (this.resultadoCombate == 2)
         {
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
@@ -383,9 +407,9 @@ public class Tabuleiro extends JPanel{
             revalidate();
             repaint();
         }
-        else if (resultadoCombate == 3)
+        else if (this.resultadoCombate == 3)
         {
-            
+           // vitoriaDoJogador();
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
             g.gridx = coordenadaXUltimoBotao;
@@ -403,7 +427,7 @@ public class Tabuleiro extends JPanel{
             tabuleiro[coordenadaXDestino][coordenadaYDestino] = novoDestino;
             tabuleiro[coordenadaXDestino][coordenadaYDestino].setCoord(coordenadaXDestino,coordenadaYDestino);
             add(tabuleiro[coordenadaXDestino][coordenadaYDestino], g);
-            vitoriaDoJogador();
+            //vitoriaDoJogador();
             ultimoBotaoClicado = null;
             revalidate();
             repaint();
@@ -504,53 +528,6 @@ public class Tabuleiro extends JPanel{
         this.ultimoBotaoClicado = null;
     }
     
-    public void mudaRodada(){
-        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
-        {
-            for (int j = 0; j < 3; j++) 
-            {
-                tabuleiro[i][j].setEnabled(true);
-                tabuleiro[i][j].addMouseListener(new MouseAdapter() 
-                {
-                    public void mouseClicked(MouseEvent e) 
-                    {
-                        Celula botaoClicado = (Celula) e.getSource();
-                        System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
-                        if ( ultimoBotaoClicado != null && validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
-                        {
-                            movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
-                            resetaUltimoBotaoClicado();
-                        } 
-                    }
-                });
-            }
-        }
-        
-        for (int i = 0; i < 5; i++)
-        {
-            for (int j = 3; j < 5; j++)
-            {
-                tabuleiro[i][j].setEnabled(true);
-                tabuleiro[i][j].addMouseListener(new MouseAdapter() 
-                {
-                    @Override
-                    public void mouseClicked(MouseEvent e) 
-                    {   
-                        Celula botaoClicado = (Celula) e.getSource();
-
-                        ultimoBotaoClicado = botaoClicado;
-                        System.out.println(ultimoBotaoClicado.getPeca());
-
-                        coordenadaXUltimoBotao = botaoClicado.getPosX();
-                        coordenadaYUltimoBotao = botaoClicado.getPosY();
-
-                        System.out.println(botaoClicado.getPosX() +" "+ botaoClicado.getPosY());
-                       
-                    }
-                });   
-            }
-        }
-    }
     
     public void atualizaTabuleiro() {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
@@ -783,6 +760,7 @@ public class Tabuleiro extends JPanel{
                     movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
                     resetaUltimoBotaoClicado();
                     //System.out.println(botaoClicado.getPeca());
+                    movePecaAdversaria();
                 } 
             }
         });
@@ -812,7 +790,7 @@ public class Tabuleiro extends JPanel{
         }
     }
     
-    public void vitoriaDoJogador()
+  /*  public void vitoriaDoJogador()
     {
         Object[] opcoes = {"Fechar jogo", "Reiniciar Jogo", "Novo Jogo"};
         int opcao = JOptionPane.showOptionDialog(null,"O Jogador venceu o jogo!", "",JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[2]);
@@ -829,14 +807,16 @@ public class Tabuleiro extends JPanel{
         {
             resetaTabuleiro();
         }
-    }
+    }*/
     
     public void copiaTabuleiro()
     {
+        g.insets = new java.awt.Insets(1, 1, 1, 1);
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
         {
-            for (int j =0; j < sqrt(NUMERO_DE_CASAS); j++)
+            for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
             {
+
                 Celula copiaCelula = CelulaFactory.factory(tabuleiro[i][j].getPeca().getTipo(), tabuleiro[i][j].getEquipe());
                 adicionarListener(copiaCelula);
                 copiaTabuleiro[i][j] = copiaCelula;
@@ -847,14 +827,8 @@ public class Tabuleiro extends JPanel{
                 }
             }
         }
-        for(int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
-        {
-            for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
-            {
-                System.out.printf("[%d][%d] = %s  ",j,i,copiaTabuleiro[j][i].getPeca().getNome());
-            }
-            System.out.println("\n");
-        }
+        repaint();
+        revalidate();
     }
     
     public void trocaTabuleiro()
@@ -876,9 +850,113 @@ public class Tabuleiro extends JPanel{
         this.caboArmeiroDisponiveis = 2;
         this.bombasDisponiveis = 2;
         this.dicasDisponiveis = 2;
-        mudaRodada();
+        //mudaRodada();
     }
 
+    public Celula getUltimoBotaoClicado() {
+        return this.ultimoBotaoClicado;
+    }
+    public void setUltimoBotaoClicado(Celula botao)
+    {
+        this.ultimoBotaoClicado = botao;
+    }
+    
+    public void setCoordenadasUltimoBotao(int x, int y)
+    {
+        this.coordenadaXUltimoBotao = x;
+        this.coordenadaYUltimoBotao = y;
+    }
+    public int getCoordenadasUltimoBotao(char xy)
+    {
+        if(xy == 'x')
+            return this.coordenadaXUltimoBotao;
+        else
+            return this.coordenadaYUltimoBotao;
+    }
+    public int getResuldadoCombate()
+    {
+        return this.resultadoCombate;
+    }
+    public void movePecaAdversaria()
+    {
+        Random rand = new Random();
+        int listaMovimento[] = new int[3];
+        listaMovimento[0] = -1; listaMovimento[1] = 1; listaMovimento[2] = 0;
+        int index = rand.nextInt(3);
+        int index2 = rand.nextInt(3);
+        int x = rand.nextInt(5);
+        int y = rand.nextInt(5);
+        int proxX;
+        int proxY;
+        do
+        {
+                x = rand.nextInt(5);
+                y = rand.nextInt(5);
+            while(tabuleiro[x][y].getEquipe() != -1 || tabuleiro[x][y].getPeca().getTipo() == 'B' || tabuleiro[x][y].getPeca().getTipo() == 'F')
+            {   
+                x = rand.nextInt(5);
+                y = rand.nextInt(5);
+            }
+
+            
+            index = rand.nextInt(3);
+            index2 = rand.nextInt(3);
+            
+            //System.out.println((x+listaMovimento[index])+" "+(y+listaMovimento[index2]));
+            
+                while( (!(0 < x+listaMovimento[index] && x+listaMovimento[index] < 5) ||  
+                       !( 0 < y+listaMovimento[index2] && y+listaMovimento[index2]< 5 )) ||
+                        (x == x+listaMovimento[index] && y == y+listaMovimento[index2])
+                    )
+                {
+                    index = rand.nextInt(3);
+                    index2 = rand.nextInt(3);    
+                }
+                
+                proxX = x+listaMovimento[index];
+                proxY = y+listaMovimento[index2];
+                
+                if(x != x+listaMovimento[index] && y != y+listaMovimento[index2])
+                {
+                    Random temp = new Random();
+                    int temp2 = rand.nextInt(2);
+                    if(temp2 == 1)
+                    {
+                        proxX = x;
+                    }
+                    if(temp2 == 0)
+                    {
+                        proxY = y;
+                    }
+                }
+                  
+                
+            
+        }while(tabuleiro[proxX][proxY].getPeca().getTipo() != ' ' || tabuleiro[proxX][proxY].getLago() == true);
+        System.out.println("Peca adversaria selecionada:"+x+" "+y);
+        System.out.println("Proxima jogada adversario: "+proxX+" "+proxY);
+                
+        Celula destino;
+            
+            destino = tabuleiro[proxX][proxY];
+            g.gridx = proxX;
+            g.gridy = proxY;
+            remove(tabuleiro[proxX][proxY]);
+            tabuleiro[proxX][proxY] = tabuleiro[x][y];
+            tabuleiro[proxX][proxY].setCoord(proxX,proxY);
+            add(tabuleiro[proxX][proxY], g);
+            
+            g.gridx = x;
+            g.gridy = y;
+            tabuleiro[x][y] = destino;
+            tabuleiro[x][y].setCoord(x,y);
+            add(tabuleiro[x][y], g);
+            ultimoBotaoClicado = null;
+            revalidate();
+            repaint();
+        
+    }
+    
     public int getResultadoCombate() {
         return resultadoCombate;
     }

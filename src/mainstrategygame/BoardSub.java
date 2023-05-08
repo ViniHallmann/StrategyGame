@@ -8,11 +8,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import static java.lang.Math.sqrt;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import static mainstrategygame.Tabuleiro.NUMERO_DE_CASAS;
 
 /**
  *
@@ -20,9 +24,12 @@ import javax.swing.JOptionPane;
  */
 public class BoardSub extends JFrame{
     Tabuleiro tabuleiro = new Tabuleiro();
+    Tabuleiro reserva;
     BotoesPecas botoesPecas = new BotoesPecas();
     BotoesUtil botoesUtil = new BotoesUtil();
-    
+
+    GridBagConstraints  g = new GridBagConstraints();
+
     private final int NUMERO_DE_ROLES = 6; 
     private boolean flagPosicionada = false;
     
@@ -34,7 +41,7 @@ public class BoardSub extends JFrame{
        setDefaultCloseOperation(EXIT_ON_CLOSE);
        
        setLayout(new GridBagLayout());
-       GridBagConstraints  g = new GridBagConstraints();
+       
        g.gridx = 0;
        g.gridy = 0;
        add(tabuleiro,g);
@@ -105,14 +112,14 @@ public class BoardSub extends JFrame{
     public void addMudaRodada(JButton mudaRodada){
         mudaRodada.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                   tabuleiro.copiaTabuleiro();
-                   tabuleiro.mudaRodada();
+                   //tabuleiro.copiaTabuleiro();
+                   mudaRodada();
                    botoesUtil.remove(botoesUtil.getBotao(0));
                    botoesUtil.remove(botoesUtil.getBotao(1));
                    remove(botoesPecas);
                    repaint();
                    tabuleiro.repaint();
-                   tabuleiro.revalidate();
+                   revalidate();
                 }
             });
     }
@@ -199,19 +206,115 @@ public class BoardSub extends JFrame{
         }
         botoesPecas.getBotoes(5).setEnabled(false);
     }
+
     
-    /*dpublic void addLabelPecasDisponiveis(GridBagConstraints g)
-    {
-        for (int i = 0; i < 5; i++){
-            g.gridx = i;
-            g.gridy = 1;
-            JLabel label = new JLabel("TESTE");
-            add(label,g);
-        }
-    }*/
-    
-    public void mensagemBoasVindas()
+    /*public void mensagemBoasVindas()
     {
         
+    }*/
+ 
+    public void mudaRodada(){
+        for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
+        {
+            for (int j = 0; j < 3; j++) 
+            {
+                tabuleiro.getCelula(i, j).setEnabled(true);
+                tabuleiro.getCelula(i, j).addMouseListener(new MouseAdapter() 
+                {
+                    public void mouseClicked(MouseEvent e) 
+                    {
+                        
+                        Celula botaoClicado = (Celula) e.getSource();
+                        System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
+                        if ( tabuleiro.getUltimoBotaoClicado() != null && tabuleiro.validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
+                        {
+                            tabuleiro.movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                            tabuleiro.resetaUltimoBotaoClicado();
+                            if(tabuleiro.getResuldadoCombate() == 3)
+                                vitoriaDoJogador();
+                            else
+                                tabuleiro.movePecaAdversaria();
+                        } 
+                    }
+                });
+            }
+        }
+        
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 3; j < 5; j++)
+            {
+                tabuleiro.getCelula(i, j).setEnabled(true);
+                tabuleiro.getCelula(i, j).addMouseListener(new MouseAdapter() 
+                {
+                    @Override
+                    public void mouseClicked(MouseEvent e) 
+                    {   
+                        Celula botaoClicado = (Celula) e.getSource();
+
+                        tabuleiro.setUltimoBotaoClicado(botaoClicado);
+                       // System.out.println(tabuleiro.getUltimoBotaoClicado().getPeca());
+
+                        tabuleiro.setCoordenadasUltimoBotao(botaoClicado.getPosX(),botaoClicado.getPosY());
+                        System.out.println(tabuleiro.getCoordenadasUltimoBotao('x') +" "+ tabuleiro.getCoordenadasUltimoBotao('y'));
+                       
+                    }
+                });   
+            }
+        }
+        
+        
+    }
+    public void adicionarListener(Celula celula)
+    {
+        
+        celula.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) 
+                    {
+                        
+                        Celula botaoClicado = (Celula) e.getSource();
+                        System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
+                        if ( tabuleiro.getUltimoBotaoClicado() != null && tabuleiro.validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
+                        {
+                            tabuleiro.movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                            tabuleiro.resetaUltimoBotaoClicado();
+                        } 
+                    }
+                });
+    }
+    public void vitoriaDoJogador()
+    {
+        Object[] opcoes = {"Fechar jogo", "Reiniciar Jogo", "Novo Jogo"};
+        int opcao = JOptionPane.showOptionDialog(null,"O Jogador venceu o jogo!", "",JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[2]);
+        
+        if (opcao == 0)
+        {
+            System.exit(0);
+        }
+        if (opcao == 1)
+        {
+        }
+        if (opcao == 2)
+        {
+            tabuleiro.resetaTabuleiro();
+            flagPosicionada = false;
+            g.gridx = 0;
+            g.gridy = 1;
+            add(botoesPecas,g);
+            botoesPecas.resetaBotoesPecas();
+            rodadaPosicionarFlag();
+            botoesUtil.remove(botoesUtil.getBotao(0));
+            botoesUtil.remove(botoesUtil.getBotao(1));
+            GridBagConstraints r = botoesUtil.getConstrains();
+            r.gridx = 0;
+            r.gridy = 0;
+            botoesUtil.add(botoesUtil.getBotao(0),r);
+            r.gridy = 1;
+            botoesUtil.add(botoesUtil.getBotao(1),r);
+            addPecasAdversario(botoesUtil.getBotao(0));
+            addPecasJogador(botoesUtil.getBotao(1));
+            tabuleiro.repaint();
+            tabuleiro.revalidate();
+        }
     }
 }
