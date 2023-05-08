@@ -22,7 +22,6 @@ public class BoardSub extends JFrame{
     Tabuleiro tabuleiro = new Tabuleiro();
     BotoesPecas botoesPecas = new BotoesPecas();
     BotoesUtil botoesUtil = new BotoesUtil();
-    
     private final int NUMERO_DE_ROLES = 6; 
     private boolean flagPosicionada = false;
     
@@ -50,6 +49,7 @@ public class BoardSub extends JFrame{
        addMudaRodada(botoesUtil.getBotao(3));
        addDebug(botoesUtil.getBotao(4));
        addDica(botoesUtil.getBotao(5));
+       
        rodadaPosicionarFlag();
        
     }
@@ -155,26 +155,26 @@ public class BoardSub extends JFrame{
             for(int j = 3; j < 5; j++)
             {
                 tabuleiro.getCelula(i,j).addMouseListener(new MouseAdapter(){
-                            @Override
-                            public void mouseClicked(MouseEvent e) {
-                            if(tabuleiro.getCelulaSelecionada() != null)
-                            {    
-                                System.out.println("CLICADO");
-                                Celula botaoClicado = (Celula) e.getSource();
-                                tabuleiro.colocaPeçaNoTabuleiro(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
-                                revalidate();
-                                repaint();
-                                tabuleiro.setCelulaSelecionada(null);
-                                tabuleiro.atualizaTabuleiro();
-                                if(!flagPosicionada)
-                                {
-                                    flagPosicionada = true;
-                                    rodadaPosicionarResto();
-                                }
-                                
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                        if(tabuleiro.getCelulaSelecionada() != null)
+                        {    
+                            System.out.println("CLICADO");
+                            Celula botaoClicado = (Celula) e.getSource();
+                            tabuleiro.colocaPeçaNoTabuleiro(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                            revalidate();
+                            repaint();
+                            tabuleiro.setCelulaSelecionada(null);
+                            tabuleiro.atualizaTabuleiro();
+                            if(!flagPosicionada)
+                            {
+                                flagPosicionada = true;
+                                rodadaPosicionarResto();
                             }
+
                         }
-                    });
+                    }
+                });
             }
         }
         
@@ -198,5 +198,14 @@ public class BoardSub extends JFrame{
         }
         botoesPecas.getBotoes(5).setEnabled(false);
     }
-   
+    
+    /*public void addLabelPecasDisponiveis(GridBagConstraints g)
+    {
+        for (int i = 0; i < 5; i++){
+            g.gridx = i;
+            g.gridy = 1;
+            JLabel label = new JLabel("TESTE");
+            add(label,g);
+        }
+    }*/
 }
