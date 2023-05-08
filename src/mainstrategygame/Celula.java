@@ -21,7 +21,7 @@ public class Celula extends JButton implements MouseListener{
     private int posY;
     private Peça peca;
     private int equipe;
-    //boolean getPeca;
+    boolean eLago = false;
     
     public Celula(char t , Peça peca, int equipe)
     {
@@ -49,19 +49,14 @@ public class Celula extends JButton implements MouseListener{
         }
     }
     
-    public static void adicionaPeca(Celula botaoSelecionado, Tabuleiro tabuleiro)
+    public void setLago()
     {
-        
+        this.eLago = true;
     }
-    public static void removePeca()
+    public boolean getLago()
     {
-        
+        return this.eLago;
     }
-    public static void substituiPeca(Peça p)
-    {
-        
-    }
-    
     public void setPeça(Peça peça)
     {
         this.peca = peça;
