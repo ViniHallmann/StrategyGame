@@ -31,7 +31,7 @@ public final class CelulaFactory{
            case 'F' : return criaCelulaBandeira(COR_BRANCO);
            case 'M' : return criaCelulaMarechal(COR_BRANCO);
        }
-        return null;
+        return null; 
     }
     public static Celula factory(char tipo, int equipe)
     {

@@ -23,7 +23,7 @@ import static mainstrategygame.Tabuleiro.NUMERO_DE_CASAS;
  * @author jvlai
  */
 public class BoardSub extends JFrame{
-    Tabuleiro tabuleiro = new Tabuleiro();
+    Tabuleiro tabuleiro = new Tabuleiro();  
     Tabuleiro reserva;
     BotoesPecas botoesPecas = new BotoesPecas();
     BotoesUtil botoesUtil = new BotoesUtil();
@@ -228,7 +228,7 @@ public class BoardSub extends JFrame{
                         System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
                         if ( tabuleiro.getUltimoBotaoClicado() != null && tabuleiro.validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
                         {
-                            tabuleiro.movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                            tabuleiro.movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY(),tabuleiro.getUltimoBotaoClicado(), tabuleiro.getCoordenadasUltimoBotao('x'),tabuleiro.getCoordenadasUltimoBotao('y'));
                             tabuleiro.resetaUltimoBotaoClicado();
                             if(tabuleiro.getResuldadoCombate() == 3)
                                 vitoriaDoJogador();
@@ -276,7 +276,7 @@ public class BoardSub extends JFrame{
                         System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
                         if ( tabuleiro.getUltimoBotaoClicado() != null && tabuleiro.validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
                         {
-                            tabuleiro.movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                            tabuleiro.movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY(),tabuleiro.getUltimoBotaoClicado(), tabuleiro.getCoordenadasUltimoBotao('x'),tabuleiro.getCoordenadasUltimoBotao('y'));
                             tabuleiro.resetaUltimoBotaoClicado();
                         } 
                     }
