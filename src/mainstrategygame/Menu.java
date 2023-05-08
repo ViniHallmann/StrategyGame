@@ -17,7 +17,7 @@ import javax.swing.JLabel;
  * @author jvlai
  */
 public class Menu extends JFrame{
-    private JButton comecar = new JButton("Novo Jogo");
+    private JButton comecar = new JButton("Start");
     private final JLabel strategyGame = new JLabel("STRATEGY GAME");
     
     GridBagConstraints g = new GridBagConstraints();
@@ -30,7 +30,7 @@ public class Menu extends JFrame{
        setLayout(new GridBagLayout());
        g.insets = new java.awt.Insets(25, 1, 1, 1);
        
-       strategyGame.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+       strategyGame.setFont(new Font("Segoe UI", Font.PLAIN, 50));
        
        g.gridx = 0;
        g.gridy = 0;
@@ -39,7 +39,7 @@ public class Menu extends JFrame{
        
        g.gridy = 1;
        comecar.setPreferredSize(new java.awt.Dimension(300,100));
-       comecar.setFont(new Font("Segoe UI", Font.PLAIN, 50));
+       comecar.setFont(new Font("Segoe UI", Font.PLAIN, 30));
        comecar.setBackground(new java.awt.Color(204,255,204));
        
        

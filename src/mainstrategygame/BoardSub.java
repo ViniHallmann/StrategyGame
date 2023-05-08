@@ -22,6 +22,7 @@ public class BoardSub extends JFrame{
     Tabuleiro tabuleiro = new Tabuleiro();
     BotoesPecas botoesPecas = new BotoesPecas();
     BotoesUtil botoesUtil = new BotoesUtil();
+    
     private final int NUMERO_DE_ROLES = 6; 
     private boolean flagPosicionada = false;
     
@@ -42,13 +43,13 @@ public class BoardSub extends JFrame{
        g.gridy = 2;
        add(botoesUtil,g);
        g.insets = new java.awt.Insets(5, 1, 1, 1);
-       
        addPecasAdversario(botoesUtil.getBotao(0));
        addPecasJogador(botoesUtil.getBotao(1));
        addResetTabuleiro(g,botoesUtil.getBotao(2));
        addMudaRodada(botoesUtil.getBotao(3));
        addDebug(botoesUtil.getBotao(4));
        addDica(botoesUtil.getBotao(5));
+       
        
        rodadaPosicionarFlag();
        
@@ -199,7 +200,7 @@ public class BoardSub extends JFrame{
         botoesPecas.getBotoes(5).setEnabled(false);
     }
     
-    /*public void addLabelPecasDisponiveis(GridBagConstraints g)
+    /*dpublic void addLabelPecasDisponiveis(GridBagConstraints g)
     {
         for (int i = 0; i < 5; i++){
             g.gridx = i;
@@ -208,4 +209,9 @@ public class BoardSub extends JFrame{
             add(label,g);
         }
     }*/
+    
+    public void mensagemBoasVindas()
+    {
+        
+    }
 }

@@ -17,11 +17,14 @@ public class MainStrategyGame{
        
        BoardSub board = new BoardSub();
        Menu menu = new Menu();
+       TelaBoasVindas tela = new TelaBoasVindas();
        menu.setVisible(true);
+       
        
        menu.getBotao().addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     menu.setVisible(false);
+                    //tela.setVisible(true);
                     board.setVisible(true);
             }
         });

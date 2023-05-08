@@ -19,8 +19,8 @@ public class BotoesUtil extends JPanel{
     
     GridBagConstraints g = new GridBagConstraints();
     List<JButton> botoes = new ArrayList<>();
-    JButton pecasAdversario = new JButton("Set Adversario");
-    JButton pecasJogador = new JButton("Set Pecas Aleatorias");
+    JButton pecasAdversario = new JButton("PC Random");
+    JButton pecasJogador = new JButton("Player Random");
     JButton resetTabuleiro = new JButton("Reset");
     JButton mudaRodada = new JButton("Inicia Jogo");
     JButton debug = new JButton("DEBUG");
@@ -46,7 +46,7 @@ public class BotoesUtil extends JPanel{
         {
             for(int j = 0; j < 2; j++)
             {
-                botoes.get(qnt).setPreferredSize(new java.awt.Dimension(100, 50));
+                botoes.get(qnt).setPreferredSize(new java.awt.Dimension(120, 50));
                 botoes.get(qnt).setBackground(new java.awt.Color(204,204,204));
                
                 g.gridx = i;

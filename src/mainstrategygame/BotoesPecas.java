@@ -23,10 +23,6 @@ public final class BotoesPecas extends JPanel{
     
     GridBagConstraints  r = new GridBagConstraints();
     
-    int numerosCabosArmeiros;
-    int numerosBombas;
-    int numerosSoldados;
-    
     public BotoesPecas()
     {
         botoes = new Celula[NUMERO_DE_ROLES];

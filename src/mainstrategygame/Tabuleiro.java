@@ -876,6 +876,7 @@ public class Tabuleiro extends JPanel{
         this.caboArmeiroDisponiveis = 2;
         this.bombasDisponiveis = 2;
         this.dicasDisponiveis = 2;
+        mudaRodada();
     }
 
     public int getResultadoCombate() {
