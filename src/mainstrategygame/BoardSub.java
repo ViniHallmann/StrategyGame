@@ -288,12 +288,8 @@ public class BoardSub extends JFrame{
                     }
                 });
     }
-<<<<<<< HEAD
-    
-    public void vitoriaDoJogador()
-=======
+
     public void vitoriaDoJogador(boolean equipeGanhadora)
->>>>>>> acdf66a4d62bb5f6b7cfaa3e2ccdeb42e2e02e7b
     {
         
         Object[] opcoes = {"Fechar jogo", "Reiniciar Jogo", "Novo Jogo"};

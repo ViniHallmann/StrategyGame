@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  * @author jvlai
  */
 public class Tabuleiro extends JPanel implements Cloneable{
-    
+     
     public static final int NUMERO_DE_CASAS = 25;
     
     private Celula ultimoBotaoClicado = null;
