@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 /**
@@ -22,6 +23,13 @@ public final class BotoesPecas extends JPanel{
     private boolean flagColocada = false;
     
     GridBagConstraints  r = new GridBagConstraints();
+    
+    private boolean bandeiraDisponivel = true;
+    private boolean marechalDisponivel = true;
+    private boolean espiaoDisponivel = true;
+    private int soldadosDisponiveis = 3;
+    private int caboArmeiroDisponiveis = 2;
+    private int bombasDisponiveis = 2;
     
     public BotoesPecas()
     {
@@ -58,12 +66,14 @@ public final class BotoesPecas extends JPanel{
         botoes[5] = CelulaFactory.factory('F');
         add(botoes[5],r);
 
-        for(int i = 0 ; i < NUMERO_DE_ROLES; i ++)
-            botoes[i].setEnabled(false);
         
         r.gridy = 1;
+        r.gridx = 0;
+        
+        
         r.insets = new java.awt.Insets(1, 1, 1, 1);
     }
+    //BOTAR A QUANTIDADE DE PECAS NO TABULEIRO
     
     public void setFlagPosicionada(boolean flagPosicionada)
     {
@@ -77,43 +87,32 @@ public final class BotoesPecas extends JPanel{
         }
         constroiBotoesPecas();
     } 
-   /* public void setMouseListeners(Tabuleiro tabuleiro)
-    {
-        if(flagColocada)
-        {
-            for(int i = 0; i < NUMERO_DE_ROLES-1 ; i++)
-            {   
-                botoes[i].setEnabled(true);
-                botoes[5].setEnabled(false);
-                botoes[i].addMouseListener(new MouseAdapter() 
-                {
-                    public void mouseClicked(MouseEvent e) 
-                    {   
-                        Celula botaoClicado = (Celula)e.getSource();
-                        System.out.println(botaoClicado.getPeca().getTipo()+" selecionado");
-                        tabuleiro.setCelulaSelecionada(botaoClicado);
-                        tabuleiro.atualizaTabuleiro();
-                    }
-                });
-            }
-        }
-        else
-        {
-            botoes[5].setEnabled(true);
-            botoes[5].addMouseListener(new MouseAdapter() 
-                {
-                    public void mouseClicked(MouseEvent e) 
-                    {   
-                        Celula botaoClicado = (Celula)e.getSource();
-                        System.out.println(botaoClicado.getPeca().getTipo()+" selecionado");
-                        tabuleiro.setCelulaSelecionada(botaoClicado);
-                        tabuleiro.atualizaTabuleiro();
-                    }
-                });
-        }
-    }*/
+
     public Celula getBotoes(int index)
     {
         return botoes[index];
+    }
+    public void iteradorPeçasDisponiveis(Celula celula)
+    {
+        switch(celula.getPeca().getTipo()){
+            case 'B':
+                bombasDisponiveis--;
+                return;
+            case 'C':
+                caboArmeiroDisponiveis--;
+                return;
+            case 'S':
+                soldadosDisponiveis--;
+                return;
+            case 'M':
+                marechalDisponivel = false;
+                return;
+            case 'E':
+                espiaoDisponivel = false;
+                return;
+            case 'F':
+                bandeiraDisponivel = false;
+                return;
+        }
     }
 }
