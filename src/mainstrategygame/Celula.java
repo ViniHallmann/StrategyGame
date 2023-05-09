@@ -21,7 +21,7 @@ public class Celula extends JButton implements MouseListener{
     private int posY;
     private Peça peca;
     private int equipe;
-    boolean eLago = false;
+    boolean eLago = false; 
     
     
     public Celula(char t , Peça peca, int equipe)

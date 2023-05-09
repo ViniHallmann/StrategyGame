@@ -41,3 +41,4 @@ public abstract class Peça extends JLabel{
     }
     
 }
+ 

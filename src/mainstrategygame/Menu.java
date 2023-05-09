@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mainstrategygame;
+package mainstrategygame; 
 
 
 import java.awt.Font;
@@ -22,7 +22,7 @@ public class Menu extends JFrame{
     
     GridBagConstraints g = new GridBagConstraints();
     public Menu()
-    {
+    { 
        setTitle("STRATEGY GAME");
        setSize(800,600);
        setLocationRelativeTo(null);

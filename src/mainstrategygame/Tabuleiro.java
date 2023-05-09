@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  * @author jvlai
  */
 public class Tabuleiro extends JPanel implements Cloneable{
-     
+      
     public static final int NUMERO_DE_CASAS = 25;
     
     private Celula ultimoBotaoClicado = null;
@@ -48,8 +48,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
     private int soldadosDisponiveis = 3;
     private int caboArmeiroDisponiveis = 2;
     private int bombasDisponiveis = 2;
-    public int original;
-    
+   
     private int resultadoCombate;
     
     GridBagConstraints  g = new GridBagConstraints();
@@ -57,32 +56,10 @@ public class Tabuleiro extends JPanel implements Cloneable{
     public Tabuleiro()
     {
         tabuleiro = new Celula[(int)(sqrt(NUMERO_DE_CASAS))][(int)(sqrt(NUMERO_DE_CASAS))];
-        original = 1;
         setLayout(new GridBagLayout());
         constroiTabuleiro();
     }
 
-    public Tabuleiro(Tabuleiro clone) {
-        this.coordenadaXUltimoBotao = clone.coordenadaXUltimoBotao;
-        this.coordenadaYUltimoBotao = clone.coordenadaYUltimoBotao;
-        this.tabuleiro = clone.tabuleiro;
-        this.peçaSelecionada = clone.peçaSelecionada;
-        this.nomeDaPeça = clone.nomeDaPeça;
-        this.tipoDePeça = clone.tipoDePeça;
-        this.celulaSelecionada = clone.celulaSelecionada;
-        this.resultadoCombate = clone.resultadoCombate;
-        this.bandeiraDisponivel = clone.bandeiraDisponivel;
-        this.marechalDisponivel = clone.marechalDisponivel;
-        this.espiaoDisponivel = clone.espiaoDisponivel;
-        this.soldadosDisponiveis = clone.soldadosDisponiveis;
-        this.caboArmeiroDisponiveis = clone.caboArmeiroDisponiveis;
-        this.bombasDisponiveis = clone.bombasDisponiveis;
-        setLayout(new GridBagLayout());
-        this.g = clone.g;
-        original = 0;
-       // copiaTabuleiro();
-        
-    }
     
     public void atualizaPeçasDisponiveis(){
         int numerosCabosArmeiros = getCaboArmeiroDisponiveis();
@@ -161,10 +138,24 @@ public class Tabuleiro extends JPanel implements Cloneable{
     public boolean isEspiaoDisponivel() {
         return espiaoDisponivel;
     }
+    
+    public void resetQuantidadeDePecas()
+    {
+        this.bandeiraDisponivel = true;
+        this.marechalDisponivel = true;
+        this.espiaoDisponivel = true;
+        this.soldadosDisponiveis = 3;
+        this.caboArmeiroDisponiveis = 2;
+        this.bombasDisponiveis = 2;
+        
+    }
                     
     private void constroiTabuleiro()
     {
         g.insets = new java.awt.Insets(1, 1, 1, 1);
+        Random rand = new Random();
+        int posLago = rand.nextInt(5);
+        
         for(int i = 0 ; i < sqrt(NUMERO_DE_CASAS); i++)
         {
             for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
@@ -179,34 +170,16 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 //Pega as coordenadas da matriz
                 //Ao clicar no botão pega as "informações do botão" e chama a função que coloca uma peça na posição desse botão
                 
-                if((i == 1 && j == 2)||(i == 3 && j == 2))
+                if((i == posLago && j == 2))
                 {
-                    tabuleiro[i][j].setBackground(new java.awt.Color(204, 204, 255));
-                    tabuleiro[i][j].setLago(); 
+                    tabuleiro[posLago][j].setBackground(new java.awt.Color(204, 204, 255));
+                    tabuleiro[posLago][j].setLago();
                 }
-                if( j > 2)
-                {
-                /*    tabuleiro[i][j].addMouseListener(new MouseAdapter(){
-                            @Override
-                            public void mouseClicked(MouseEvent e) {
-                            if(celulaSelecionada != null)
-                            {    
-                                System.out.println("CLICADO");
-                                Celula botaoClicado = (Celula) e.getSource();
-                                colocaPeçaNoTabuleiro(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
-                                revalidate();
-                                repaint();
-                                setCelulaSelecionada(null);
-                                atualizaTabuleiro();
-                            }
-                        }
-                    });*/
-                }
-                
                 add(tabuleiro[i][j],g);
             }
         }
     }
+        
     
     public void resetaTabuleiro()
     {
@@ -217,13 +190,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 remove(tabuleiro[i][j]);
             }
         }
-        this.bandeiraDisponivel = true;
-        this.marechalDisponivel = true;
-        this.espiaoDisponivel = true;
-        this.soldadosDisponiveis = 3;
-        this.caboArmeiroDisponiveis = 2;
-        this.bombasDisponiveis = 2;
-        this.dicasDisponiveis = 2;
+        resetQuantidadeDePecas();
         constroiTabuleiro();
     }
     
@@ -274,13 +241,13 @@ public class Tabuleiro extends JPanel implements Cloneable{
     {
         Celula novaCelula = CelulaFactory.factory(celulaSelecionada.getPeca().getTipo(),1);
 
-        if (verificaPeçasDisponiveis(celulaSelecionada.getPeca().getTipo()))
+        /*if (verificaPeçasDisponiveis(celulaSelecionada.getPeca().getTipo()))
         {
             iteradorPeçasDisponiveis(celulaSelecionada.getPeca().getTipo());
             if ( getTipoDePeça() == 'F' && y == 3) // A bandeira só pode ficar na ultima linha da matriz!!
             {
                 return;
-            }
+            }*/
             tabuleiro[x][y] = novaCelula;
             tabuleiro[x][y].setCoord(x,y);
 
@@ -292,11 +259,11 @@ public class Tabuleiro extends JPanel implements Cloneable{
             add(novaCelula, g);
             revalidate();
             repaint();
-        }
+        /*}
         else
         {
             System.out.println("Peça indisponivel...");
-        }
+        }*/
     }
 
     public void limpaPeca(Celula ultimoBotaoClicado){
@@ -341,12 +308,12 @@ public class Tabuleiro extends JPanel implements Cloneable{
         {
             Celula novaOrigem = CelulaFactory.factory(' ');
             adicionarListener(novaOrigem);
-            g.gridx = coordenadaXUltimoBotao;
-            g.gridy = coordenadaYUltimoBotao;
-            remove(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao]);
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao] = novaOrigem;
-            tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao].setCoord(coordenadaXUltimoBotao,coordenadaYUltimoBotao);
-            add(tabuleiro[coordenadaXUltimoBotao][coordenadaYUltimoBotao],g);
+            g.gridx = coordenadaXOrigem ;
+            g.gridy = coordenadaYOrigem ;
+            remove(tabuleiro[coordenadaXOrigem][coordenadaYOrigem]);
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem] = novaOrigem;
+            tabuleiro[coordenadaXOrigem][coordenadaYOrigem].setCoord(coordenadaXOrigem,coordenadaYOrigem);
+            add(tabuleiro[coordenadaXOrigem][coordenadaYOrigem],g);
             
             Celula novoDestino = CelulaFactory.factory(' ');
             adicionarListener(novoDestino);
@@ -451,7 +418,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
             {
                 verifica(botaoClicado);
             }
-            if((x == 1 && y == 2)||(x == 3 && y == 2))
+            if(botaoClicado.eLago == true)
             {
                 return false;
             }

@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import static java.lang.Math.sqrt;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -32,6 +33,13 @@ public class BoardSub extends JFrame{
 
     private final int NUMERO_DE_ROLES = 6; 
     private boolean flagPosicionada = false;
+    
+    private boolean bandeiraJogadorDisponivel = false;
+    private boolean marechalJogadorDisponivel = false;
+    private boolean espiaoJogadorDisponivel = false;
+    private int soldadosJogadorDisponiveis = 0;
+    private int caboArmeiroJogadorDisponiveis = 0;
+    private int bombasJogadorDisponiveis = 0;
     
     public BoardSub()
     {
@@ -86,15 +94,15 @@ public class BoardSub extends JFrame{
     public void addResetTabuleiro(GridBagConstraints g,JButton resetTabuleiro){
         resetTabuleiro.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
+                    
+                   botoesPecas.resetaBotoesPecas();
                    tabuleiro.resetaTabuleiro();
-                   flagPosicionada = false;
+                   resetNumeroDePecas();
+                   bandeiraJogadorDisponivel = false;
                    g.gridx = 0;
                    g.gridy = 1;
                    add(botoesPecas,g);
-                   botoesPecas.resetaBotoesPecas();
-                   rodadaPosicionarFlag();
-                   botoesUtil.remove(botoesUtil.getBotao(0));
-                   botoesUtil.remove(botoesUtil.getBotao(1));
+                   
                    GridBagConstraints r = botoesUtil.getConstrains();
                    r.gridx = 0;
                    r.gridy = 0;
@@ -103,8 +111,13 @@ public class BoardSub extends JFrame{
                    botoesUtil.add(botoesUtil.getBotao(1),r);
                    addPecasAdversario(botoesUtil.getBotao(0));
                    addPecasJogador(botoesUtil.getBotao(1));
+                   
+                   botoesPecas.repaint();
+                   botoesPecas.revalidate();
                    tabuleiro.repaint();
                    tabuleiro.revalidate();
+                   
+                   rodadaPosicionarFlag();
                 }
             });
     }
@@ -112,14 +125,22 @@ public class BoardSub extends JFrame{
     public void addMudaRodada(JButton mudaRodada){
         mudaRodada.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                   tabuleiro.copiaTabuleiro();
-                   mudaRodada();
-                   botoesUtil.remove(botoesUtil.getBotao(0));
-                   botoesUtil.remove(botoesUtil.getBotao(1));
-                   remove(botoesPecas);
-                   repaint();
-                   tabuleiro.repaint();
-                   revalidate();
+                    if(verificaPeçasPosicionadas())
+                    {    
+                        tabuleiro.copiaTabuleiro();
+                        mudaRodada();
+                        tabuleiro.resetQuantidadeDePecas();
+                        botoesUtil.remove(botoesUtil.getBotao(0));
+                        botoesUtil.remove(botoesUtil.getBotao(1));
+                        remove(botoesPecas);
+                        repaint();
+                        tabuleiro.repaint();
+                        revalidate();
+                    }
+                    else
+                    {
+                        //PARA VINI: IMPLEMENTAR UMA JANELA DE AVISO FALANDO QUE FALTA PECAS A SEREM ADICIONADAS
+                    }
                 }
             });
     }
@@ -160,9 +181,8 @@ public class BoardSub extends JFrame{
                 });
         for(int i = 0; i < 5; i++)
         {
-            for(int j = 3; j < 5; j++)
-            {
-                tabuleiro.getCelula(i,j).addMouseListener(new MouseAdapter(){
+            
+                tabuleiro.getCelula(i,4).addMouseListener(new MouseAdapter(){
                         @Override
                         public void mouseClicked(MouseEvent e) {
                         if(tabuleiro.getCelulaSelecionada() != null)
@@ -170,20 +190,23 @@ public class BoardSub extends JFrame{
                             System.out.println("CLICADO");
                             Celula botaoClicado = (Celula) e.getSource();
                             tabuleiro.colocaPeçaNoTabuleiro(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                            if(bandeiraJogadorDisponivel)
+                            {
+                                iteradorPeçasDisponiveis(tabuleiro.getCelulaSelecionada());
+                            }
                             revalidate();
                             repaint();
                             tabuleiro.setCelulaSelecionada(null);
                             tabuleiro.atualizaTabuleiro();
-                            if(!flagPosicionada)
+                            if(!bandeiraJogadorDisponivel)
                             {
-                                flagPosicionada = true;
+                                bandeiraJogadorDisponivel = true;
                                 rodadaPosicionarResto();
                             }
-
                         }
                     }
                 });
-            }
+            
         }
         
     }
@@ -204,16 +227,41 @@ public class BoardSub extends JFrame{
                     }
                 });
         }
+        for(int i = 0 ; i < sqrt(NUMERO_DE_CASAS); i++)
+        {
+            for(int j = 3; j < 5; j++)
+            {    
+                tabuleiro.getCelula(i,j).addMouseListener(new MouseAdapter(){
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                        if(tabuleiro.getCelulaSelecionada() != null)
+                        {    
+                            System.out.println("CLICADO");
+                            Celula botaoClicado = (Celula) e.getSource();
+                            tabuleiro.colocaPeçaNoTabuleiro(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY());
+                            iteradorPeçasDisponiveis(tabuleiro.getCelulaSelecionada());
+                            revalidate();
+                            repaint();
+                            tabuleiro.setCelulaSelecionada(null);
+                            tabuleiro.atualizaTabuleiro();
+                            
+                        }
+                    }
+                });
+            }
+        }
+        
         botoesPecas.getBotoes(5).setEnabled(false);
+        
+        for(MouseListener al : botoesPecas.getBotoes(5).getMouseListeners())
+            botoesPecas.getBotoes(5).removeMouseListener(al);
+        
+        
     }
 
-    
-    /*public void mensagemBoasVindas()
-    {
-        
-    }*/
  
     public void mudaRodada(){
+        System.out.println("            "+bombasJogadorDisponiveis);
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
             for (int j = 0; j < 3; j++) 
@@ -289,7 +337,7 @@ public class BoardSub extends JFrame{
                 });
     }
 
-    public void vitoriaDoJogador(boolean equipeGanhadora)
+    public void vitoriaDoJogador(boolean equipeGanhadora) 
     {
         
         Object[] opcoes = {"Fechar jogo", "Reiniciar Jogo", "Novo Jogo"};
@@ -330,5 +378,102 @@ public class BoardSub extends JFrame{
             tabuleiro.repaint();
             tabuleiro.revalidate();
         }
+    }
+    public void iteradorPeçasDisponiveis(Celula tipoDePeça)
+    {
+        switch(tipoDePeça.getPeca().getTipo()){
+            case 'B':
+                if(bombasJogadorDisponiveis < 2)
+                {
+                    bombasJogadorDisponiveis++;
+                    if(bombasJogadorDisponiveis == 2)
+                    {
+                        botoesPecas.getBotoes(0).setEnabled(false);
+
+                        for(MouseListener ml : botoesPecas.getBotoes(0).getMouseListeners())
+                            botoesPecas.getBotoes(0).removeMouseListener(ml);
+
+                    }
+                }
+                   
+                return;
+            case 'C':
+                if(caboArmeiroJogadorDisponiveis < 2)
+                {
+                    caboArmeiroJogadorDisponiveis++;
+                    if(caboArmeiroJogadorDisponiveis == 2)
+                    {
+                        botoesPecas.getBotoes(1).setEnabled(false);
+
+                        for(MouseListener ml : botoesPecas.getBotoes(1).getMouseListeners())
+                            botoesPecas.getBotoes(1).removeMouseListener(ml);
+
+                    }
+                }
+                return;
+            case 'S':
+                if(soldadosJogadorDisponiveis < 3)
+                {
+                    soldadosJogadorDisponiveis++;
+                    if(soldadosJogadorDisponiveis == 3)
+                    {
+                        botoesPecas.getBotoes(2).setEnabled(false);
+
+                        for(MouseListener ml : botoesPecas.getBotoes(2).getMouseListeners())
+                            botoesPecas.getBotoes(2).removeMouseListener(ml);
+
+                    }
+                }
+                return;
+            case 'M':
+                if(marechalJogadorDisponivel == false)
+                {
+                    marechalJogadorDisponivel = true;
+                    if(marechalJogadorDisponivel)
+                    {
+                        botoesPecas.getBotoes(3).setEnabled(false);
+
+                        for(MouseListener ml : botoesPecas.getBotoes(3).getMouseListeners())
+                            botoesPecas.getBotoes(3).removeMouseListener(ml);
+
+                    }
+                }
+                return;
+            case 'E':
+                if(espiaoJogadorDisponivel == false)
+                {
+                    espiaoJogadorDisponivel = true;
+                    if(espiaoJogadorDisponivel)
+                    {
+                        botoesPecas.getBotoes(4).setEnabled(false);
+
+                        for(MouseListener ml : botoesPecas.getBotoes(4).getMouseListeners())
+                            botoesPecas.getBotoes(4).removeMouseListener(ml);
+
+                    }
+                }
+                return;
+        }
+    }
+    
+    public boolean verificaPeçasPosicionadas(){
+        
+        return bombasJogadorDisponiveis == 2 &&
+                caboArmeiroJogadorDisponiveis == 2 &&
+                soldadosJogadorDisponiveis == 3 &&
+                marechalJogadorDisponivel == true &&
+                espiaoJogadorDisponivel == true &&
+                bandeiraJogadorDisponivel == true;
+        
+        
+    }
+    public void resetNumeroDePecas()
+    {
+        bandeiraJogadorDisponivel = false;
+        marechalJogadorDisponivel = false;
+        espiaoJogadorDisponivel = false;
+        soldadosJogadorDisponiveis = 0;
+        caboArmeiroJogadorDisponiveis = 0;
+        bombasJogadorDisponiveis = 0;
     }
 }
