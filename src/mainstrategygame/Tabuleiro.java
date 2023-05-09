@@ -565,7 +565,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
         {
             if (coordenadaXUltimoBotaoClicado == coordenadaXBotaoClicado || coordenadaYUltimoBotaoClicado == coordenadaYBotaoClicado )
             {
-                int distanciaClicada;
                 int incrementoX = 0;
                 int incrementoY = 0;
                 int x;
@@ -593,7 +592,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 y = coordenadaYUltimoBotaoClicado + incrementoY;
                 while (x != coordenadaXBotaoClicado || y != coordenadaYBotaoClicado) 
                 {
-                    if (!(tabuleiro[x][y].getPeca() instanceof Vazio)) 
+                    if (!(tabuleiro[x][y].getPeca() instanceof Vazio) || (tabuleiro[x][y].getLago() == true) ) 
                     {
                         return false;
                     }
