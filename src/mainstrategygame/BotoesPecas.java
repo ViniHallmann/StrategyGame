@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -19,7 +20,7 @@ public final class BotoesPecas extends JPanel{
     public static final int NUMERO_DE_ROLES = 6;
     
     private final Celula[] botoes;
-    
+    private JLabel[] quantidades;
     private boolean flagColocada = false;
     
     GridBagConstraints  r = new GridBagConstraints();
@@ -31,9 +32,16 @@ public final class BotoesPecas extends JPanel{
     private int caboArmeiroDisponiveis = 2;
     private int bombasDisponiveis = 2;
     
+    
+    
     public BotoesPecas()
     {
         botoes = new Celula[NUMERO_DE_ROLES];
+        quantidades = new JLabel[NUMERO_DE_ROLES];
+        for(int i = 0; i < NUMERO_DE_ROLES ; i++){
+            quantidades[i] = new JLabel("teste");
+            add(quantidades[i],r);
+        }
         setLayout(new GridBagLayout());
         constroiBotoesPecas();
     }
@@ -65,16 +73,50 @@ public final class BotoesPecas extends JPanel{
         r.gridx = 5;
         botoes[5] = CelulaFactory.factory('F');
         add(botoes[5],r);
-
-        
-        r.gridy = 1;
-        r.gridx = 0;
-        
         
         r.insets = new java.awt.Insets(1, 1, 1, 1);
     }
     //BOTAR A QUANTIDADE DE PECAS NO TABULEIRO
     
+    public void quantidadeDePecas(int bombas, int cabos, int soldados, boolean marechal, boolean espiao, boolean flag)
+    {
+        
+        r.gridy = 1;
+        
+            
+        int marechalVal, flagVal, espiaoVal;
+        
+        if(marechal)
+           marechalVal = 1;
+        else
+            marechalVal = 0;
+        
+        if(flag)
+           flagVal = 1;
+        else
+            flagVal = 0;
+        
+        if(espiao)
+           espiaoVal = 1;
+        else
+            espiaoVal = 0;
+        
+        int array[] = {bombas, cabos, soldados, marechalVal, espiaoVal, flagVal};
+        
+            for(int i = 0 ; i < NUMERO_DE_ROLES; i++)
+            {
+                r.gridx = i;
+                r.gridy = 1;
+                remove(quantidades[i]);
+                quantidades[i].setText(Integer.toString(array[i]));
+                add(quantidades[i],r);
+                quantidades[i].repaint();
+                revalidate();
+            }
+       
+        
+    }
+        
     public void setFlagPosicionada(boolean flagPosicionada)
     {
         this.flagColocada = flagPosicionada;
