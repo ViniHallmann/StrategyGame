@@ -41,14 +41,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
     
     private Color corAdversario = new Color(255,204,204);
     private Color corJogador = new Color(175,175,255);
-    
-    private boolean bandeiraDisponivel = true;
-    private boolean marechalDisponivel = true;
-    private boolean espiaoDisponivel = true;
-    private int soldadosDisponiveis = 3;
-    private int caboArmeiroDisponiveis = 2;
-    private int bombasDisponiveis = 2;
-   
+
     private int resultadoCombate;
     
     GridBagConstraints  g = new GridBagConstraints();
@@ -58,13 +51,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
         tabuleiro = new Celula[(int)(sqrt(NUMERO_DE_CASAS))][(int)(sqrt(NUMERO_DE_CASAS))];
         setLayout(new GridBagLayout());
         constroiTabuleiro();
-    }
-
-    
-    public void atualizaPeçasDisponiveis(){
-        int numerosCabosArmeiros = getCaboArmeiroDisponiveis();
-        int numerosBombas = getBombasDisponiveis();
-        int numerosSoldados = getSoldadosDisponiveis();
     }
     
     public Celula getCelula(int x,int y)
@@ -110,46 +96,11 @@ public class Tabuleiro extends JPanel implements Cloneable{
         return rodada;
     }
     
-    public int getSoldadosDisponiveis() {
-        return soldadosDisponiveis;
-    }
-    
-    public int getCaboArmeiroDisponiveis() {
-        return caboArmeiroDisponiveis;
-    }
-    
-    public int getBombasDisponiveis() {
-        return bombasDisponiveis;
-    }
-    
     public Celula getCelulaSelecionada()
     {
         return celulaSelecionada;
     }
-    
-    public boolean isBandeiraDisponivel() {
-        return bandeiraDisponivel;
-    }
-
-    public boolean isMarechalDisponivel() {
-        return marechalDisponivel;
-    }
-
-    public boolean isEspiaoDisponivel() {
-        return espiaoDisponivel;
-    }
-    
-    public void resetQuantidadeDePecas()
-    {
-        this.bandeiraDisponivel = true;
-        this.marechalDisponivel = true;
-        this.espiaoDisponivel = true;
-        this.soldadosDisponiveis = 3;
-        this.caboArmeiroDisponiveis = 2;
-        this.bombasDisponiveis = 2;
-        
-    }
-                    
+     
     private void constroiTabuleiro()
     {
         g.insets = new java.awt.Insets(1, 1, 1, 1);
@@ -190,51 +141,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 remove(tabuleiro[i][j]);
             }
         }
-        resetQuantidadeDePecas();
         constroiTabuleiro();
-    }
-    
-    public void iteradorPeçasDisponiveis(char tipoDePeça)
-    {
-        switch(tipoDePeça){
-            case 'B':
-                bombasDisponiveis--;
-                return;
-            case 'C':
-                caboArmeiroDisponiveis--;
-                return;
-            case 'S':
-                soldadosDisponiveis--;
-                return;
-            case 'M':
-                marechalDisponivel = false;
-                return;
-            case 'E':
-                espiaoDisponivel = false;
-                return;
-            case 'F':
-                bandeiraDisponivel = false;
-                return;
-        }
-    }
-    
-    public boolean verificaPeçasDisponiveis(char tipoDePeça){
-        switch(tipoDePeça){
-            case 'B':
-                return (bombasDisponiveis > 0);
-            case 'C':
-                return (getCaboArmeiroDisponiveis() > 0);
-            case 'S':
-                return (getSoldadosDisponiveis() > 0);
-            case 'M':
-                return isMarechalDisponivel();
-            case 'E':
-                return isEspiaoDisponivel();
-            case 'F':
-                return isBandeiraDisponivel();
-            default:
-                return false;
-        }
     }
     
     public void colocaPeçaNoTabuleiro(Celula botaoClicado, int x, int y)
@@ -259,11 +166,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             add(novaCelula, g);
             revalidate();
             repaint();
-        /*}
-        else
-        {
-            System.out.println("Peça indisponivel...");
-        }*/
     }
 
     public void limpaPeca(Celula ultimoBotaoClicado){
@@ -516,6 +418,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
     }
 
     public void setPecasAleatorias(int time){
+        
         Random rand = new Random();
         int gerado = rand.nextInt(5);
         int ladoFlag;
@@ -536,12 +439,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
         remove(tabuleiro[gerado][ladoFlag]);
         tabuleiro[gerado][ladoFlag] = CelulaFactory.factory('F',time);
         tabuleiro[gerado][ladoFlag].setCoord(gerado, ladoFlag);
-        tabuleiro[gerado][ladoFlag].addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                   
-                   
-            }
-        });
+        
                 
         g.insets = new java.awt.Insets(1, 1, 1, 1); 
         g.gridx = gerado; g.gridy = ladoFlag;
@@ -583,14 +481,13 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 }
             }
         }
-        if(time == 1)
-        {
-            this.bombasDisponiveis = bombas;
+        
+         /*   this.bombasDisponiveis = bombas;
             this.soldadosDisponiveis = soldados;
             this.caboArmeiroDisponiveis = cabos;
             this.marechalDisponivel = marechal;
             this.espiaoDisponivel = espiao;
-        }
+        */
             
     }
 
@@ -799,13 +696,13 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 add(tabuleiro[i][j], g);
             }
         }
-        this.bandeiraDisponivel = true;
+      /*  this.bandeiraDisponivel = true;
         this.marechalDisponivel = true;
         this.espiaoDisponivel = true;
         this.soldadosDisponiveis = 3;
         this.caboArmeiroDisponiveis = 2;
         this.bombasDisponiveis = 2;
-        this.dicasDisponiveis = 2;
+        this.dicasDisponiveis = 2;*/
         repaint();
         revalidate();
     }
