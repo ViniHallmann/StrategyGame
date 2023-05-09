@@ -86,6 +86,12 @@ public class BoardSub extends JFrame{
                    tabuleiro.setPecasAleatorias(1);
                    tabuleiro.repaint();
                    tabuleiro.revalidate();
+                   bandeiraJogadorDisponivel = true;
+                   soldadosJogadorDisponiveis = 3;
+                   caboArmeiroJogadorDisponiveis = 2;
+                   bombasJogadorDisponiveis = 2;
+                   marechalJogadorDisponivel = true;
+                   espiaoJogadorDisponivel = true;
                    
                 }
             });
@@ -111,13 +117,14 @@ public class BoardSub extends JFrame{
                    botoesUtil.add(botoesUtil.getBotao(1),r);
                    addPecasAdversario(botoesUtil.getBotao(0));
                    addPecasJogador(botoesUtil.getBotao(1));
-                   
+                   rodadaPosicionarFlag();
+                   botoesUtil.repaint();
+                   botoesUtil.revalidate();
                    botoesPecas.repaint();
                    botoesPecas.revalidate();
                    tabuleiro.repaint();
                    tabuleiro.revalidate();
-                   
-                   rodadaPosicionarFlag();
+
                 }
             });
     }
@@ -129,7 +136,7 @@ public class BoardSub extends JFrame{
                     {    
                         tabuleiro.copiaTabuleiro();
                         mudaRodada();
-                        tabuleiro.resetQuantidadeDePecas();
+                        //tabuleiro.resetQuantidadeDePecas();
                         botoesUtil.remove(botoesUtil.getBotao(0));
                         botoesUtil.remove(botoesUtil.getBotao(1));
                         remove(botoesPecas);
