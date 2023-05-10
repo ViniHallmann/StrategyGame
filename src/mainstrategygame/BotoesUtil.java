@@ -17,14 +17,14 @@ import javax.swing.JPanel;
  */
 public class BotoesUtil extends JPanel{
     
-    GridBagConstraints g = new GridBagConstraints();
-    List<JButton> botoes = new ArrayList<>();
-    JButton pecasAdversario = new JButton("PC Random");
-    JButton pecasJogador = new JButton("Player Random");
-    JButton resetTabuleiro = new JButton("Reset");
-    JButton mudaRodada = new JButton("Inicia Jogo");
-    JButton debug = new JButton("DEBUG");
-    JButton dica = new JButton("Dica");
+    private GridBagConstraints g = new GridBagConstraints();
+    private List<JButton> botoes = new ArrayList<>();
+    private JButton pecasAdversario = new JButton("PC Random");
+    private JButton pecasJogador = new JButton("Player Random");
+    private JButton resetTabuleiro = new JButton("Reset");
+    private JButton mudaRodada = new JButton("Inicia Jogo");
+    private JButton debug = new JButton("DEBUG");
+    private JButton dica = new JButton("Dica");
     
     BotoesUtil()
     {
@@ -37,6 +37,7 @@ public class BotoesUtil extends JPanel{
         setLayout(new GridBagLayout());
         constroiBotoesUtil();
     }
+    
     private void constroiBotoesUtil()
     {
         int qnt = 0;
@@ -57,12 +58,15 @@ public class BotoesUtil extends JPanel{
             }
         }
     }
+    
     public JButton getBotao(int index)
     {
         return this.botoes.get(index);
     }
+    
     public GridBagConstraints getConstrains()
     {
         return g;
     }
+    
 } 

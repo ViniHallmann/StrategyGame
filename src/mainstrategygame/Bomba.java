@@ -11,24 +11,22 @@ package mainstrategygame;
 public class Bomba extends Peça{
 
     private boolean peçaEscondida;
-    private char tipo;
     private int nivel;
-  
+    
     public Bomba (){
         this.peçaEscondida = true;
         this.setNome("💣");
         this.nivel = 99;
     }
 
-    public int getNivel() {
-        return nivel;
-    }
-    
-    public void setBombaEscondida(boolean peçaEscondida) {
+    public void setEscondida(boolean peçaEscondida) {
         this.peçaEscondida = peçaEscondida;
     }
     
-    public boolean isBombaEscondida() {
+    public boolean isEscondida() {
         return peçaEscondida;
+    }
+    public int getNivel(){
+        return nivel;
     }
 }

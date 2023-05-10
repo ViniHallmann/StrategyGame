@@ -27,8 +27,6 @@ public class BoardSub extends JFrame{
     GridBagConstraints  g = new GridBagConstraints();
 
     private final int NUMERO_DE_ROLES = 6; 
-    private boolean flagPosicionada = false;
-    
     private boolean bandeiraJogadorDisponivel = false;
     private boolean marechalJogadorDisponivel = false;
     private boolean espiaoJogadorDisponivel = false;
@@ -74,7 +72,8 @@ public class BoardSub extends JFrame{
        
     }
     
-    public void addPecasAdversario( JButton pecasAdversario){
+    public void addPecasAdversario( JButton pecasAdversario)
+    {
         pecasAdversario.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.setPecasAleatorias(-1);
@@ -84,7 +83,8 @@ public class BoardSub extends JFrame{
         });
     }
     
-    public void addPecasJogador( JButton pecasJogador){
+    public void addPecasJogador( JButton pecasJogador)
+    {
         pecasJogador.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.setPecasAleatorias(1);
@@ -110,7 +110,8 @@ public class BoardSub extends JFrame{
             });
     }
        
-    public void addResetTabuleiro(GridBagConstraints g,JButton resetTabuleiro){
+    public void addResetTabuleiro(GridBagConstraints g,JButton resetTabuleiro)
+    {
         resetTabuleiro.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
       
@@ -143,7 +144,8 @@ public class BoardSub extends JFrame{
             });
     }
     
-    public void addMudaRodada(JButton mudaRodada){
+    public void addMudaRodada(JButton mudaRodada)
+    {
         mudaRodada.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     if(verificaPeçasPosicionadas())
@@ -166,7 +168,8 @@ public class BoardSub extends JFrame{
             });
     }
     
-    public void addDebug(JButton debug){
+    public void addDebug(JButton debug)
+    {
         debug.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.debugBoard();
@@ -174,7 +177,8 @@ public class BoardSub extends JFrame{
             });
     }
        
-    public void addDica(JButton imprimeMatriz){
+    public void addDica(JButton imprimeMatriz)
+    {
         imprimeMatriz.setSize(50, 10);
         imprimeMatriz.addMouseListener(new MouseAdapter() {
                  public void mouseClicked(MouseEvent e) {
@@ -282,8 +286,8 @@ public class BoardSub extends JFrame{
         
     }
 
- 
-    public void mudaRodada(){
+    public void mudaRodada()
+    {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
             for (int j = 0; j < 3; j++) 
@@ -407,6 +411,7 @@ public class BoardSub extends JFrame{
         
         
     }
+    
     public void adicionarListener(Celula origem, Celula destino)
     {
         origem.addMouseListener(new MouseAdapter() 
@@ -641,6 +646,7 @@ public class BoardSub extends JFrame{
             tabuleiro.revalidate();
         }
     }
+    
     public void iteradorPeçasDisponiveis(Celula tipoDePeça)
     {
         switch(tipoDePeça.getPeca().getTipo()){
@@ -718,7 +724,8 @@ public class BoardSub extends JFrame{
         }
     }
     
-    public boolean verificaPeçasPosicionadas(){
+    public boolean verificaPeçasPosicionadas()
+    {
         
         return bombasJogadorDisponiveis == 2 &&
                 caboArmeiroJogadorDisponiveis == 2 &&
@@ -737,6 +744,7 @@ public class BoardSub extends JFrame{
                espiaoAdversarioDisponivel == false;
                 
     }
+    
     public boolean verificaAdversarioVitoria()
     {
         return caboArmeiroJogadorDisponiveis == 0 &&
@@ -745,6 +753,7 @@ public class BoardSub extends JFrame{
                espiaoJogadorDisponivel == false;
                 
     }
+    
     public void resetNumeroDePecasJogador()
     {
         bandeiraJogadorDisponivel = false;

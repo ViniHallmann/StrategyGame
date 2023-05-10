@@ -21,7 +21,6 @@ public final class BotoesPecas extends JPanel{
     
     private final Celula[] botoes;
     private JLabel[] quantidades;
-    private boolean flagColocada = false;
     
     GridBagConstraints  r = new GridBagConstraints();
     
@@ -46,7 +45,8 @@ public final class BotoesPecas extends JPanel{
         constroiBotoesPecas();
     }
     
-    public void constroiBotoesPecas(){
+    public void constroiBotoesPecas()
+    {
         
         r.insets = new java.awt.Insets(40, 1, 1, 1);
         
@@ -76,7 +76,6 @@ public final class BotoesPecas extends JPanel{
         
         r.insets = new java.awt.Insets(1, 1, 1, 1);
     }
-    //BOTAR A QUANTIDADE DE PECAS NO TABULEIRO
     
     public void quantidadeDePecas(int bombas, int cabos, int soldados, boolean marechal, boolean espiao, boolean flag)
     {
@@ -117,10 +116,6 @@ public final class BotoesPecas extends JPanel{
         
     }
         
-    public void setFlagPosicionada(boolean flagPosicionada)
-    {
-        this.flagColocada = flagPosicionada;
-    }
     public void resetaBotoesPecas()
     {
         for(int i = 0 ; i < NUMERO_DE_ROLES; i++)
@@ -134,6 +129,7 @@ public final class BotoesPecas extends JPanel{
     {
         return botoes[index];
     }
+    
     public void iteradorPeçasDisponiveis(Celula celula)
     {
         switch(celula.getPeca().getTipo()){

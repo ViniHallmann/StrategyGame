@@ -15,8 +15,7 @@ import javax.swing.JButton;
  *
  * @author jvlai
  */
-public class Celula extends JButton implements MouseListener{
-   // private char tipo;
+public class Celula extends JButton{
     private int posX;
     private int posY;
     private Peça peca;
@@ -26,7 +25,6 @@ public class Celula extends JButton implements MouseListener{
     
     public Celula(char t , Peça peca, int equipe)
     {
-        addMouseListener(this);
         this.peca = peca;
         this.equipe = equipe;
         if(equipe > -1)
@@ -35,9 +33,9 @@ public class Celula extends JButton implements MouseListener{
         this.peca.setTipo(t);
         setPreferredSize(new java.awt.Dimension(50, 50));
     }
+    
     public Celula()
     {
-        addMouseListener(this);
         setText(peca.getNome());
     }
     
@@ -54,10 +52,12 @@ public class Celula extends JButton implements MouseListener{
     {
         this.eLago = true;
     }
+    
     public boolean getLago()
     {
         return this.eLago;
     }
+    
     public void setPeça(Peça peça)
     {
         this.peca = peça;
@@ -72,9 +72,12 @@ public class Celula extends JButton implements MouseListener{
     {
         this.equipe = equipe;
     }
-    public int getEquipe(){
+    
+    public int getEquipe()
+    {
         return this.equipe;
     }
+    
     public void setCoord(int posx, int posy)
     {
         this.posX = posx;
@@ -85,29 +88,10 @@ public class Celula extends JButton implements MouseListener{
     {
         return this.posX;
     }
+    
     public int getPosY()
     {
         return this.posY;
     }
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
+    
 }

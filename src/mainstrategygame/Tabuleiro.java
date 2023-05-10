@@ -43,7 +43,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
     
     private int resultadoCombate;
     
-    GridBagConstraints  g = new GridBagConstraints();
+    private GridBagConstraints  g = new GridBagConstraints();
        
     public Tabuleiro()
     {
@@ -51,27 +51,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
         setLayout(new GridBagLayout());
         constroiTabuleiro();
     }
-    
-    public Celula getCelula(int x,int y)
-    {
-        return tabuleiro[x][y];
-    }
-    
-    public void setCelulaSelecionada(Celula celulaSelecionada)
-    {
-        this.celulaSelecionada = celulaSelecionada; 
-    }
-
-   
-    public int getDicasDisponiveis() {
-        return dicasDisponiveis;
-    }
-    
-    public Celula getCelulaSelecionada()
-    {
-        return celulaSelecionada;
-    }
-     
+         
     private void constroiTabuleiro()
     {
         g.insets = new java.awt.Insets(1, 1, 1, 1);
@@ -101,8 +81,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
             }
         }
     }
-        
-    
+       
     public void resetaTabuleiro()
     {
         for(int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
@@ -132,7 +111,8 @@ public class Tabuleiro extends JPanel implements Cloneable{
             repaint();
     }
 
-    public void limpaPeca(Celula ultimoBotaoClicado){
+    public void limpaPeca(Celula ultimoBotaoClicado)
+    {
         ultimoBotaoClicado.setIcon(null);
         ultimoBotaoClicado.setText(null);
         Color cor = new Color(204,255,204);
@@ -378,12 +358,13 @@ public class Tabuleiro extends JPanel implements Cloneable{
         return getResultadoCombate();
     }
     
-    public void resetaUltimoBotaoClicado(){
+    public void resetaUltimoBotaoClicado()
+    {
         this.ultimoBotaoClicado = null;
     }
     
-    
-    public void atualizaTabuleiro() {
+    public void atualizaTabuleiro() 
+    {
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++) 
         {
             for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++) 
@@ -400,7 +381,8 @@ public class Tabuleiro extends JPanel implements Cloneable{
         }
     }
 
-    public void setPecasAleatorias(int time){
+    public void setPecasAleatorias(int time)
+    {
         
         Random rand = new Random();
         int gerado = rand.nextInt(5);
@@ -502,7 +484,8 @@ public class Tabuleiro extends JPanel implements Cloneable{
         }
     }
     
-    public static void clearConsole() {
+    public static void clearConsole() 
+    {
         for (int i = 0; i < 10; i++) {
             System.out.println();
     }
@@ -589,6 +572,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
         }
         return resultadoCalculoDistancia;
     }
+    
     public void adicionarListener(Celula celula)
     {
         
@@ -676,33 +660,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
         repaint();
         revalidate();
     }
-
-    public Celula getUltimoBotaoClicado() {
-        return this.ultimoBotaoClicado;
-    }
-    public void setUltimoBotaoClicado(Celula botao)
-    {
-        this.ultimoBotaoClicado = botao;
-    }
-    
-    public void setCoordenadasUltimoBotao(int x, int y)
-    {
-        this.coordenadaXUltimoBotao = x;
-        this.coordenadaYUltimoBotao = y;
-    }
-    
-    public int getCoordenadasUltimoBotao(char xy)
-    {
-        if(xy == 'x')
-            return this.coordenadaXUltimoBotao;
-        else
-            return this.coordenadaYUltimoBotao;
-    }
-    
-    public int getResultadoCombate()
-    {
-        return this.resultadoCombate;
-    }
     
     public void movePecaAdversaria()
     {
@@ -765,16 +722,69 @@ public class Tabuleiro extends JPanel implements Cloneable{
     {
         return this.novoDestino;
     }
+    
     public Celula getCelulaNovaOrigem()
     {
         return this.novaOrigem;
     }
+    
      public Celula getCelulaDestino()
     {
         return this.celulaDestino;
     }
+     
     public Celula getCelulaOrigem()
     {
         return this.celulaOrigem;
     }
+    
+    public int getResultadoCombate()
+    {
+        return this.resultadoCombate;
+    }
+      
+    public Celula getUltimoBotaoClicado() 
+    {
+        return this.ultimoBotaoClicado;
+    }
+    
+    public void setUltimoBotaoClicado(Celula botao)
+    {
+        this.ultimoBotaoClicado = botao;
+    }
+    
+    public int getCoordenadasUltimoBotao(char xy)
+    {
+        if(xy == 'x')
+            return this.coordenadaXUltimoBotao;
+        else
+            return this.coordenadaYUltimoBotao;
+    }
+    
+    public Celula getCelula(int x,int y)
+    {
+        return tabuleiro[x][y];
+    }
+        
+    public void setCoordenadasUltimoBotao(int x, int y)
+    {
+        this.coordenadaXUltimoBotao = x;
+        this.coordenadaYUltimoBotao = y;
+    }
+    
+    public void setCelulaSelecionada(Celula celulaSelecionada)
+    {
+        this.celulaSelecionada = celulaSelecionada; 
+    }
+    
+    public Celula getCelulaSelecionada()
+    {
+        return celulaSelecionada;
+    }
+    
+    public int getDicasDisponiveis() 
+    {
+        return dicasDisponiveis;
+    }
+
 }

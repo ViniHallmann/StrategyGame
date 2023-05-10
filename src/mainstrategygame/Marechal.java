@@ -11,14 +11,21 @@ package mainstrategygame;
 public class Marechal extends Peça{
     private boolean peçaEscondida;
     private int nivel;
-    private char tipo;
     
     public Marechal(){
         this.peçaEscondida = true;
         this.setNome("🎖");
         this.nivel = 10;
     }
-
+    
+     public void setEscondida(boolean peçaEscondida) {
+        this.peçaEscondida = peçaEscondida;
+    }
+    
+    public boolean isEscondida() {
+        return peçaEscondida;
+    }
+    
     public int getNivel() {
         return nivel;
     }

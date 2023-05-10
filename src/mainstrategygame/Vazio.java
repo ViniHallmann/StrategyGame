@@ -9,8 +9,14 @@ package mainstrategygame;
  * @author jvlai
  */
 public class Vazio extends Peça {
-    private char tipo;
+    private boolean vazio;
     
     public Vazio (){
+        this.vazio = true;
+    }
+    
+    public boolean isVazio()
+    {
+        return this.vazio;
     }
 }
