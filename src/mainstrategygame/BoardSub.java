@@ -21,7 +21,6 @@ import static mainstrategygame.Tabuleiro.NUMERO_DE_CASAS;
  */
 public class BoardSub extends JFrame{
     Tabuleiro tabuleiro = new Tabuleiro();  
-    Tabuleiro reserva;
     BotoesPecas botoesPecas = new BotoesPecas();
     BotoesUtil botoesUtil = new BotoesUtil();
 
@@ -304,8 +303,10 @@ public class BoardSub extends JFrame{
                             adicionarListener(tabuleiro.getCelulaNovaOrigem(), tabuleiro.getCelulaNovoDestino());                            
                             //System.out.println("resultado jogador = "+tabuleiro.getResultadoCombate());
                             if(tabuleiro.getResultadoCombate() == 3)
+                            {   
                                 vitoriaDoJogador(true);
-                            
+                                return;
+                            }
                             else
                             {
                                 if(tabuleiro.getResultadoCombate() != 0 && tabuleiro.getResultadoCombate() != -1)
@@ -326,12 +327,20 @@ public class BoardSub extends JFrame{
                                 adicionarListener(tabuleiro.getCelulaNovaOrigem(), tabuleiro.getCelulaNovoDestino());
                                 
                                 if(verificaJogadorVitoria())
+                                {
                                     vitoriaDoJogador(true);
+                                    return;
+                                }
                                 if(verificaAdversarioVitoria())
+                                {
                                     vitoriaDoJogador(false);
-                                
+                                    return;
+                                }
                                 if(tabuleiro.getResultadoCombate() == 3)
+                                {
                                     vitoriaDoJogador(false);
+                                    return;
+                                }
                                 else
                                 {
                                     if(tabuleiro.getResultadoCombate() != 0 && tabuleiro.getResultadoCombate() != -1)
@@ -356,10 +365,16 @@ public class BoardSub extends JFrame{
                         System.out.println(" BJ:"+bombasJogadorDisponiveis+" CJ:"+caboArmeiroJogadorDisponiveis+" SJ:"+soldadosJogadorDisponiveis+" MJ:"+marechalJogadorDisponivel+" EJ:"+espiaoJogadorDisponivel+" BJ:"+bandeiraJogadorDisponivel);
                         System.out.println(" BA:"+bombasAdversarioDisponiveis+" CA:"+caboArmeiroAdversarioDisponiveis+" SA:"+soldadosAdversarioDisponiveis+" MA:"+marechalAdversarioDisponivel+" EA:"+espiaoAdversarioDisponivel+" BA:"+bandeiraAdversarioDisponivel);
 
-                        if(verificaJogadorVitoria())
-                            vitoriaDoJogador(true);
-                        if(verificaAdversarioVitoria())
-                            vitoriaDoJogador(false);
+                         if(verificaJogadorVitoria())
+                                {
+                                    vitoriaDoJogador(true);
+                                    return;
+                                }
+                                if(verificaAdversarioVitoria())
+                                {
+                                    vitoriaDoJogador(false);
+                                    return;
+                                }
                         
                         
                     }
@@ -408,8 +423,10 @@ public class BoardSub extends JFrame{
                             adicionarListener(tabuleiro.getCelulaNovaOrigem(), tabuleiro.getCelulaNovoDestino());                            
                             //System.out.println("resultado jogador = "+tabuleiro.getResultadoCombate());
                             if(tabuleiro.getResultadoCombate() == 3)
+                            {   
                                 vitoriaDoJogador(true);
-                            
+                                return;
+                            }
                             else
                             {
                                 if(tabuleiro.getResultadoCombate() != 0 && tabuleiro.getResultadoCombate() != -1)
@@ -430,12 +447,20 @@ public class BoardSub extends JFrame{
                                 adicionarListener(tabuleiro.getCelulaNovaOrigem(), tabuleiro.getCelulaNovoDestino());
                                 
                                 if(verificaJogadorVitoria())
+                                {
                                     vitoriaDoJogador(true);
+                                    return;
+                                }
                                 if(verificaAdversarioVitoria())
+                                {
                                     vitoriaDoJogador(false);
-                                
+                                    return;
+                                }
                                 if(tabuleiro.getResultadoCombate() == 3)
+                                {
                                     vitoriaDoJogador(false);
+                                    return;
+                                }
                                 else
                                 {
                                     if(tabuleiro.getResultadoCombate() != 0 && tabuleiro.getResultadoCombate() != -1)
@@ -461,57 +486,39 @@ public class BoardSub extends JFrame{
                         System.out.println(" BA:"+bombasAdversarioDisponiveis+" CA:"+caboArmeiroAdversarioDisponiveis+" SA:"+soldadosAdversarioDisponiveis+" MA:"+marechalAdversarioDisponivel+" EA:"+espiaoAdversarioDisponivel+" BA:"+bandeiraAdversarioDisponivel);
 
                         if(verificaJogadorVitoria())
-                            vitoriaDoJogador(true);
-                        if(verificaAdversarioVitoria())
-                            vitoriaDoJogador(false);
-                        
-                        
-                    }
-                });
-    if(tabuleiro.getResultadoCombate() == 2)
-    {
-        destino.addMouseListener(new MouseAdapter() 
-                {
-                    public void mouseClicked(MouseEvent e) 
-                    {
-                        
-                        Celula botaoClicado = (Celula) e.getSource();
-                        System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
-                        if ( tabuleiro.getUltimoBotaoClicado() != null && tabuleiro.validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
+                               {
+                                   vitoriaDoJogador(true);
+                                   return;
+                               }
+                               if(verificaAdversarioVitoria())
+                               {
+                                   vitoriaDoJogador(false);
+                                   return;
+                               }
+
+
+                   }
+               });
+        if(tabuleiro.getResultadoCombate() == 2)
+        {
+            destino.addMouseListener(new MouseAdapter() 
+            {
+                        public void mouseClicked(MouseEvent e) 
                         {
-                            tabuleiro.movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY(),tabuleiro.getUltimoBotaoClicado(), tabuleiro.getCoordenadasUltimoBotao('x'),tabuleiro.getCoordenadasUltimoBotao('y'));
-                            tabuleiro.resetaUltimoBotaoClicado();
-                            adicionarListener(tabuleiro.getCelulaNovaOrigem(), tabuleiro.getCelulaNovoDestino());                            
-                            //System.out.println("resultado jogador = "+tabuleiro.getResultadoCombate());
-                            if(tabuleiro.getResultadoCombate() == 3)
-                                vitoriaDoJogador(true);
-                            
-                            else
+
+                            Celula botaoClicado = (Celula) e.getSource();
+                            System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
+                            if ( tabuleiro.getUltimoBotaoClicado() != null && tabuleiro.validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
                             {
-                                if(tabuleiro.getResultadoCombate() != 0 && tabuleiro.getResultadoCombate() != -1)
-                                    decrementarPeca(tabuleiro.getCelulaDestino());
-                                else if(tabuleiro.getResultadoCombate() == -1)
-                                {
-                                    System.out.println("se matou");
-                                    decrementarPeca(tabuleiro.getCelulaOrigem());
-                                }
-                                else
-                                {
-                                    decrementarPeca(tabuleiro.getCelulaDestino());
-                                    decrementarPeca(tabuleiro.getCelulaOrigem());
-                                }
-                                
-                                tabuleiro.movePecaAdversaria();
+                                tabuleiro.movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY(),tabuleiro.getUltimoBotaoClicado(), tabuleiro.getCoordenadasUltimoBotao('x'),tabuleiro.getCoordenadasUltimoBotao('y'));
                                 tabuleiro.resetaUltimoBotaoClicado();
-                                adicionarListener(tabuleiro.getCelulaNovaOrigem(), tabuleiro.getCelulaNovoDestino());
-                                
-                                if(verificaJogadorVitoria())
-                                    vitoriaDoJogador(true);
-                                if(verificaAdversarioVitoria())
-                                    vitoriaDoJogador(false);
-                                
+                                adicionarListener(tabuleiro.getCelulaNovaOrigem(), tabuleiro.getCelulaNovoDestino());                            
+                                //System.out.println("resultado jogador = "+tabuleiro.getResultadoCombate());
                                 if(tabuleiro.getResultadoCombate() == 3)
-                                    vitoriaDoJogador(false);
+                                {   
+                                    vitoriaDoJogador(true);
+                                    return;
+                                }
                                 else
                                 {
                                     if(tabuleiro.getResultadoCombate() != 0 && tabuleiro.getResultadoCombate() != -1)
@@ -526,31 +533,66 @@ public class BoardSub extends JFrame{
                                         decrementarPeca(tabuleiro.getCelulaDestino());
                                         decrementarPeca(tabuleiro.getCelulaOrigem());
                                     }
-                                }
-                                
-                            }
-                            
-                            tabuleiro.resetaUltimoBotaoClicado();
-                                
-                        }
-                        System.out.println(" BJ:"+bombasJogadorDisponiveis+" CJ:"+caboArmeiroJogadorDisponiveis+" SJ:"+soldadosJogadorDisponiveis+" MJ:"+marechalJogadorDisponivel+" EJ:"+espiaoJogadorDisponivel+" BJ:"+bandeiraJogadorDisponivel);
-                        System.out.println(" BA:"+bombasAdversarioDisponiveis+" CA:"+caboArmeiroAdversarioDisponiveis+" SA:"+soldadosAdversarioDisponiveis+" MA:"+marechalAdversarioDisponivel+" EA:"+espiaoAdversarioDisponivel+" BA:"+bandeiraAdversarioDisponivel);
 
-                        if(verificaJogadorVitoria())
-                            vitoriaDoJogador(true);
-                        if(verificaAdversarioVitoria())
-                            vitoriaDoJogador(false);
-                        
-                        
-                    }
-                });
-    }
-        
-    //#quando 2 listener no origem
-    //#quando 0 listener nos dois
-    //#quando -1 listener no origem
-    //#quando 1 listener no origem 
-    }
+                                    tabuleiro.movePecaAdversaria();
+                                    tabuleiro.resetaUltimoBotaoClicado();
+                                    adicionarListener(tabuleiro.getCelulaNovaOrigem(), tabuleiro.getCelulaNovoDestino());
+
+                                    if(verificaJogadorVitoria())
+                                    {
+                                        vitoriaDoJogador(true);
+                                        return;
+                                    }
+                                    if(verificaAdversarioVitoria())
+                                    {
+                                        vitoriaDoJogador(false);
+                                        return;
+                                    }
+                                    if(tabuleiro.getResultadoCombate() == 3)
+                                    {
+                                        vitoriaDoJogador(false);
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        if(tabuleiro.getResultadoCombate() != 0 && tabuleiro.getResultadoCombate() != -1)
+                                            decrementarPeca(tabuleiro.getCelulaDestino());
+                                        else if(tabuleiro.getResultadoCombate() == -1)
+                                        {
+                                            System.out.println("se matou");
+                                            decrementarPeca(tabuleiro.getCelulaOrigem());
+                                        }
+                                        else
+                                        {
+                                            decrementarPeca(tabuleiro.getCelulaDestino());
+                                            decrementarPeca(tabuleiro.getCelulaOrigem());
+                                        }
+                                    }
+
+                                }
+
+                                tabuleiro.resetaUltimoBotaoClicado();
+
+                            }
+                            System.out.println(" BJ:"+bombasJogadorDisponiveis+" CJ:"+caboArmeiroJogadorDisponiveis+" SJ:"+soldadosJogadorDisponiveis+" MJ:"+marechalJogadorDisponivel+" EJ:"+espiaoJogadorDisponivel+" BJ:"+bandeiraJogadorDisponivel);
+                            System.out.println(" BA:"+bombasAdversarioDisponiveis+" CA:"+caboArmeiroAdversarioDisponiveis+" SA:"+soldadosAdversarioDisponiveis+" MA:"+marechalAdversarioDisponivel+" EA:"+espiaoAdversarioDisponivel+" BA:"+bandeiraAdversarioDisponivel);
+
+                            if(verificaJogadorVitoria())
+                                    {
+                                        vitoriaDoJogador(true);
+                                        return;
+                                    }
+                                    if(verificaAdversarioVitoria())
+                                    {
+                                        vitoriaDoJogador(false);
+                                        return;
+                                    }
+
+
+                        }
+             });
+         }
+   }
 
     public void vitoriaDoJogador(boolean equipeGanhadora) 
     {
@@ -574,14 +616,13 @@ public class BoardSub extends JFrame{
         if (opcao == 2)
         {
             tabuleiro.resetaTabuleiro();
-            flagPosicionada = false;
+            resetNumeroDePecasJogador();
+            resetNumeroDePecasAdversario();
+            bandeiraJogadorDisponivel = false;
             g.gridx = 0;
             g.gridy = 1;
             add(botoesPecas,g);
-            botoesPecas.resetaBotoesPecas();
-            rodadaPosicionarFlag();
-            botoesUtil.remove(botoesUtil.getBotao(0));
-            botoesUtil.remove(botoesUtil.getBotao(1));
+
             GridBagConstraints r = botoesUtil.getConstrains();
             r.gridx = 0;
             r.gridy = 0;
@@ -590,6 +631,12 @@ public class BoardSub extends JFrame{
             botoesUtil.add(botoesUtil.getBotao(1),r);
             addPecasAdversario(botoesUtil.getBotao(0));
             addPecasJogador(botoesUtil.getBotao(1));
+            rodadaPosicionarFlag();
+            botoesPecas.quantidadeDePecas(bombasJogadorDisponiveis,caboArmeiroJogadorDisponiveis,soldadosJogadorDisponiveis,marechalJogadorDisponivel,espiaoJogadorDisponivel,bandeiraJogadorDisponivel);
+            botoesUtil.repaint();
+            botoesUtil.revalidate();
+            botoesPecas.repaint();
+            botoesPecas.revalidate();
             tabuleiro.repaint();
             tabuleiro.revalidate();
         }
@@ -710,12 +757,12 @@ public class BoardSub extends JFrame{
     
     public void resetNumeroDePecasAdversario()
     {
-        bandeiraAdversarioDisponivel = false;
-        marechalAdversarioDisponivel = false;
-        espiaoAdversarioDisponivel = false;
-        soldadosAdversarioDisponiveis = 0;
-        caboArmeiroAdversarioDisponiveis = 0;
-        bombasAdversarioDisponiveis = 0;
+        bandeiraAdversarioDisponivel = true;
+        marechalAdversarioDisponivel = true;
+        espiaoAdversarioDisponivel = true;
+        soldadosAdversarioDisponiveis = 3;
+        caboArmeiroAdversarioDisponiveis = 2;
+        bombasAdversarioDisponiveis = 2;
     }
     
     public void decrementarPeca(Celula pecaAtacada)
