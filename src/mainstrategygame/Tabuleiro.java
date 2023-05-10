@@ -667,8 +667,9 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 adicionarListener(copiaCelula);
                 copiaTabuleiro[i][j] = copiaCelula;
                 copiaTabuleiro[i][j].setCoord(i,j);
-                if((i == 1 && j == 2)||(i == 3 && j == 2))
+                if (tabuleiro[i][j].getLago() == true)
                 {
+                    copiaTabuleiro[i][j].setLago();
                     copiaTabuleiro[i][j].setBackground(new java.awt.Color(204, 204, 255));
                 }
             }
