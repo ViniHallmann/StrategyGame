@@ -4,7 +4,6 @@
  */
 package mainstrategygame; 
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -31,7 +30,8 @@ public class TelaBoasVindas extends JFrame{
         "</div></html>");
     private final JButton continuar = new JButton();
     GridBagConstraints g = new GridBagConstraints();
-    public TelaBoasVindas(){
+    public TelaBoasVindas()
+    {
         
         setSize(800,600);
         setLocationRelativeTo(null);
@@ -57,7 +57,9 @@ public class TelaBoasVindas extends JFrame{
         textoBoasVindas.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         add(textoBoasVindas, g);
     }
-    public JButton getBotaoContinuar() {
+    
+    public JButton getBotaoContinuar() 
+    {
         return continuar;
     }
 }

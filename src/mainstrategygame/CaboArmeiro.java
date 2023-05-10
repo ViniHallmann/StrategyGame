@@ -11,7 +11,6 @@ package mainstrategygame;
 public class CaboArmeiro extends Peça {
     private boolean peçaEscondida;
     private boolean desarmaBomba;
-    private char tipo;
     private int nivel;
     
     public CaboArmeiro (){

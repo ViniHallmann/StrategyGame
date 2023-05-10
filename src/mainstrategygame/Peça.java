@@ -13,28 +13,26 @@ import javax.swing.JLabel;
 public abstract class Peça extends JLabel{
     private String nome;
     private char tipo;   
-    private int nivel;
+
     public Peça() {
-        //setText(nome);
+        
     }
     
     public void setTipo(char tipo)
     {
         this.tipo = tipo;
     }
+    
     public char getTipo()
     {
         return tipo;
     }
-   // public void setCoord(int x ,int y)
-   // {
-   //     this.posX = x;
-   //     this.posY = y;
-   // }
 
-    public String getNome() {
+    public String getNome() 
+    {
         return nome;
     }
+    
     public void setNome(String nome)
     {
         this.nome = nome;

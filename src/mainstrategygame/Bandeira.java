@@ -12,7 +12,6 @@ public class Bandeira extends Peça{
 
     private boolean peçaEscondida;
     private boolean bandeiraSegura;
-    private char tipo;
     
     public Bandeira(){
         this.peçaEscondida  = true;
