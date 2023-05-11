@@ -2,6 +2,23 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/BoardSub.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Bomba.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/CelulaFactory.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Soldado.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/BotoesUtil.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Tabuleiro.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/TelaBoasVindas.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Bandeira.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/BotoesPecas.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/Celula.java</file>
+            <file>file:/D:/Arquivos/Programação/StrategyGame/MainStrategyGame/src/mainstrategygame/MainStrategyGame.java</file>
+
+        </group>
+>>>>>>> 45750816947f499ee2f06359fbf09f90f4450478
     </open-files>
 </project-private>
