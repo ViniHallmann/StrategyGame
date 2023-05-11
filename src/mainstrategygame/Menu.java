@@ -22,7 +22,7 @@ public class Menu extends JFrame{
     
     GridBagConstraints g = new GridBagConstraints();
     public Menu()
-    {
+    { 
        setTitle("STRATEGY GAME");
        setSize(800,600);
        setLocationRelativeTo(null);

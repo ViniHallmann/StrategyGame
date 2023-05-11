@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  */
 public final class BotoesPecas extends JPanel{
     public static final int NUMERO_DE_ROLES = 6;
-    
+     
     private final Celula[] botoes;
     private JLabel[] quantidades;
     

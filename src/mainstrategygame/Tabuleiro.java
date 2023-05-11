@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  * @author jvlai
  */
 public class Tabuleiro extends JPanel implements Cloneable{
-    
+      
     public static final int NUMERO_DE_CASAS = 25;
     
     private Celula ultimoBotaoClicado = null;
@@ -524,7 +524,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
         {
             if (coordenadaXUltimoBotaoClicado == coordenadaXBotaoClicado || coordenadaYUltimoBotaoClicado == coordenadaYBotaoClicado )
             {
-                int distanciaClicada;
                 int incrementoX = 0;
                 int incrementoY = 0;
                 int x;
@@ -552,7 +551,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 y = coordenadaYUltimoBotaoClicado + incrementoY;
                 while (x != coordenadaXBotaoClicado || y != coordenadaYBotaoClicado) 
                 {
-                    if (!(tabuleiro[x][y].getPeca() instanceof Vazio)) 
+                    if (!(tabuleiro[x][y].getPeca() instanceof Vazio) || (tabuleiro[x][y].getLago() == true) ) 
                     {
                         return false;
                     }
@@ -628,8 +627,9 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 adicionarListener(copiaCelula);
                 copiaTabuleiro[i][j] = copiaCelula;
                 copiaTabuleiro[i][j].setCoord(i,j);
-                if((i == 1 && j == 2)||(i == 3 && j == 2))
+                if (tabuleiro[i][j].getLago() == true)
                 {
+                    copiaTabuleiro[i][j].setLago();
                     copiaTabuleiro[i][j].setBackground(new java.awt.Color(204, 204, 255));
                 }
             }
