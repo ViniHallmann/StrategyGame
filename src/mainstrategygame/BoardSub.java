@@ -75,6 +75,7 @@ public class BoardSub extends JFrame{
     public void addPecasAdversario( JButton pecasAdversario)
     {
         pecasAdversario.addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.setPecasAleatorias(-1);
                    tabuleiro.repaint();
@@ -86,6 +87,7 @@ public class BoardSub extends JFrame{
     public void addPecasJogador( JButton pecasJogador)
     {
         pecasJogador.addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.setPecasAleatorias(1);
                    tabuleiro.repaint();
@@ -113,6 +115,7 @@ public class BoardSub extends JFrame{
     public void addResetTabuleiro(GridBagConstraints g,JButton resetTabuleiro)
     {
         resetTabuleiro.addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
       
                    tabuleiro.resetaTabuleiro();
@@ -147,6 +150,7 @@ public class BoardSub extends JFrame{
     public void addMudaRodada(JButton mudaRodada)
     {
         mudaRodada.addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     if(verificaPeçasPosicionadas())
                     {    
@@ -170,6 +174,7 @@ public class BoardSub extends JFrame{
     public void addDebug(JButton debug)
     {
         debug.addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
                    tabuleiro.debugBoard();
                 }
@@ -180,6 +185,7 @@ public class BoardSub extends JFrame{
     {
         imprimeMatriz.setSize(50, 10);
         imprimeMatriz.addMouseListener(new MouseAdapter() {
+                 @Override
                  public void mouseClicked(MouseEvent e) {
                     tabuleiro.dicaBomba();
                  }
@@ -195,6 +201,7 @@ public class BoardSub extends JFrame{
             botoesPecas.getBotoes(5).setEnabled(true);
             botoesPecas.getBotoes(5).addMouseListener(new MouseAdapter() 
                 {
+                    @Override
                     public void mouseClicked(MouseEvent e) 
                     {   
                         Celula botaoClicado = (Celula)e.getSource();
@@ -243,6 +250,7 @@ public class BoardSub extends JFrame{
             botoesPecas.getBotoes(i).setEnabled(true);
             botoesPecas.getBotoes(i).addMouseListener(new MouseAdapter() 
                 {
+                    @Override
                     public void mouseClicked(MouseEvent e) 
                     {   
                         Celula botaoClicado = (Celula)e.getSource();
@@ -294,6 +302,7 @@ public class BoardSub extends JFrame{
                 tabuleiro.getCelula(i, j).setEnabled(true);
                 tabuleiro.getCelula(i, j).addMouseListener(new MouseAdapter() 
                 {
+                    @Override
                     public void mouseClicked(MouseEvent e) 
                     {
                         
@@ -399,7 +408,7 @@ public class BoardSub extends JFrame{
                        // System.out.println(tabuleiro.getUltimoBotaoClicado().getPeca());
 
                         tabuleiro.setCoordenadasUltimoBotao(botaoClicado.getPosX(),botaoClicado.getPosY());
-                        System.out.println(tabuleiro.getCoordenadasUltimoBotao('x') +" "+ tabuleiro.getCoordenadasUltimoBotao('y'));
+                        //System.out.println(tabuleiro.getCoordenadasUltimoBotao('x') +" "+ tabuleiro.getCoordenadasUltimoBotao('y'));
                        
                     }
                 });   
@@ -413,6 +422,7 @@ public class BoardSub extends JFrame{
     {
         origem.addMouseListener(new MouseAdapter() 
                 {
+                    @Override
                     public void mouseClicked(MouseEvent e) 
                     {
                         
@@ -503,6 +513,7 @@ public class BoardSub extends JFrame{
         {
             destino.addMouseListener(new MouseAdapter() 
                 {
+                    @Override
                     public void mouseClicked(MouseEvent e) 
                     {
                         

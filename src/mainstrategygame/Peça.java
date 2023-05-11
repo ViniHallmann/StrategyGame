@@ -4,13 +4,11 @@
  */
 package mainstrategygame;
 
-import javax.swing.JLabel;
-
 /**
  *
  * @author vinic
  */
-public abstract class Peça extends JLabel{
+public abstract class Peça{
     private String nome;
     private char tipo;   
 

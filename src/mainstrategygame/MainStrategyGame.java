@@ -21,12 +21,14 @@ public class MainStrategyGame{
        
        
        menu.getBotao().addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     menu.setVisible(false);
                     tela.setVisible(true);
             } 
         });
         tela.getBotaoContinuar().addMouseListener(new MouseAdapter() { 
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     tela.setVisible(false);
                     board.setVisible(true);

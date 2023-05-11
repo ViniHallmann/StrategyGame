@@ -9,12 +9,9 @@ import java.awt.GridBagLayout;
 import static java.lang.Math.sqrt;
 import javax.swing.JPanel;
 import java.awt.GridBagConstraints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,8 +31,8 @@ public class Tabuleiro extends JPanel implements Cloneable{
     
     private int coordenadaXUltimoBotao;
     private int coordenadaYUltimoBotao;
-    private Celula[][] tabuleiro;
-    private Celula[][] copiaTabuleiro = new Celula[(int) sqrt(NUMERO_DE_CASAS)][(int) sqrt(NUMERO_DE_CASAS)];
+    private final Celula[][] tabuleiro;
+    private final Celula[][] copiaTabuleiro = new Celula[(int) sqrt(NUMERO_DE_CASAS)][(int) sqrt(NUMERO_DE_CASAS)];
     
     private int dicasDisponiveis = 2;
     
@@ -43,7 +40,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
     
     private int resultadoCombate;
     
-    private GridBagConstraints  g = new GridBagConstraints();
+    private final GridBagConstraints  g = new GridBagConstraints();
        
     public Tabuleiro()
     {
@@ -64,13 +61,11 @@ public class Tabuleiro extends JPanel implements Cloneable{
             {
                 g.gridx=i;
                 g.gridy=j;
-                //Cria o tabuleiro
+                
                 tabuleiro[i][j] = CelulaFactory.factory(' ',0);
                 tabuleiro[i][j].setCoord(i,j);
-                //Seta o tabuleiro como falso
+                
                 tabuleiro[i][j].setEnabled(false);
-                //Pega as coordenadas da matriz
-                //Ao clicar no botão pega as "informações do botão" e chama a função que coloca uma peça na posição desse botão
                 
                 if((i == posLago && j == 2))
                 {
@@ -130,7 +125,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
         int coordenadaYDestino = y;
         
         this.resultadoCombate = combate(botaoClicado, origem);
-       // System.out.println(resultadoCombate);
         
         if (this.resultadoCombate == -1){
             botaoClicado.revelaCelula();
@@ -261,10 +255,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
     
     public boolean verifica(Celula botao)
     {
-        if (!(botao.getPeca() instanceof Vazio))
-            return true;
-        
-        return false;
+        return !(botao.getPeca() instanceof Vazio);
     }
     
     public boolean validaMovimento(Celula botaoClicado, int x, int y)
@@ -504,9 +495,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
         int coordenadaYBotaoClicado = botaoClicado.getPosY();
         int coordenadaXFinal;
         int coordenadaYFinal;
-        boolean resultadoCalculoDistancia = false;
-        int coordenadaXTemp = coordenadaXUltimoBotaoClicado;
-        int coordenadaYTemp = coordenadaYUltimoBotaoClicado;
+        boolean resultadoCalculoDistancia = false;      
         coordenadaXFinal = Math.abs(coordenadaXUltimoBotaoClicado - coordenadaXBotaoClicado);
         coordenadaYFinal = Math.abs(coordenadaYUltimoBotaoClicado - coordenadaYBotaoClicado);
         resultadoCalculoDistancia = (coordenadaXFinal == 1 && coordenadaYFinal == 0) || (coordenadaXFinal == 0 && coordenadaYFinal == 1);
@@ -518,9 +507,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 int incrementoX = 0;
                 int incrementoY = 0;
                 int x;
-                int y;
-                int distanciaClicadaX = Math.abs(coordenadaXUltimoBotaoClicado - coordenadaXBotaoClicado);
-                int distanciaClicadaY = Math.abs(coordenadaYUltimoBotaoClicado - coordenadaYBotaoClicado);
+                int y;              
                 if (coordenadaXUltimoBotaoClicado > coordenadaXBotaoClicado)
                 {
                     incrementoX = -1;
@@ -549,45 +536,18 @@ public class Tabuleiro extends JPanel implements Cloneable{
                     x += incrementoX;
                     y += incrementoY;
                 }
-                if(!(botaoClicado.getPeca() instanceof Vazio) && !resultadoCalculoDistancia)
-                {
-                    return false;
-                } 
-                else 
-                {
-                    return true;
-                }
+                return !(!(botaoClicado.getPeca() instanceof Vazio) && !resultadoCalculoDistancia);
                 
             }
         }
         return resultadoCalculoDistancia;
     }
     
-    public void adicionarListener(Celula celula)
-    {
-        
-        celula.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) 
-            {
-                Celula botaoClicado = (Celula) e.getSource();
-                System.out.println("botaoClicado:"+botaoClicado.getPosX()+" "+botaoClicado.getPosY());
-                if ( ultimoBotaoClicado != null && validaMovimento(botaoClicado,botaoClicado.getPosX(),botaoClicado.getPosY()))
-                {
-                    movePeca(botaoClicado, botaoClicado.getPosX(), botaoClicado.getPosY(),getUltimoBotaoClicado(), getCoordenadasUltimoBotao('x'),getCoordenadasUltimoBotao('y'));
-                    //resetaUltimoBotaoClicado();
-                    //System.out.println(botaoClicado.getPeca());
-                    movePecaAdversaria();
-                } 
-            }
-        });
-    }
-    
     public void dicaBomba()
     {
         imprimeMatriz();
         if(dicasDisponiveis > 0)
-        {
-            Scanner scannerDica = new Scanner(System.in);
+        {         
             String colunaString= JOptionPane.showInputDialog("Digite a coluna da matriz [0] até [4]:");
             if (colunaString != null)
             {
@@ -616,7 +576,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             {
 
                 Celula copiaCelula = CelulaFactory.factory(tabuleiro[i][j].getPeca().getTipo(), tabuleiro[i][j].getEquipe());
-                //adicionarListener(copiaCelula);
                 copiaTabuleiro[i][j] = copiaCelula;
                 copiaTabuleiro[i][j].setCoord(i,j);
                 if (tabuleiro[i][j].getLago() == true)
@@ -672,7 +631,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             {   
                 x = rand.nextInt(5);
                 y = rand.nextInt(5);
-                //System.out.print(". ");
             }
 
             index = rand.nextInt(3);
@@ -685,7 +643,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             {
                 index = rand.nextInt(3);
                 index2 = rand.nextInt(3);  
-                //System.out.print("* ");
             }
 
             proxX = x+listaMovimento[index];
@@ -693,7 +650,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
 
             if(x != x+listaMovimento[index] && y != y+listaMovimento[index2])
             {
-                Random temp = new Random();
                 int temp2 = rand.nextInt(2);
                 if(temp2 == 1)
                 {

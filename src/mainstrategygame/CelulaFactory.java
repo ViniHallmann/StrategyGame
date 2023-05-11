@@ -10,7 +10,7 @@ import java.awt.Color;
  *
  * @author jvlai
  */
-public final class CelulaFactory{
+public abstract class CelulaFactory{
      
     private static final Color COR_ADVERSARIO = new Color(255,204,204);
     private static final Color COR_JOGADOR = new Color(175,175,255);
@@ -100,40 +100,47 @@ public final class CelulaFactory{
         celula.setEquipe(0);
         return celula;
     }
+    
     private static Celula criaCelulaBomba(Color cor)
     {
         Celula celula = new Celula('B', new Bomba(),equipe);
         celula.setBackground(cor);
         return celula;
     }
+    
     private static Celula criaCelulaCabo(Color cor)
     {
         Celula celula = new Celula('C', new CaboArmeiro(),equipe);
         celula.setBackground(cor);
         return celula; 
     }
+    
     private static Celula criaCelulaEspiao(Color cor)
     {
         Celula celula = new Celula('E', new Espiao(),equipe);
         celula.setBackground(cor);
         return celula; 
     }
+    
     private static Celula criaCelulaMarechal(Color cor)
     {
         Celula celula = new Celula('M', new Marechal(),equipe);
         celula.setBackground(cor);
         return celula; 
     }
+    
     private static Celula criaCelulaBandeira(Color cor)
     {
         Celula celula = new Celula('F', new Bandeira(),equipe);
         celula.setBackground(cor);
         return celula; 
     }
+    
     private static Celula criaCelulaSoldado(Color cor)
     {
         Celula celula = new Celula('S', new Soldado(),equipe);
         celula.setBackground(cor);
         return celula; 
     }   
+    
 }
