@@ -734,5 +734,9 @@ public class Tabuleiro extends JPanel implements Cloneable{
     {
         return dicasDisponiveis;
     }
-
+    
+    public void setDicasDisponiveis()
+    {
+        this.dicasDisponiveis = 2;
+    }
 }

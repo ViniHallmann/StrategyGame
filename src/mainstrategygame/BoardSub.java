@@ -117,7 +117,7 @@ public class BoardSub extends JFrame{
         resetTabuleiro.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-      
+                   tabuleiro.setDicasDisponiveis();
                    tabuleiro.resetaTabuleiro();
                    resetNumeroDePecasJogador();
                    resetNumeroDePecasAdversario();
@@ -380,9 +380,7 @@ public class BoardSub extends JFrame{
                                 }
                                 
                             }
-                            
                             tabuleiro.resetaUltimoBotaoClicado();
-                                
                         }
                         //System.out.println(" BJ:"+bombasJogadorDisponiveis+" CJ:"+caboArmeiroJogadorDisponiveis+" SJ:"+soldadosJogadorDisponiveis+" MJ:"+marechalJogadorDisponivel+" EJ:"+espiaoJogadorDisponivel+" BJ:"+bandeiraJogadorDisponivel);
                        // System.out.println(" BA:"+bombasAdversarioDisponiveis+" CA:"+caboArmeiroAdversarioDisponiveis+" SA:"+soldadosAdversarioDisponiveis+" MA:"+marechalAdversarioDisponivel+" EA:"+espiaoAdversarioDisponivel+" BA:"+bandeiraAdversarioDisponivel);

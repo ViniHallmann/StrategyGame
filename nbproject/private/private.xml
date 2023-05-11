@@ -2,6 +2,9 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
+        <group/>
+=======
         <group>
             <file>file:/C:/Users/jvlai/Documents/NetBeansProjects/TrabalhoStrategy/StrategyGame/src/mainstrategygame/BotoesUtil.java</file>
             <file>file:/C:/Users/jvlai/Documents/NetBeansProjects/TrabalhoStrategy/StrategyGame/src/mainstrategygame/Tabuleiro.java</file>
@@ -14,5 +17,6 @@
             <file>file:/C:/Users/jvlai/Documents/NetBeansProjects/TrabalhoStrategy/StrategyGame/src/mainstrategygame/Celula.java</file>
             <file>file:/C:/Users/jvlai/Documents/NetBeansProjects/TrabalhoStrategy/StrategyGame/src/mainstrategygame/Menu.java</file>
         </group>
+>>>>>>> 45750816947f499ee2f06359fbf09f90f4450478
     </open-files>
 </project-private>
