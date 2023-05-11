@@ -138,7 +138,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             Celula novaOrigem = CelulaFactory.factory(' ');
             
             this.novaOrigem = novaOrigem;
-            //adicionarListener(novaOrigem);
             g.gridx = coordenadaXOrigem;
             g.gridy = coordenadaYOrigem;
             remove(tabuleiro[coordenadaXOrigem][coordenadaYOrigem]);
@@ -159,7 +158,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             
             this.novaOrigem = novaOrigem;
             
-            //adicionarListener(novaOrigem);
             g.gridx = coordenadaXOrigem ;
             g.gridy = coordenadaYOrigem ;
             remove(tabuleiro[coordenadaXOrigem][coordenadaYOrigem]);
@@ -170,7 +168,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             Celula novoDestino = CelulaFactory.factory(' ');
             this.novoDestino = novoDestino;
             
-            //adicionarListener(novoDestino);
                         
             g.gridx = coordenadaXDestino;
             g.gridy = coordenadaYDestino;
@@ -188,8 +185,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             Celula novaOrigem = CelulaFactory.factory(' ');
             this.novaOrigem = novaOrigem;
             
-            
-            //adicionarListener(novaOrigem);
             
             g.gridx = coordenadaXOrigem;
             g.gridy = coordenadaYOrigem;
@@ -217,8 +212,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             
             this.novaOrigem = novaOrigem;
    
-            //adicionarListener(novaOrigem);
-            
             g.gridx = coordenadaXDestino;
             g.gridy = coordenadaYDestino;
             remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
@@ -243,7 +236,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
            Celula novaOrigem = CelulaFactory.factory(' ');
            this.novaOrigem = novaOrigem;
             
-            //adicionarListener(novaOrigem);
             g.gridx = coordenadaXOrigem;
             g.gridy = coordenadaYOrigem;
             remove(tabuleiro[coordenadaXOrigem][coordenadaYOrigem]);
@@ -254,7 +246,6 @@ public class Tabuleiro extends JPanel implements Cloneable{
             Celula novoDestino = CelulaFactory.factory(' ');
             this.novoDestino = novoDestino;
             
-            //adicionarListener(novoDestino); 
             g.gridx = coordenadaXDestino;
             g.gridy = coordenadaYDestino;
             remove(tabuleiro[coordenadaXDestino][coordenadaYDestino]);
@@ -618,13 +609,14 @@ public class Tabuleiro extends JPanel implements Cloneable{
     public void copiaTabuleiro()
     {
         g.insets = new java.awt.Insets(1, 1, 1, 1);
+        resetaUltimoBotaoClicado();
         for (int i = 0; i < sqrt(NUMERO_DE_CASAS); i++)
         {
             for (int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
             {
 
                 Celula copiaCelula = CelulaFactory.factory(tabuleiro[i][j].getPeca().getTipo(), tabuleiro[i][j].getEquipe());
-                adicionarListener(copiaCelula);
+                //adicionarListener(copiaCelula);
                 copiaTabuleiro[i][j] = copiaCelula;
                 copiaTabuleiro[i][j].setCoord(i,j);
                 if (tabuleiro[i][j].getLago() == true)

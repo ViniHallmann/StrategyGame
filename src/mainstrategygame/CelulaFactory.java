@@ -5,7 +5,6 @@
 package mainstrategygame;
 
 import java.awt.Color;
-import javax.swing.BorderFactory;
 
 /**
  *
@@ -94,44 +93,44 @@ public final class CelulaFactory{
         return null;
     }
     
-    public static Celula criaCelulaVazio()
+    private static Celula criaCelulaVazio()
     {
         Celula celula = new Celula(' ',new Vazio(),equipe);
         celula.setBackground(COR_VAZIO);
         celula.setEquipe(0);
         return celula;
     }
-    public static Celula criaCelulaBomba(Color cor)
+    private static Celula criaCelulaBomba(Color cor)
     {
         Celula celula = new Celula('B', new Bomba(),equipe);
         celula.setBackground(cor);
         return celula;
     }
-    public static Celula criaCelulaCabo(Color cor)
+    private static Celula criaCelulaCabo(Color cor)
     {
         Celula celula = new Celula('C', new CaboArmeiro(),equipe);
         celula.setBackground(cor);
         return celula; 
     }
-    public static Celula criaCelulaEspiao(Color cor)
+    private static Celula criaCelulaEspiao(Color cor)
     {
         Celula celula = new Celula('E', new Espiao(),equipe);
         celula.setBackground(cor);
         return celula; 
     }
-    public static Celula criaCelulaMarechal(Color cor)
+    private static Celula criaCelulaMarechal(Color cor)
     {
         Celula celula = new Celula('M', new Marechal(),equipe);
         celula.setBackground(cor);
         return celula; 
     }
-    public static Celula criaCelulaBandeira(Color cor)
+    private static Celula criaCelulaBandeira(Color cor)
     {
         Celula celula = new Celula('F', new Bandeira(),equipe);
         celula.setBackground(cor);
         return celula; 
     }
-    public static Celula criaCelulaSoldado(Color cor)
+    private static Celula criaCelulaSoldado(Color cor)
     {
         Celula celula = new Celula('S', new Soldado(),equipe);
         celula.setBackground(cor);
