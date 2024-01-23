@@ -12,6 +12,9 @@ import java.awt.GridBagConstraints;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,7 +22,7 @@ import javax.swing.JOptionPane;
  * @author jvlai
  */
 public class Tabuleiro extends JPanel implements Cloneable{
-      
+    
     public static final int NUMERO_DE_CASAS = 25;
     
     private Celula ultimoBotaoClicado = null;
@@ -41,7 +44,9 @@ public class Tabuleiro extends JPanel implements Cloneable{
     private int resultadoCombate;
     
     private final GridBagConstraints  g = new GridBagConstraints();
-       
+    
+    private final CountDownLatch latch = new CountDownLatch(1);
+    
     public Tabuleiro()
     {
         tabuleiro = new Celula[(int)(sqrt(NUMERO_DE_CASAS))][(int)(sqrt(NUMERO_DE_CASAS))];
@@ -71,6 +76,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 {
                     tabuleiro[posLago][j].setBackground(new java.awt.Color(204, 204, 255));
                     tabuleiro[posLago][j].setLago();
+                    tabuleiro[posLago][j].colocaImagemLago();
                 }
                 add(tabuleiro[i][j],g);
             }
@@ -116,7 +122,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
     
     public void movePeca(Celula botaoClicado, int x, int y, Celula origem, int coordenadaXOrigem, int coordenadaYOrigem)
     {
-        
+        latch.countDown();
         this.celulaOrigem = origem;
         this.celulaDestino = botaoClicado;
 
@@ -127,7 +133,7 @@ public class Tabuleiro extends JPanel implements Cloneable{
         this.resultadoCombate = combate(botaoClicado, origem);
         
         if (this.resultadoCombate == -1){
-            botaoClicado.revelaCelula();
+            botaoClicado.revelaCelula(botaoClicado.getPeca().getTipo());
             
             Celula novaOrigem = CelulaFactory.factory(' ');
             
@@ -461,9 +467,12 @@ public class Tabuleiro extends JPanel implements Cloneable{
         {
             for(int j = 0; j < sqrt(NUMERO_DE_CASAS); j++)
             {
-                tabuleiro[i][j].revelaCelula();
+                tabuleiro[i][j].revelaCelula(tabuleiro[i][j].getPeca().getTipo());
+                repaint();
+                revalidate();
             }
         }
+        
     }
     
     public static void clearConsole() 
@@ -554,7 +563,9 @@ public class Tabuleiro extends JPanel implements Cloneable{
                 int coluna = Integer.parseInt(colunaString);
                 for (int i = 0; i < 5; i++){
                     if (tabuleiro[coluna][i].getPeca() instanceof Bomba){
-                        tabuleiro[coluna][i].revelaCelula();
+                        tabuleiro[coluna][i].revelaCelula(tabuleiro[coluna][i].getPeca().getTipo());
+                        repaint();
+                        revalidate();
                     }
                 }
             }
@@ -663,6 +674,34 @@ public class Tabuleiro extends JPanel implements Cloneable{
                   
                 
         }while(tabuleiro[proxX][proxY].getEquipe() == -1 || tabuleiro[proxX][proxY].getLago() == true); 
+        /*CyclicBarrier barreira = new CyclicBarrier(1);
+        
+        // Aguarda a jogada do adversário
+        try {
+            barreira.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
+            // Trate a exceção, se necessário
+        }*/
+        
+        synchronized (this) 
+        {
+            try 
+            {
+                this.wait(100); 
+            } catch (InterruptedException e) {         }
+        }
+        /*try {
+            // Aguarda a minha jogada
+            latch.await();
+        } catch (InterruptedException e) {
+            // Trate a exceção, se necessário
+        }
+
+        try {
+            Thread.sleep(500); // Dorme por meio segundo (500 milissegundos)
+        } catch (InterruptedException e) {
+            // Trate a exceção, se necessário
+        }*/
         movePeca(tabuleiro[proxX][proxY], proxX, proxY, tabuleiro[x][y], x, y);
     }
     

@@ -4,6 +4,7 @@
  */
 package mainstrategygame;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -44,33 +45,31 @@ public final class BotoesPecas extends JPanel{
     
     public void constroiBotoesPecas()
     {
-        
         r.insets = new java.awt.Insets(40, 1, 1, 1);
-        
         r.gridx = 0;
-        botoes[0] = CelulaFactory.factory('B');
+        botoes[0] = CelulaFactory.factory('B',1);
         add(botoes[0],r);
         
         r.gridx = 1;
-        botoes[1] = CelulaFactory.factory('C');
+        botoes[1] = CelulaFactory.factory('C',1);
         add(botoes[1],r);
         
         r.gridx = 2;
-        botoes[2] = CelulaFactory.factory('S');
+        botoes[2] = CelulaFactory.factory('S', 1);
         add(botoes[2],r);
         
         r.gridx = 3;
-        botoes[3] = CelulaFactory.factory('M');
+        botoes[3] = CelulaFactory.factory('M',1);
         add(botoes[3],r);
         
         r.gridx = 4;
-        botoes[4] = CelulaFactory.factory('E');
+        botoes[4] = CelulaFactory.factory('E',1);
         add(botoes[4],r);
         
         r.gridx = 5;
-        botoes[5] = CelulaFactory.factory('F');
+        botoes[5] = CelulaFactory.factory('F',1);
         add(botoes[5],r);
-        
+        resetaBotoes();
         r.insets = new java.awt.Insets(1, 1, 1, 1);
     }
     
@@ -99,20 +98,26 @@ public final class BotoesPecas extends JPanel{
         
         int array[] = {bombas, cabos, soldados, marechalVal, espiaoVal, flagVal};
         
-            for(int i = 0 ; i < NUMERO_DE_ROLES; i++)
-            {
-                r.gridx = i;
-                r.gridy = 1;
-                remove(quantidades[i]);
-                quantidades[i].setText(Integer.toString(array[i]));
-                add(quantidades[i],r);
-                quantidades[i].repaint();
-                revalidate();
-            }
-       
-        
+        for(int i = 0 ; i < NUMERO_DE_ROLES; i++)
+        {
+            r.gridx = i;
+            r.gridy = 1;
+            remove(quantidades[i]);
+            quantidades[i].setText(Integer.toString(array[i]));
+            add(quantidades[i],r);
+            quantidades[i].repaint();
+            revalidate();
+        }
     }
-        
+    public void resetaBotoes()
+    {
+        for (int i = 0; i < botoes.length; i++) 
+        {
+            botoes[i].setIcon(null);
+            botoes[i].setBackground(new Color(204, 204, 255));
+        }
+    }
+    
     public void resetaBotoesPecas()
     {
         for(int i = 0 ; i < NUMERO_DE_ROLES; i++)

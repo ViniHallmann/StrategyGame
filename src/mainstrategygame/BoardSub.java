@@ -4,6 +4,8 @@
  */
 package mainstrategygame;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
@@ -44,7 +46,10 @@ public class BoardSub extends JFrame{
     public BoardSub()
     {
        setTitle("STRATEGY GAME");
-       setSize(600,600);
+       setExtendedState(JFrame.MAXIMIZED_BOTH);
+       setSize(850,700);
+       //GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+       //gd.setFullScreenWindow(this);
        setLocationRelativeTo(null);
        setDefaultCloseOperation(EXIT_ON_CLOSE);
        
@@ -66,10 +71,7 @@ public class BoardSub extends JFrame{
        addMudaRodada(botoesUtil.getBotao(3));
        addDebug(botoesUtil.getBotao(4));
        addDica(botoesUtil.getBotao(5));
-       
-       
        rodadaPosicionarFlag();
-       
     }
     
     public void addPecasAdversario( JButton pecasAdversario)
@@ -728,13 +730,12 @@ public class BoardSub extends JFrame{
     
     public boolean verificaPeçasPosicionadas()
     {
-        
         return bombasJogadorDisponiveis == 2 &&
-                caboArmeiroJogadorDisponiveis == 2 &&
-                soldadosJogadorDisponiveis == 3 &&
-                marechalJogadorDisponivel == true &&
-                espiaoJogadorDisponivel == true &&
-                bandeiraJogadorDisponivel == true;
+               caboArmeiroJogadorDisponiveis == 2 &&
+               soldadosJogadorDisponiveis == 3 &&
+               marechalJogadorDisponivel == true &&
+               espiaoJogadorDisponivel == true &&
+               bandeiraJogadorDisponivel == true;
                
     }
     

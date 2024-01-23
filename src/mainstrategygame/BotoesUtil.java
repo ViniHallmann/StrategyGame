@@ -42,7 +42,7 @@ public class BotoesUtil extends JPanel{
     {
         int qnt = 0;
         g.insets = new java.awt.Insets(1, 1, 1, 1);
-        
+       
         for(int i = 0; i < 3; i++)
         {
             for(int j = 0; j < 2; j++)

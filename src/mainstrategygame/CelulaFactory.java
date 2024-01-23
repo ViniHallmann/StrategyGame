@@ -5,7 +5,6 @@
 package mainstrategygame;
 
 import java.awt.Color;
-
 /**
  *
  * @author jvlai
@@ -16,19 +15,19 @@ public abstract class CelulaFactory{
     private static final Color COR_JOGADOR = new Color(175,175,255);
     private static final Color COR_VAZIO = new Color(204,255,204);
     private static final Color COR_BRANCO = new Color(255,255,255);
+    private static int equipe = 1;
     
-    private static int equipe = 0;
     public static Celula factory(char tipo)
     {
        switch(tipo)
        {
            case ' ' : return criaCelulaVazio();
-           case 'B' : return criaCelulaBomba(COR_BRANCO);
-           case 'C' : return criaCelulaCabo(COR_BRANCO);
-           case 'S' : return criaCelulaSoldado(COR_BRANCO);
-           case 'E' : return criaCelulaEspiao(COR_BRANCO);
-           case 'F' : return criaCelulaBandeira(COR_BRANCO);
-           case 'M' : return criaCelulaMarechal(COR_BRANCO);
+           case 'B' : return criaCelulaBomba();
+           case 'C' : return criaCelulaCabo();
+           case 'S' : return criaCelulaSoldado();
+           case 'E' : return criaCelulaEspiao();
+           case 'F' : return criaCelulaBandeira();
+           case 'M' : return criaCelulaMarechal();
        }
         return null; 
     }
@@ -40,22 +39,22 @@ public abstract class CelulaFactory{
         {
             switch(tipo)
             {
-               case 'B' :  nova = criaCelulaBomba(COR_JOGADOR);
+               case 'B' :  nova = criaCelulaBomba();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'C' :  nova = criaCelulaCabo(COR_JOGADOR);
+               case 'C' :  nova = criaCelulaCabo();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'S' :  nova = criaCelulaSoldado(COR_JOGADOR);
+               case 'S' :  nova = criaCelulaSoldado();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'E' :  nova = criaCelulaEspiao(COR_JOGADOR);
+               case 'E' :  nova = criaCelulaEspiao();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'F' :  nova = criaCelulaBandeira(COR_JOGADOR);
+               case 'F' :  nova = criaCelulaBandeira();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'M' :  nova = criaCelulaMarechal(COR_JOGADOR);
+               case 'M' :  nova = criaCelulaMarechal();
                            nova.setEquipe(equipe);
                            return nova;
             }
@@ -64,22 +63,22 @@ public abstract class CelulaFactory{
         {
             switch(tipo)
             {
-               case 'B' :  nova = criaCelulaBomba(COR_ADVERSARIO);
+               case 'B' :  nova = criaCelulaBomba();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'C' :  nova = criaCelulaCabo(COR_ADVERSARIO);
+               case 'C' :  nova = criaCelulaCabo();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'S' :  nova = criaCelulaSoldado(COR_ADVERSARIO);
+               case 'S' :  nova = criaCelulaSoldado();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'E' :  nova = criaCelulaEspiao(COR_ADVERSARIO);
+               case 'E' :  nova = criaCelulaEspiao();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'F' :  nova = criaCelulaBandeira(COR_ADVERSARIO);
+               case 'F' :  nova = criaCelulaBandeira();
                            nova.setEquipe(equipe);
                            return nova;
-               case 'M' :  nova = criaCelulaMarechal(COR_ADVERSARIO);
+               case 'M' :  nova = criaCelulaMarechal();
                            nova.setEquipe(equipe);
                            return nova;
             }
@@ -89,57 +88,56 @@ public abstract class CelulaFactory{
             nova = criaCelulaVazio();
             return nova;
         }
-        
         return null;
     }
     
     private static Celula criaCelulaVazio()
     {
         Celula celula = new Celula(' ',new Vazio(),equipe);
-        celula.setBackground(COR_VAZIO);
         celula.setEquipe(0);
+        celula.colocaImagemCelula(' ');
         return celula;
     }
     
-    private static Celula criaCelulaBomba(Color cor)
+    private static Celula criaCelulaBomba()
     {
         Celula celula = new Celula('B', new Bomba(),equipe);
-        celula.setBackground(cor);
+        celula.colocaImagemCelula('B');
         return celula;
     }
     
-    private static Celula criaCelulaCabo(Color cor)
+    private static Celula criaCelulaCabo()
     {
         Celula celula = new Celula('C', new CaboArmeiro(),equipe);
-        celula.setBackground(cor);
+        celula.colocaImagemCelula('C');
         return celula; 
     }
     
-    private static Celula criaCelulaEspiao(Color cor)
+    private static Celula criaCelulaEspiao()
     {
         Celula celula = new Celula('E', new Espiao(),equipe);
-        celula.setBackground(cor);
+        celula.colocaImagemCelula('E');
         return celula; 
     }
     
-    private static Celula criaCelulaMarechal(Color cor)
+    private static Celula criaCelulaMarechal()
     {
         Celula celula = new Celula('M', new Marechal(),equipe);
-        celula.setBackground(cor);
+        celula.colocaImagemCelula('M');
         return celula; 
     }
     
-    private static Celula criaCelulaBandeira(Color cor)
+    private static Celula criaCelulaBandeira()
     {
         Celula celula = new Celula('F', new Bandeira(),equipe);
-        celula.setBackground(cor);
+        celula.colocaImagemCelula('F');
         return celula; 
     }
     
-    private static Celula criaCelulaSoldado(Color cor)
+    private static Celula criaCelulaSoldado()
     {
         Celula celula = new Celula('S', new Soldado(),equipe);
-        celula.setBackground(cor);
+        celula.colocaImagemCelula('S');
         return celula; 
     }   
     

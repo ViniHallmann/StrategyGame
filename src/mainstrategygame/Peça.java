@@ -11,7 +11,7 @@ package mainstrategygame;
 public abstract class Peça{
     private String nome;
     private char tipo;   
-
+    private boolean pecaEscondida = true;
     public Peça() {
         
     }
@@ -19,6 +19,16 @@ public abstract class Peça{
     public void setTipo(char tipo)
     {
         this.tipo = tipo;
+    }
+    
+    public void setPecaRevelada()
+    {
+        this.pecaEscondida = false;
+    }
+    
+    public boolean getPecaEscondida()
+    {
+        return this.pecaEscondida = false;
     }
     
     public char getTipo()

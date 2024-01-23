@@ -4,43 +4,155 @@
  */
 package mainstrategygame;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.OverlayLayout;
 
 /**
  *
  * @author jvlai
  */
 public class Celula extends JButton{
+    
     private int posX;
     private int posY;
     private Peça peca;
     private int equipe;
     boolean eLago = false; 
+    private JLabel labelImagemPeca;
     
-    
-    public Celula(char t , Peça peca, int equipe)
+    public Celula( char t , Peça peca, int equipe)
     {
         this.peca = peca;
         this.equipe = equipe;
-        if(equipe > -1)
-            setText(peca.getNome());
-        
         this.peca.setTipo(t);
-        setPreferredSize(new java.awt.Dimension(50, 50));
     }
-    
+
     public Celula()
     {
         setText(peca.getNome());
     }
     
-    public void revelaCelula()
+    public void colocaImagemCelula(char tipo)
     {
-        if(equipe == -1)
+        setPreferredSize(new java.awt.Dimension(150, 100));
+        setLayout(new OverlayLayout(this));
+        ImageIcon backgroundImage = new ImageIcon(getClass().getResource("/Resources/tile2.png"));
+        setIcon(backgroundImage);
+        
+        String stringEquipe = "aliado";
+        if (getEquipe() == 1 )
         {
-            setText(peca.getNome());
-            repaint();
+            ImageIcon imagemPecaIcon = null;
+            switch (tipo) 
+            {
+             case 'B':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/bomba_" + stringEquipe + ".png"));
+                 break;
+             case 'C':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/cabo_" + stringEquipe + ".png"));
+                 break;
+             case 'S':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/soldado_" + stringEquipe + ".png"));
+                 break;
+             case 'E':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/espiao_" + stringEquipe + ".png"));
+                 break;
+             case 'F':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/bandeira_" + stringEquipe + ".png"));
+                 break;
+             case 'M':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/marechal_" + stringEquipe + ".png"));
+                 break;
+            }
+            setIcon(backgroundImage);
+            Image imagemPeca = imagemPecaIcon.getImage();
+            Image imagemPecaRedimensionada = imagemPeca.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            ImageIcon imagemPecaRedimensionadaIcon = new ImageIcon(imagemPecaRedimensionada);
+
+            labelImagemPeca = new JLabel(imagemPecaRedimensionadaIcon);
+            labelImagemPeca.setAlignmentX(CENTER_ALIGNMENT);
+            labelImagemPeca.setAlignmentY(CENTER_ALIGNMENT);
+            add(labelImagemPeca);
         }
+        else
+        {
+            stringEquipe = "inimigo";
+        }
+        
+        if (tipo != ' ')
+        {
+            ImageIcon imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/peca_" + stringEquipe + ".png"));
+            setIcon(backgroundImage);
+            Image imagemPeca = imagemPecaIcon.getImage();
+            Image imagemPecaRedimensionada = imagemPeca.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            ImageIcon imagemPecaRedimensionadaIcon = new ImageIcon(imagemPecaRedimensionada);
+
+            labelImagemPeca = new JLabel(imagemPecaRedimensionadaIcon);
+            labelImagemPeca.setAlignmentX(CENTER_ALIGNMENT);
+            labelImagemPeca.setAlignmentY(CENTER_ALIGNMENT);
+            add(labelImagemPeca); 
+        }
+        
+    }
+    public void colocaImagemLago()
+    {
+        if(getLago() == true)
+        {
+            ImageIcon backgroundImage = new ImageIcon(getClass().getResource("/Resources/tile3.jpg"));
+            Image image = backgroundImage.getImage();
+            Image resizedImage = image.getScaledInstance(150, 100, Image.SCALE_SMOOTH);
+            ImageIcon resizedBackgroundImage = new ImageIcon(resizedImage);
+            setIcon(resizedBackgroundImage);
+        }
+    }
+    public void revelaCelula(char tipo)
+    {
+        if (labelImagemPeca != null) 
+        {
+            remove(labelImagemPeca);
+            labelImagemPeca = null;
+        }
+        if (equipe == -1)
+        {
+            ImageIcon imagemPecaIcon = null;
+            switch (tipo) 
+            {
+             case 'B':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/bomba_inimigo.png"));
+                 break;
+             case 'C':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/cabo_inimigo.png"));
+                 break;
+             case 'S':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/soldado_inimigo.png"));
+                 break;
+             case 'E':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/espiao_inimigo.png"));
+                 break;
+             case 'F':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/bandeira_inimigo.png"));
+                 break;
+             case 'M':
+                 imagemPecaIcon = new ImageIcon(getClass().getResource("/Resources/marechal_inimigo.png"));
+                 break;
+            } 
+
+            if (imagemPecaIcon != null)
+            {
+                Image imagemPeca = imagemPecaIcon.getImage();
+                Image imagemPecaRedimensionada = imagemPeca.getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+                ImageIcon imagemPecaRedimensionadaIcon = new ImageIcon(imagemPecaRedimensionada);
+
+                labelImagemPeca = new JLabel(imagemPecaRedimensionadaIcon);
+                labelImagemPeca.setAlignmentX(CENTER_ALIGNMENT);
+                labelImagemPeca.setAlignmentY(CENTER_ALIGNMENT);
+                add(labelImagemPeca);
+            }
+        }
+        repaint();
     }
     
     public void setLago()

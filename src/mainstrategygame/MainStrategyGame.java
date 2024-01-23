@@ -16,7 +16,7 @@ public class MainStrategyGame{
        
        BoardSub board = new BoardSub();
        Menu menu = new Menu();
-       TelaBoasVindas tela = new TelaBoasVindas();
+       //TelaBoasVindas tela = new TelaBoasVindas();
        menu.setVisible(true);
        
        
@@ -24,16 +24,17 @@ public class MainStrategyGame{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     menu.setVisible(false);
-                    tela.setVisible(true);
+                    //tela.setVisible(true);
+                    board.setVisible(true);
             } 
         });
-        tela.getBotaoContinuar().addMouseListener(new MouseAdapter() { 
+        /*tela.getBotaoContinuar().addMouseListener(new MouseAdapter() { 
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     tela.setVisible(false);
                     board.setVisible(true);
             } 
-        });
+        });*/
        
     }
 }
